@@ -21,3 +21,14 @@
 ### Interfaccia Carte
 
 - [ ] Usare progress bar di bootstrap per le stats dei supereroi
+
+
+
+
+
+
+### Da gestire
+
+- [ ] i doppioni di carte sono carte diverse con un altro id oppure ogni carta ha un campo copie per indicare quanti duplicati ci sono di una certa carta?
+- [ ] ha senso salvare le informazioni di scambio?
+- [ ] creare piu album oppure un album con piu viste?
