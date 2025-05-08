@@ -1,6 +1,6 @@
 # Progetto ProgWeb
 
-## Nome Progetto: SuperFlip
+## Nome Progetto: HeroFlip
 
 
 ### Step Introduttivi
@@ -14,7 +14,9 @@
 - [X] pensare ai prossimi step dopo aver completato questo
 
 
-
+### User creation 
+- Struttura: 
+  - username
 
 
 
