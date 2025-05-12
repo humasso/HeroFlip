@@ -11,16 +11,18 @@ app.use(express.json());
 
 const mongoURI = process.env.MONGO_URI;
 
+/*
 mongoose.connect(mongoURI)
 .then(() => console.log('✅ Connesso a MongoDB'))
 .catch(err => console.error('❌ Errore connessione MongoDB:', err));
+*/
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello, Express.js Server!</h1>');
 });
 
 // Monta le rotte di auth sotto /api/auth
-app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
 
 // Avvio del server
 const PORT = process.env.PORT || 3000;
