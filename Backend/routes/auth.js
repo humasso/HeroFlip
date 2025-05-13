@@ -3,16 +3,23 @@ const bcrypt  = require('bcrypt');
 const jwt     = require('jsonwebtoken');
 const User    = require('../models/User');
 const router  = express.Router();
+const functions = require('../functions');
 
 // Registrazione
 router.post('/register', async (req, res) => {
   const { username, name, surname, email, password, favoriteHero} = req.body;
   const hash = await bcrypt.hash(password, 10);
   const user = new User({ username, name, surname, email, favoriteHero, password: hash });
-  await user.save();
-  res.status(201).send({ message: 'Registrazione avvenuta' });
-  
-  res.send('<h1>siamo in register</h1>');
+  functions.connectDB();
+  try {
+    await user.save();
+    console.log('Registrazione avvenuta ');
+    res.status(201).send({ message: 'Registrazione avvenuta' });
+  } catch (err) {
+    console.error('❌ Errore in /register:', err);
+    res.status(400).json({ error: err.message });
+  }
+  res.send('<h1>siamo in regs</h1>');
 });
 
 // Login
@@ -29,6 +36,9 @@ router.post('/login', async (req, res) => {
 
 module.exports = router;
 
+router.get('/test', (req, res) => {
+  res.send('<h1>siamo in test</h1>');
+})
 
 /*
 

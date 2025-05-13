@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 import { AuthRoutingModule } from './auth-routing.module';
 
@@ -8,7 +11,11 @@ import { AuthRoutingModule } from './auth-routing.module';
   declarations: [],
   imports: [
     CommonModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    HttpClient
   ]
 })
-export class AuthModule { }
+
+export class AuthModule { 
+ 
+}

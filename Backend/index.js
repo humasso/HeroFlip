@@ -1,21 +1,13 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const authRoutes = require('./routes/auth');
 const cors = require('cors');
 require('dotenv').config();
+const connectDB = require('./functions');
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
-
-const mongoURI = process.env.MONGO_URI;
-
-/*
-mongoose.connect(mongoURI)
-.then(() => console.log('✅ Connesso a MongoDB'))
-.catch(err => console.error('❌ Errore connessione MongoDB:', err));
-*/
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello, Express.js Server!</h1>');

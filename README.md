@@ -14,6 +14,9 @@
 - [X] pensare ai prossimi step dopo aver completato questo
 
 
+### Step nella creazione da migliorare subito
+- [ ] creare un envoirment nella parte frontend per tenere l'indirizzo del server
+
 ### User creation 
 - Struttura: 
   - username
