@@ -4,6 +4,7 @@ const jwt     = require('jsonwebtoken');
 const User    = require('../models/User');
 const router  = express.Router();
 const connectDB = require('../functions/dbconnection');
+require('dotenv').config();
 
 // Registrazione
 router.post('/register', async (req, res) => {
@@ -94,16 +95,16 @@ router.post('/register', async (req, res) => {
 
 // Login
 router.post('/login', async (req, res) => {
+  const JWT_SECRET = process.env.JWT_SECRET;
   connectDB();
   const { username, password } = req.body;
   const user = await User.findOne({ username });
   if (!user || !(await bcrypt.compare(password, user.password))) {
     return res.status(401).send({ message: 'Credenziali errate' });
   }
-  //const token = jwt.sign({ sub: user._id }, JWT_SECRET, { expiresIn: '1h' });
-  const test = 'prova token';
+  const token = jwt.sign({ sub: user._id }, JWT_SECRET, { expiresIn: '1h' });
   //res.status(201).send({ message: 'Login avvenuto' });
-  res.send({ test });
+  res.send({ token });
 });
 
 module.exports = router;

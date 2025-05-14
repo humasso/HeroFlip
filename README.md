@@ -16,6 +16,7 @@
 
 ### Step nella creazione da migliorare subito
 - [ ] creare un envoirment nella parte frontend per tenere l'indirizzo del server
+- [ ] controllare meglio i campi login
 
 ### User creation 
 - Struttura: 
