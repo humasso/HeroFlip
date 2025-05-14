@@ -5,7 +5,7 @@ const mongoURI = process.env.MONGO_URI;
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(process.env.MONGO_URI, {dbName: 'HeroFlip'});
     console.log('✅ Connesso a MongoDB');
   } catch (err) {
     console.error('❌ Errore connessione MongoDB:', err);

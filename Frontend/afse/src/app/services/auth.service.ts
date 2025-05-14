@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -21,9 +21,10 @@ export interface RegisterResponse {
   providedIn: 'root'
 })
 export class AuthService {
+  private http = inject(HttpClient)
   private apiUrl = 'http://localhost:3000/auth';
 
-  constructor(private http: HttpClient) {}
+  constructor() {}
 
   register(data: RegisterRequest): Observable<RegisterResponse> {
     return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, data);
