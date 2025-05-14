@@ -3,7 +3,7 @@ const bcrypt  = require('bcrypt');
 const jwt     = require('jsonwebtoken');
 const User    = require('../models/User');
 const router  = express.Router();
-const connectDB = require('../functions/DBconnection');
+const connectDB = require('../functions/dbconnection');
 
 // Registrazione
 router.post('/register', async (req, res) => {
