@@ -10,7 +10,7 @@ require('dotenv').config();
 router.post('/register', async (req, res) => {
   const { username, name, surname, email, password, favoriteHero} = req.body;
   if (!username || !name || !surname || !email || !password || !favoriteHero) {
-    return res.status(400).send({ message: 'Tutti i campi sono obbligatori' });
+    return res.status(400).send("Tutti i campi sono obbligatori");
   }
   
   // Nome
@@ -82,29 +82,45 @@ router.post('/register', async (req, res) => {
   try {
     await user.save();
     console.log('Registrazione avvenuta ');
-    res.status(201).send({ message: 'Registrazione avvenuta' });
+    res.status(201).send("Registrazione avvenuta");
   } catch (err) {
     console.error('❌ Errore in /register:', err); //debug 
     if (err.code === 11000) {
-      return res.status(400).send({ message: 'Email già in uso' });
+      return res.status(400).send("Email già in uso");
     }
-    res.status(400).json({ error: "Errore Server Interno" });
+    res.status(400).send("Errore Server Interno");
   }
 
 });
 
 // Login
 router.post('/login', async (req, res) => {
+
   const JWT_SECRET = process.env.JWT_SECRET;
+  try {
   connectDB();
   const { username, password } = req.body;
+  // Username
+  if (username == undefined || username == "") {
+    return res.status(400).send('Username mancante');
+  }
+  // Password
+  if (password == undefined || password == "") {
+    res.status(400).send("Password mancante");
+    return;
+  }
   const user = await User.findOne({ username });
   if (!user || !(await bcrypt.compare(password, user.password))) {
-    return res.status(401).send({ message: 'Credenziali errate' });
+    return res.status(400).send("Credenziali errate");
   }
   const token = jwt.sign({ sub: user._id }, JWT_SECRET, { expiresIn: '1h' });
   //res.status(201).send({ message: 'Login avvenuto' });
   res.send({ token });
+
+  } catch (err) {
+    console.error('❌ Errore in /login:', err); //debug
+    res.status(500).send("Errore Server Interno");
+  }
 });
 
 module.exports = router;
@@ -112,6 +128,7 @@ module.exports = router;
 router.get('/test', (req, res) => {
   res.send('<h1>siamo in test</h1>');
 })
+
 
 /*
 
