@@ -44,7 +44,7 @@ export class RegisterComponent {
         this.router.navigate(['/login']);
       },
       error: err => {
-        //console.error('Errore registrazione:', err);
+        console.error('Errore registrazione:', err);
         if (err.error && err.error.message) {
           this.errorMessage = err.error.message;
         } else {

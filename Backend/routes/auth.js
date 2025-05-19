@@ -1,10 +1,10 @@
 const express = require('express');
 const bcrypt  = require('bcrypt');
-const jwt     = require('jsonwebtoken');
 const User    = require('../models/User');
 const router  = express.Router();
 const connectDB = require('../functions/dbconnection');
 require('dotenv').config();
+//const formattedString  = require('../functions/formattedString');
 
 // Registrazione
 router.post('/register', async (req, res) => {
@@ -21,7 +21,7 @@ router.post('/register', async (req, res) => {
 
   if ((/[^^[A-Za-z\s]+$]/.test(name))) {
     res.status(400).send("Inserire un nome valido");
-    return;
+    return;q
   }
 
   // Cognome
@@ -70,6 +70,10 @@ router.post('/register', async (req, res) => {
     return;
   }
 
+  //name = formattedString(name);
+  //surname = formattedString(surname);
+  //email = email.trim().toLowerCase();
+
   const hash = await bcrypt.hash(password, 10);
   const user = new User({ username, name, surname, email, favoriteHero, password: hash });
   connectDB();
@@ -79,10 +83,11 @@ router.post('/register', async (req, res) => {
     return res.status(400).send('Username già in uso');
   }
 
+
   try {
     await user.save();
     console.log('Registrazione avvenuta ');
-    res.status(201).send("Registrazione avvenuta");
+    res.status(201).json({ message: 'Registrazione avvenuta' });
   } catch (err) {
     console.error('❌ Errore in /register:', err); //debug 
     if (err.code === 11000) {
@@ -90,7 +95,6 @@ router.post('/register', async (req, res) => {
     }
     res.status(400).send("Errore Server Interno");
   }
-
 });
 
 // Login
@@ -113,9 +117,9 @@ router.post('/login', async (req, res) => {
   if (!user || !(await bcrypt.compare(password, user.password))) {
     return res.status(400).send("Credenziali errate");
   }
-  const token = jwt.sign({ sub: user._id }, JWT_SECRET, { expiresIn: '1h' });
+  //const token = jwt.sign({ sub: user._id }, JWT_SECRET, { expiresIn: '1h' });
   //res.status(201).send({ message: 'Login avvenuto' });
-  res.send({ token });
+  res.send({_id: user._id });
 
   } catch (err) {
     console.error('❌ Errore in /login:', err); //debug

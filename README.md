@@ -16,10 +16,13 @@
 
 ### Step nella creazione da migliorare subito (quando verra voglia di farlo :/)
 - [ ] creare un envoirment nella parte frontend per tenere l'indirizzo del server
-- [ ] controllare meglio i campi login
+- [X] controllare meglio i campi login
 - [X] far vedere errori sul form quando si inserisce un campo sbagliato
 - [ ] diferenzaire i vari tipi di errore e nella documentaione e commenti segnare vari tipi di codice errore cosa vuoldire
 - [ ] Aggiungere messaggio di conferma di registrazione avvenuta e login avvenuto (piu avanti magari si potrebbe inserire una mini animazione di sucesso)
+- [ ] doppia psd per registrazione
+- [ ] separare funzioni in usercheck
+- [ ] il supereore preferito diventa l'icona del profilo
 
 ### User creation 
 - Struttura: 

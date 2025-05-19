@@ -30,8 +30,8 @@ export class AuthService {
     return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, data);
   }
 
-  login(data: { username: string; password: string }): Observable<{ token: string }> {
+  login(data: { username: string; password: string }): Observable<{ userid: string }> {
     //console.log('Login data:', data);
-    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, data);
+    return this.http.post<{ userid: string }>(`${this.apiUrl}/login`, data);
   }
 }

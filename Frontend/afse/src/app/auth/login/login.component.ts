@@ -23,7 +23,7 @@ export class LoginComponent {
 
   login() {
     const payload = {
-      username: this.username,
+      username:  this.username,
       password: this.password
     };
 
@@ -31,9 +31,9 @@ export class LoginComponent {
 
     this.authService.login(payload).subscribe({
       next: res => {
-        console.log('Login riuscito:', res);
-        // Salva il token in localStorage
-        localStorage.setItem('token', res.token);
+        //console.log('Login riuscito:', res);
+        localStorage.setItem('userid', JSON.stringify(res));
+        //console.log('ID utente salvato in localStorage:', localStorage.getItem('userid'));
         this.router.navigate(['/']);
       },
       error: err => {
