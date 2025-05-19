@@ -1,15 +1,23 @@
-import { Component } from '@angular/core';
+import { CommonModule} from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-home',
-  imports: [NgbDropdownModule],
+  imports: [NgbDropdownModule, CommonModule, RouterOutlet],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+  isLoggedIn = false;
+  username: string | null = null;
 
-  
-
-  username = 'NomeUtente';
+  ngOnInit(): void {
+    const userId = localStorage.getItem('userid');
+    console.log('User ID:', userId);
+    console.log('Is logged in:', this.isLoggedIn);
+    //this.isLoggedIn = !!userId;
+    //this.username = localStorage.getItem('username');
+  }
 }

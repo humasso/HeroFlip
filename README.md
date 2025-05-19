@@ -25,6 +25,7 @@
 - [ ] doppia psd per registrazione
 - [ ] separare funzioni in usercheck
 - [ ] il supereore preferito diventa l'icona del profilo
+- [ ] sistemare Formated String function in Backend
 
 ### User creation 
 - Struttura: 

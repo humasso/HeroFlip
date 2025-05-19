@@ -18,7 +18,7 @@
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="mainNavbar">
+    <div *ngIf="isLoggedIn == true" class="collapse navbar-collapse" id="mainNavbar">
       <ul class="navbar-nav ms-auto align-items-center">
         <!-- Pacchetti -->
         <li class="nav-item me-3">
@@ -63,12 +63,26 @@
         </li>
       </ul>
     </div>
+    <div *ngIf="isLoggedIn == false" class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav ms-auto align-items-center">
+        <!-- Login -->
+        <li class="nav-item me-3">
+          <button
+            class="btn btn-outline-primary"
+            routerLink="/login"
+            title="Login"
+          >
+            Login
+          </button>
+        </li>
+      </ul>
+    </div>
   </div>
 </nav>
 
+<router-outlet></router-outlet>
 
 <!-- Contenuto principale -->
 <main class="container mt-4">
   <h1>Benvenuto nella Home</h1>
-  <p>Qui inserirai la dashboard e le varie aree dell’applicazione.</p>
 </main>
