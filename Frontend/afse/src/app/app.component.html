@@ -1,10 +1,10 @@
-<div class="container mt-5">
-      <h1 class="mb-4">Home Page</h1>
-      <button class="btn btn-primary" routerLink="/login">Vai al Login</button>
-      <br>
-      <br>
-      <button class="btn btn-secondary" routerLink="/register">Registrati</button>
-</div>
+<!-- il button sparisce quando siamo già su /home -->
+<button
+  *ngIf="router.url !== '/home'"
+  class="btn btn-secondary"
+  routerLink="/home"
+>
+  Home
+</button>
 
-
-<router-outlet></router-outlet> 
+<router-outlet></router-outlet>

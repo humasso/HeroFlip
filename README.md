@@ -3,15 +3,17 @@
 ## Nome Progetto: HeroFlip
 
 
-### Step Introduttivi
+### Struttura Sito
 
-- [X] Recuperare Le Slide
-- [X] Leggere bene la traccia del esame
-- [X] capire il problema dei outage del API
-- [X] discutere le soluzioni da usare per il progetto
-- [X] controllare progetti di altri
-- [X] chiedere conferma al prof per utilizzare angular come framework
-- [X] pensare ai prossimi step dopo aver completato questo
+- appcomponent
+  - Homepage
+    - navbar
+      - Auth
+        - login
+        - register
+      - shop
+    - Pachetti
+
 
 
 ### Step nella creazione da migliorare subito (quando verra voglia di farlo :/)
@@ -33,6 +35,7 @@
   - password
   - eroe preferto
   - crediti
+  - profile pic
 
 
 
@@ -52,3 +55,24 @@
 - [ ] i doppioni di carte sono carte diverse con un altro id oppure ogni carta ha un campo copie per indicare quanti duplicati ci sono di una certa carta?
 - [ ] ha senso salvare le informazioni di scambio?
 - [ ] creare piu album oppure un album con piu viste?
+
+
+
+
+
+
+###### TEmp
+
+<div class="container mt-5">
+      <h1 class="mb-4">Home Page</h1>
+      <button class="btn btn-primary" routerLink="/login">Vai al Login</button>
+      <br>
+      <br>
+      <button class="btn btn-secondary" routerLink="/register">Registrati</button>
+      <br>
+      <br>
+      <button class="btn btn-secondary" routerLink="/home">Home</button>
+</div>
+
+
+<router-outlet></router-outlet> 
