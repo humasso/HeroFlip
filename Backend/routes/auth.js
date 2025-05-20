@@ -9,6 +9,9 @@ require('dotenv').config();
 // Registrazione
 router.post('/register', async (req, res) => {
   const { username, name, surname, email, password, favoriteHero} = req.body;
+
+  console.log('Registrazione:', username, name, surname, email, password, favoriteHero); //debug
+
   if (!username || !name || !surname || !email || !password || !favoriteHero) {
     return res.status(400).send("Tutti i campi sono obbligatori");
   }
@@ -49,7 +52,6 @@ router.post('/register', async (req, res) => {
   if (username == undefined || username == "") {
     return res.status(400).send('Username mancante');
   }
-
 
   // Password
   if (password == undefined || password == "") {
@@ -100,10 +102,11 @@ router.post('/register', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
 
-  const JWT_SECRET = process.env.JWT_SECRET;
   try {
   connectDB();
   const { username, password } = req.body;
+  console.log('Login:', username, password); //debug
+  
   // Username
   if (username == undefined || username == "") {
     return res.status(400).send('Username mancante');
@@ -115,11 +118,13 @@ router.post('/login', async (req, res) => {
   }
   const user = await User.findOne({ username });
   if (!user || !(await bcrypt.compare(password, user.password))) {
+    console.log('Credenziali errate', username, password, await bcrypt.compare(password, user.password)); //debug
     return res.status(400).send("Credenziali errate");
   }
   //const token = jwt.sign({ sub: user._id }, JWT_SECRET, { expiresIn: '1h' });
   //res.status(201).send({ message: 'Login avvenuto' });
   res.send({_id: user._id });
+  console.log('Login avvenuto', user._id); //debug
 
   } catch (err) {
     console.error('❌ Errore in /login:', err); //debug

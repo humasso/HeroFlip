@@ -26,14 +26,15 @@ export class LoginComponent {
       username:  this.username,
       password: this.password
     };
-
+    console.log('Payload:', payload);
     this.errorMessage = null; 
 
     this.authService.login(payload).subscribe({
       next: res => {
-        //console.log('Login riuscito:', res);
+        console.log('Login riuscito:', res);
         localStorage.setItem('userid', JSON.stringify(res));
-        //console.log('ID utente salvato in localStorage:', localStorage.getItem('userid'));
+        localStorage.setItem('username', this.username);
+        console.log('ID utente salvato in localStorage:', localStorage.getItem('userid'));
         this.router.navigate(['/']);
       },
       error: err => {
