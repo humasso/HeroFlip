@@ -1,11 +1,11 @@
 import { CommonModule} from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterLink } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-home',
-  imports: [NgbDropdownModule, CommonModule, RouterOutlet],
+  imports: [NgbDropdownModule, CommonModule, RouterOutlet, RouterLink],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
