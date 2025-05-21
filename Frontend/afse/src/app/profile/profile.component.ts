@@ -6,6 +6,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { User } from '../models/user.model';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,18 +24,20 @@ export class ProfileComponent implements OnInit {
   constructor(
     private userService: UserService,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private auth: AuthService
   ) {}
 
-  ngOnInit(): void {
-    const userId = localStorage.getItem('userid')?.split('"')[3];
+  userId = localStorage.getItem('userid')?.split('"')[3];
 
-    if (!userId) {
+  ngOnInit(): void {
+
+    if (!this.userId) {
       this.router.navigate(['/login']);
       return;
     }
-    console.log('User ID:', userId);
-    this.userService.getUser(userId).subscribe({
+    console.log('User ID:', this.userId);
+    this.userService.getUser(this.userId).subscribe({
       next: user => {
         this.user = user;
         this.initForm();
@@ -61,24 +64,20 @@ export class ProfileComponent implements OnInit {
     const { username, password } = this.editForm.value;
     const updateData: any = { username };
     if (password) updateData.password = password;
-
-    this.userService.updateUser(this.user.id, updateData).subscribe({
-      next: updated => {
-        this.user = updated;
-        this.editing = false;
-        this.loading = false;
-      },
-      error: () => {
-        this.errorMsg = 'Errore durante l’aggiornamento.';
-        this.loading = false;
-      }
-    });
   }
 
   onDelete() {
     if (!confirm('Sei sicuro di voler eliminare definitivamente il tuo profilo?')) return;
-    this.userService.deleteUser(this.user.id).subscribe({
-      next: () => this.router.navigate(['/goodbye']),
+    if (!this.userId) {
+      this.router.navigate(['/login']);
+      return;
+    }
+    this.userService.deleteUser(this.userId).subscribe({
+      next: () => {
+        this.router.navigate(['/']);
+        alert('Profilo eliminato con successo.');
+        this.auth.logout();
+      },
       error: () => this.errorMsg = 'Errore durante la cancellazione.'
     });
   }
