@@ -1,0 +1,39 @@
+<div *ngIf="user; else loadingTpl">
+  <h2>Profilo di {{ user.username }}</h2>
+  <p><strong>Email:</strong> {{ user.email }}</p>
+  <!-- altri campi... -->
+
+  <button (click)="toggleEdit()">
+    {{ editing ? 'Annulla' : 'Modifica profilo' }}
+  </button>
+  <button class="danger" (click)="onDelete()">
+    Elimina profilo
+  </button>
+
+  <form *ngIf="editing" [formGroup]="editForm" (ngSubmit)="onSubmit()">
+    <div>
+      <label>Username</label>
+      <input formControlName="username">
+      <div *ngIf="editForm.get('username')?.invalid && editForm.get('username')?.touched">
+        Username obbligatorio (min 3 caratteri).
+      </div>
+    </div>
+
+    <div>
+      <label>Nuova password</label>
+      <input type="password" formControlName="password">
+      <div *ngIf="editForm.get('password')?.invalid && editForm.get('password')?.touched">
+        Minimo 6 caratteri.
+      </div>
+    </div>
+
+    <button type="submit" [disabled]="loading || editForm.invalid">
+      Salva modifiche
+    </button>
+    <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
+  </form>
+</div>
+
+<ng-template #loadingTpl>
+  <p>Caricamento in corso…</p>
+</ng-template>

@@ -2,10 +2,9 @@ const express = require('express');
 const bcrypt  = require('bcrypt');
 const User    = require('../models/User');
 const router  = express.Router();
-const connectDB = require('../functions/dbconnection');
+
 require('dotenv').config();
 //const formattedString  = require('../functions/formattedString');
-
 // Registrazione
 router.post('/register', async (req, res) => {
   const { username, name, surname, email, password, favoriteHero} = req.body;
@@ -78,7 +77,6 @@ router.post('/register', async (req, res) => {
 
   const hash = await bcrypt.hash(password, 10);
   const user = new User({ username, name, surname, email, favoriteHero, password: hash });
-  connectDB();
 
   if(await User.findOne({username: username})) {
     console.log('Username già in uso');
@@ -103,7 +101,6 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
 
   try {
-  connectDB();
   const { username, password } = req.body;
   console.log('Login:', username, password); //debug
   
