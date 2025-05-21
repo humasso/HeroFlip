@@ -24,6 +24,9 @@
 - [ ] separare funzioni in usercheck
 - [ ] il supereore preferito diventa l'icona del profilo
 - [ ] sistemare Formated String function in Backend
+- [ ] mettere nel usercheck tutte le funzioni di controllo dei dati del utente
+- [ ] nel aggiorna password usare le funzioni di usercheck per controllare la nuova pass
+
 
 ### User creation 
 - Struttura: 

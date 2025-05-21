@@ -1,39 +1,107 @@
-<div *ngIf="user; else loadingTpl">
-  <h2>Profilo di {{ user.username }}</h2>
-  <p><strong>Email:</strong> {{ user.email }}</p>
-  <!-- altri campi... -->
+<div class="container py-4" *ngIf="user; else loadingTpl">
+  <div class="card mx-auto" style="max-width: 600px;">
+    <div class="card-body">
+      <div class="text-center mb-4">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"/>
+            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"/>
+        </svg>
 
-  <button (click)="toggleEdit()">
-    {{ editing ? 'Annulla' : 'Modifica profilo' }}
-  </button>
-  <button class="danger" (click)="onDelete()">
-    Elimina profilo
-  </button>
+      <h4 class="card-title text-center mb-3">{{ user.username }}</h4>
+      <ul class="list-group list-group-flush mb-3">
+        <li class="list-group-item d-flex justify-content-between">
+          <span><strong>Nome</strong> {{ user.name }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span><strong>Cognome</strong> {{ user.surname }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span><strong>Email</strong> {{ user.email }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>
+            <strong>Password</strong>
+            <span class="ms-2">••••••••••••</span>
+          </span>
+          <a class="link-primary small" (click)="startEdit('password')">Modifica</a>
+        </li>
+        <li class="list-group-item d-flex justify-content-between">
+          <span>
+            <strong>Crediti</strong>
+            <span class="badge bg-secondary ms-2">{{ temp }}</span>
+          </span>
+          <button class="btn btn-sm btn-outline-primary" (click)="goToShop()">
+            <i class="bi bi-cart-plus"></i>
+          </button>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>
+            <strong>Eroe preferito</strong> {{ user.favoriteHero }}
+          </span>
+          <a href="#" class="link-primary small" (click)="startEdit('favoriteHero')">Modifica</a>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          <span>
+            <strong>Username</strong> {{ user.username }}
+          </span>
+          <a href="#" class="link-primary small" (click)="startEdit('username')">Modifica</a>
+        </li>
+      </ul>
 
-  <form *ngIf="editing" [formGroup]="editForm" (ngSubmit)="onSubmit()">
-    <div>
-      <label>Username</label>
-      <input formControlName="username">
-      <div *ngIf="editForm.get('username')?.invalid && editForm.get('username')?.touched">
-        Username obbligatorio (min 3 caratteri).
+      <!-- Inline edit form -->
+      <div *ngIf="editingField" class="border p-3 mb-3 rounded">
+        <form [formGroup]="editForm" (ngSubmit)="saveField(editingField)">
+          <div class="mb-3" *ngIf="editingField === 'username'">
+            <label class="form-label">Nuovo Username</label>
+            <input type="text" formControlName="username" class="form-control" [class.is-invalid]="editForm.get('username')?.invalid && editForm.get('username')?.touched">
+            <div class="invalid-feedback">
+              Username obbligatorio (minimo 3 caratteri).
+            </div>
+          </div>
+
+          <div class="mb-3" *ngIf="editingField === 'password'">
+            <label class="form-label">Vecchia Password</label>
+            <input type="password" formControlName="oldPassword" class="form-control" [class.is-invalid]="editForm.get('oldPassword')?.invalid && editForm.get('oldPassword')?.touched">
+            <label class="form-label">Nuova Password</label>
+            <input type="password" formControlName="password" class="form-control" [class.is-invalid]="editForm.get('password')?.invalid && editForm.get('password')?.touched">
+            <div class="invalid-feedback">
+              Minimo 6 caratteri.
+            </div>
+          </div>
+
+          <div class="mb-3" *ngIf="editingField === 'favoriteHero'">
+            <label class="form-label">Eroe Preferito</label>
+            <input type="text" formControlName="favoriteHero" class="form-control" [class.is-invalid]="editForm.get('favoriteHero')?.invalid && editForm.get('favoriteHero')?.touched">
+            <div class="invalid-feedback">
+              Questo campo è obbligatorio.
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-secondary me-2" (click)="cancelEdit()">Annulla</button>
+            <button type="submit" class="btn btn-primary" [disabled]="loading || editForm.get(editingField!)?.invalid">
+              Salva
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="text-center">
+        <button class="btn btn-danger" (click)="deleteProfile()">
+          Elimina Profilo
+        </button>
+      </div>
+
+      <div *ngIf="errorMsg" class="alert alert-danger mt-3">
+        {{ errorMsg }}
       </div>
     </div>
-
-    <div>
-      <label>Nuova password</label>
-      <input type="password" formControlName="password">
-      <div *ngIf="editForm.get('password')?.invalid && editForm.get('password')?.touched">
-        Minimo 6 caratteri.
-      </div>
-    </div>
-
-    <button type="submit" [disabled]="loading || editForm.invalid">
-      Salva modifiche
-    </button>
-    <div *ngIf="errorMsg" class="error">{{ errorMsg }}</div>
-  </form>
+  </div>
 </div>
 
 <ng-template #loadingTpl>
-  <p>Caricamento in corso…</p>
+  <div class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="mt-2">Caricamento in corso…</p>
+  </div>
 </ng-template>

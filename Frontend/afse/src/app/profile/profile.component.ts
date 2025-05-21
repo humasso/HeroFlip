@@ -1,25 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild }           from '@angular/core';
+import { CommonModule }                from '@angular/common';
+import { ReactiveFormsModule }         from '@angular/forms';
+import { Router }                      from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { NgIf } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { UserService } from '../services/user.service';
-import { User } from '../models/user.model';
-import { AuthService } from '../services/auth.service';
+
+import { UserService }                 from '../services/user.service';
+import { AuthService }                 from '../services/auth.service';
+import { User }                        from '../models/user.model';
 
 @Component({
   selector: 'app-profile',
-  imports: [CommonModule, NgIf, ReactiveFormsModule],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+  styleUrls: ['./profile.component.css'],
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule]
 })
 export class ProfileComponent implements OnInit {
+
+  @ViewChild('loadingTpl', { static: true }) loadingTpl!: TemplateRef<any>;
+
   user!: User;
   editForm!: FormGroup;
-  editing = false;
+  editingField: 'username' | 'password' | 'favoriteHero' | null = null;
   loading = false;
   errorMsg = '';
+  temp = 300; 
 
   constructor(
     private userService: UserService,
@@ -28,57 +33,87 @@ export class ProfileComponent implements OnInit {
     private auth: AuthService
   ) {}
 
-  userId = localStorage.getItem('userid')?.split('"')[3];
+  private userId = localStorage.getItem('userid')?.split('"')[3];
 
   ngOnInit(): void {
-
     if (!this.userId) {
       this.router.navigate(['/login']);
       return;
     }
-    console.log('User ID:', this.userId);
     this.userService.getUser(this.userId).subscribe({
       next: user => {
         this.user = user;
         this.initForm();
       },
-      error: err => this.errorMsg = 'Impossibile caricare i dati.'
+      error: () => this.errorMsg = 'Impossibile caricare i dati.'
     });
   }
 
-  initForm() {
+  private initForm() {
     this.editForm = this.fb.group({
       username: [this.user.username, [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.minLength(6)]]
+      oldPassword: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.minLength(6)]],
+      favoriteHero: [this.user.favoriteHero, Validators.required]
     });
   }
 
-  toggleEdit() {
-    this.editing = !this.editing;
-    if (!this.editing) this.editForm.reset({ username: this.user.username, password: '' });
-  }
-
-  onSubmit() {
-    if (this.editForm.invalid) return;
-    this.loading = true;
-    const { username, password } = this.editForm.value;
-    const updateData: any = { username };
-    if (password) updateData.password = password;
-  }
-
-  onDelete() {
-    if (!confirm('Sei sicuro di voler eliminare definitivamente il tuo profilo?')) return;
-    if (!this.userId) {
-      this.router.navigate(['/login']);
-      return;
+  startEdit(field: 'username' | 'password' | 'favoriteHero') {
+    this.editingField = field;
+    if (field === 'password') {
+    // reset di entrambi i campi sulla password
+    this.editForm.patchValue({ oldPassword: '', password: '' });
+    } else {
+      const value = this.user[field] || '';
+      this.editForm.get(field)!.setValue(value);
     }
-    this.userService.deleteUser(this.userId).subscribe({
+  }
+
+  cancelEdit() {
+    this.editingField = null;
+    this.editForm.reset({
+      username: this.user.username,
+      password: '',
+      favoriteHero: this.user.favoriteHero
+    });
+  }
+
+  saveField(field: 'username' | 'password' | 'favoriteHero') {
+    if (this.editForm.get(field)!.invalid) { return; }
+    this.loading = true;
+    if (field === 'password') {
+      console.log('user', this.user);
+      this.userService.updatePassword(this.user._id, this.editForm.value.oldPassword, this.editForm.value.password).subscribe({
+        next: response => {
+          console.log('response', response);
+          this.user.password = this.editForm.value.password;
+          this.editingField = null;
+          this.loading = false;
+          this.errorMsg = '';
+          alert('Password aggiornata con successo.');
+        },
+        error: error => {
+          this.errorMsg =  error.error.message || 'Errore durante l\'aggiornamento della password.';
+          this.loading = false;
+        }
+      });
+    }
+
+  }
+
+  deleteProfile() {
+    if (!confirm('Sei sicuro di voler eliminare definitivamente il tuo profilo?')) { return; }
+    this.userService.deleteUser(this.user._id).subscribe({
       next: () => {
+        this.auth.logout();
         this.router.navigate(['/']);
         alert('Profilo eliminato con successo.');
-        this.auth.logout();
       },
       error: () => this.errorMsg = 'Errore durante la cancellazione.'
     });
+  }
+
+  goToShop() {
+    this.router.navigate(['/shop']);
   }
 }
