@@ -1,5 +1,5 @@
 import { Component,OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
   username: string | null = null;
   credits = 0;
 
-  constructor(private auth: AuthService, private userService: UserService) {}
+  constructor(private auth: AuthService, private userService: UserService, private router: Router) {}
 
 
   ngOnInit(): void {
@@ -41,5 +41,10 @@ export class AppComponent implements OnInit {
 
   logout() {
     this.auth.logout();
+    this.isLoggedIn = false;
+    this.username = null;
+    this.credits = 0;
+
+    this.router.navigate(['/login']);
   }
 }

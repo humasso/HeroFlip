@@ -26,8 +26,7 @@ router.put('/pass/:id', async (req, res) => {
         console.log(user.password);
         if (!(await bcrypt.compare(req.body.oldPassword, user.password))) return res.status(400).json({ message: 'Password errata' });
 
-        const { password } = req.body.newPassword;
-        user = await User.findByIdAndUpdate(req.params.id, { password }, { new: true });
+        await User.findByIdAndUpdate(req.params.id, { password: await bcrypt.hash(req.body.newPassword, 10) }, { new: true });
         res.status(200).json({ message: 'Password aggiornata' });
 
     } catch (err) {
