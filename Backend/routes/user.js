@@ -48,6 +48,19 @@ router.put('/username/:id', async (req, res) => {
     }
 });
 
+// PUT /api/user/favoritehero/:id
+router.put('/favoritehero/:id', async (req, res) => {
+    try {
+        const { favoriteHero } = req.body;
+        const user = await User.findByIdAndUpdate(req.params.id, { favoriteHero }, { new: true });
+        if (!user) return res.status(404).json({ message: 'Utente non trovato' });
+        res.json(user);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ message: 'Errore server' });
+    }
+});
+
 // DELETE /api/user/:id
 router.delete('/:id', async (req, res) => {
   try {

@@ -85,6 +85,8 @@ export class ProfileComponent implements OnInit {
   saveField(field: 'username' | 'password' | 'favoriteHero') {
     if (this.editForm.get(field)!.invalid) { return; }
     this.loading = true;
+
+    // Caso Password
     if (field === 'password') {
       console.log('user', this.user);
       this.userService.updatePassword(this.user._id, this.editForm.value.oldPassword, this.editForm.value.password).subscribe({
@@ -98,6 +100,29 @@ export class ProfileComponent implements OnInit {
         },
         error: error => {
           this.errorMsg =  error.error.message || 'Errore durante l\'aggiornamento della password.';
+          this.loading = false;
+        }
+      });
+    }
+
+    // Caso Usarname
+    if (field === 'username') {
+      if (this.editForm.value.username === this.user.username) {
+        this.editingField = null;
+        this.loading = false;
+        alert('Username aggiornato con successo.');
+        return;
+      }
+      this.userService.updateUsername(this.user._id, this.editForm.value.username).subscribe({
+        next: response => {
+          this.user.username = this.editForm.value.username;
+          this.editingField = null;
+          this.loading = false;
+          this.errorMsg = '';
+          alert('Username aggiornato con successo.');
+        },
+        error: error => {
+          this.errorMsg =  error.error.message || 'Errore durante l\'aggiornamento dello username.';
           this.loading = false;
         }
       });

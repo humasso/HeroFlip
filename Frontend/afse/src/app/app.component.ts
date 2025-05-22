@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('Is logged in:', this.isLoggedIn);
-    
+    this.username = null;
     this.auth.loggedIn$.subscribe(status => {
       this.isLoggedIn = status;
     });
@@ -33,6 +33,7 @@ export class AppComponent implements OnInit {
     const userId = localStorage.getItem('userid')?.split('"')[3];
     if (userId) {
       this.userService.getUser(userId).subscribe(user => {
+        console.log('User:', user.username);
         this.username = user.username;
         //this.credits = user.credits;
       });

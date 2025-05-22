@@ -23,7 +23,11 @@
             <strong>Password</strong>
             <span class="ms-2">••••••••••••</span>
           </span>
-          <a class="link-primary small" (click)="startEdit('password')">Modifica</a>
+          <button type="button"
+                  class="btn btn-link p-0 small"
+                  (click)="startEdit('password')">
+            Modifica
+          </button>
         </li>
         <li class="list-group-item d-flex justify-content-between">
           <span>
@@ -38,13 +42,21 @@
           <span>
             <strong>Eroe preferito</strong> {{ user.favoriteHero }}
           </span>
-          <a href="#" class="link-primary small" (click)="startEdit('favoriteHero')">Modifica</a>
+          <button type="button"
+                  class="btn btn-link p-0 small"
+                  (click)="startEdit('favoriteHero')">
+            Modifica
+          </button>
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-center">
           <span>
             <strong>Username</strong> {{ user.username }}
           </span>
-          <a href="#" class="link-primary small" (click)="startEdit('username')">Modifica</a>
+          <button type="button"
+                  class="btn btn-link p-0 small"
+                  (click)="startEdit('username')">
+            Modifica
+          </button>
         </li>
       </ul>
 
