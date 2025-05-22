@@ -48,7 +48,8 @@ export class RegisterComponent {
       surname: this.surname,
       email: this.email,
       password: this.password,
-      favoriteHero: this.favoriteHero
+      favoriteHero: this.favoriteHero,
+      avatar: `https://robohash.org/${this.username}.png?set=set4`
     };
 
     this.errorMessage = null;

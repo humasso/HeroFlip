@@ -7,9 +7,9 @@ require('dotenv').config();
 //const formattedString  = require('../functions/formattedString');
 // Registrazione
 router.post('/register', async (req, res) => {
-  const { username, name, surname, email, password, favoriteHero} = req.body;
+  const { username, name, surname, email, password, favoriteHero, avatar } = req.body;
 
-  console.log('Registrazione:', username, name, surname, email, password, favoriteHero); //debug
+  console.log('Registrazione:', username, name, surname, email, password, favoriteHero, avatar); //debug
 
   if (!username || !name || !surname || !email || !password || !favoriteHero) {
     return res.status(400).send("Tutti i campi sono obbligatori");
@@ -76,7 +76,7 @@ router.post('/register', async (req, res) => {
   //email = email.trim().toLowerCase();
 
   const hash = await bcrypt.hash(password, 10);
-  const user = new User({ username, name, surname, email, favoriteHero, password: hash });
+  const user = new User({ username, name, surname, email, favoriteHero, password: hash, avatar });
 
   if(await User.findOne({username: username})) {
     console.log('Username già in uso');

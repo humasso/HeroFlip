@@ -20,9 +20,6 @@ export class ProfileComponent implements OnInit {
   @ViewChild('loadingTpl', { static: true }) loadingTpl!: TemplateRef<any>;
 
 
-  // $2b$10$EX8F/V/9tFyPEsmv5QuNbuhggVLJdnLcBS68HlojP1A1gPzbEqUQu
-  // 
-
   user!: User;
   editForm!: FormGroup;
   editingField: 'username' | 'password' | 'favoriteHero' | null = null;

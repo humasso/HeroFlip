@@ -6,6 +6,8 @@ export interface User {
     email: string;
     password: string;
     favoriteHero: string;
+    credits: number;
+    avatar: string;
 }
 
 // Interfacce per la richiesta e risposta di registrazione
@@ -16,6 +18,7 @@ export interface RegisterRequest {
   email: string;
   password: string;
   favoriteHero: string;
+  avatar: string; // URL dell'avatar
 }
 
 export interface RegisterResponse {
