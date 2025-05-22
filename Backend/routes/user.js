@@ -17,7 +17,6 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-
 // PUT /api/user/pass/:id
 router.put('/pass/:id', async (req, res) => {
     try {

@@ -5,10 +5,11 @@ import { RouterLink } from '@angular/router';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule, RouterLink, RouterModule, NgIf],
+  imports: [FormsModule, RouterLink, RouterModule, NgIf, CommonModule],
   standalone: true,
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
@@ -17,9 +18,14 @@ export class LoginComponent {
   username = '';
   password = '';
 
+  showPassword = false;
   errorMessage: string | null = null;
 
   constructor(private router: Router, private authService: AuthService) {}
+
+  toggleShowPassword() {
+    this.showPassword = !this.showPassword;
+  }
 
   login() {
     const payload = {

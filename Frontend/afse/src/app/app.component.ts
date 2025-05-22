@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from './services/auth.service';
+import { UserService } from './services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -17,17 +18,25 @@ export class AppComponent implements OnInit {
 
   isLoggedIn = false;
   username: string | null = null;
+  credits = 0;
 
-  constructor(private auth: AuthService) {}
+  constructor(private auth: AuthService, private userService: UserService) {}
 
 
   ngOnInit(): void {
     console.log('Is logged in:', this.isLoggedIn);
-    this.username = 'palle';
+    
     this.auth.loggedIn$.subscribe(status => {
       this.isLoggedIn = status;
     });
-    //this.username = localStorage.getItem('username');
+
+    const userId = localStorage.getItem('userid')?.split('"')[3];
+    if (userId) {
+      this.userService.getUser(userId).subscribe(user => {
+        this.username = user.username;
+        //this.credits = user.credits;
+      });
+    }
   }
 
   logout() {
