@@ -140,6 +140,6 @@ export class ProfileComponent implements OnInit {
   }
 
   goToShop() {
-    this.router.navigate(['/shop']);
+    this.router.navigate(['/shop/credits']);
   }
 }

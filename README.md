@@ -27,7 +27,7 @@
 - [ ] nel aggiorna password usare le funzioni di usercheck per controllare la nuova pass
 - [ ] facendo login una seconda volta senza aver fatto il logout, nella navbar rimane il nome del vecchio account 
 - [ ] per qualche motivo, facendo cambio account e rimettendo lo stesso account nella navbar non appare il username, rimane vuoto
-- [ ] 
+- [ ] Se non c'è l'account non da l'errore giusto. (errore server)
 
 ### User creation 
 - Struttura: 

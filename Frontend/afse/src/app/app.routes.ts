@@ -4,6 +4,8 @@ import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
+import { ShopdashComponent } from './shop/shopdash/shopdash.component';
+import { CreditsComponent } from './shop/credits/credits.component';
 
 export const routes: Routes = [
     //{ path: '', component: AppComponent },
@@ -11,5 +13,7 @@ export const routes: Routes = [
     { path: 'register', component: RegisterComponent },
     { path: 'home', component: HomeComponent },
     { path: 'profile', component: ProfileComponent },
+    { path: 'shop', component: ShopdashComponent },
+    { path: 'shop/credits', component: CreditsComponent },
     { path: '**', redirectTo: '' }
 ];
