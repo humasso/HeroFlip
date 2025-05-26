@@ -15,6 +15,13 @@
         - credits shop
         - Pachetti shop
 
+### Struttura navbar utente loggato
+-Nome utente
+- Profilo
+- pachetti / album (da decidere dopo)
+- metodi di pagamento 
+- cronologia ordini 
+- Logout
 
 
 ### Step nella creazione da migliorare subito (quando verra voglia di farlo :/)
