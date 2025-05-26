@@ -1,0 +1,6 @@
+/* evidenzia bundle selezionato */
+.card.border-primary {
+  border-width: 2px !important;
+}
+/* fa sembrare cliccabili i bundle */
+.card { cursor: pointer; }

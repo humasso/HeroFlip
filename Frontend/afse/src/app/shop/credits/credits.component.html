@@ -1,1 +1,179 @@
-<p>credits works!</p>
+<div class="container py-4">
+  <div class="card mx-auto" style="max-width:700px;">
+    <div class="card-header text-center">
+      <h4>Acquista Crediti</h4>
+    </div>
+
+    <!-- ATTENZIONE: applichiamo il formGroup qui, in modo che tutti i formControlName funzionino -->
+    <div class="card-body position-relative" [formGroup]="purchaseForm">
+
+      <!-- overlay spinner -->
+      <div *ngIf="processing"
+           class="position-absolute top-0 start-0 w-100 h-100 d-flex 
+                  align-items-center justify-content-center"
+           style="background: rgba(255,255,255,0.8); z-index:10;">
+        <div class="spinner-border" role="status"></div>
+      </div>
+
+      <!-- 1) Bundle SEMPRE visibili -->
+      <div class="mb-4">
+        <label class="form-label"><strong>Seleziona un bundle</strong></label>
+        <div class="row g-2">
+          <div class="col-6 col-md-4" *ngFor="let b of bundles; let i = index">
+            <div class="card"
+                 [class.border-primary]="purchaseForm.value.bundleIndex === i"
+                 (click)="purchaseForm.get('bundleIndex')!.setValue(i)">
+              <div class="card-body text-center p-2">
+                <h6 class="card-title mb-1">{{ b.name }}</h6>
+                <p class="mb-1">{{ b.credits }} crediti</p>
+                <small>{{ b.price }} €</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2) Input manuale SEMPRE visibile -->
+      <div class="mb-4">
+        <label for="manualCredits" class="form-label">
+          <strong>Oppure inserisci manualmente</strong>
+        </label>
+        <input id="manualCredits"
+               type="text"
+               inputmode="numeric"
+               maxlength="4"
+               formControlName="manualCredits"
+               class="form-control"
+               [class.is-invalid]="purchaseForm.get('manualCredits')?.invalid && purchaseForm.get('manualCredits')?.touched"
+               (keypress)="allowOnlyDigits($event)">
+        <div class="invalid-feedback">
+          Inserisci un numero intero maggiore di zero.
+        </div>
+      </div>
+
+      <hr>
+
+      <!-- 3) Riepilogo -->
+      <div class="mb-4">
+        <p><strong>Totale crediti:</strong> {{ creditsToBuy }}</p>
+        <p><strong>Da pagare:</strong> {{ priceToPay | number:'1.2-2' }} €</p>
+      </div>
+
+      <hr>
+
+      <!-- 4) Selezione metodo di pagamento -->
+      <div class="mb-4 text-center">
+        <button type="button"
+                class="btn btn-outline-primary me-2"
+                [class.active]="purchaseForm.value.paymentMethod === 'card'"
+                (click)="purchaseForm.get('paymentMethod')!.setValue('card')">
+          Carta di credito
+        </button>
+
+        <button type="button"
+                class="btn btn-outline-primary"
+                (click)="openPaypalModal()">
+          <img src="assets/paypal-logo.png" alt="PayPal" style="height:24px;">
+        </button>
+      </div>
+
+      <!-- 5a) Form Carta -->
+      <div *ngIf="purchaseForm.value.paymentMethod === 'card'">
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Numero carta</label>
+            <input type="text"
+                   maxlength="16"
+                   inputmode="numeric"
+                   formControlName="cardNumber"
+                   class="form-control"
+                   [class.is-invalid]="purchaseForm.get('cardNumber')?.invalid && purchaseForm.get('cardNumber')?.touched"
+                   (keypress)="allowOnlyDigits($event)">
+            <div class="invalid-feedback">Esattamente 16 cifre.</div>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Scadenza MM</label>
+            <input type="text"
+                   maxlength="2"
+                   inputmode="numeric"
+                   formControlName="expiryMonth"
+                   class="form-control"
+                   [class.is-invalid]="purchaseForm.get('expiryMonth')?.invalid && purchaseForm.get('expiryMonth')?.touched"
+                   (keypress)="allowOnlyDigits($event)">
+            <div class="invalid-feedback">Formato MM (01–12).</div>
+          </div>
+          <div class="col-6">
+            <label class="form-label">Scadenza YYYY</label>
+            <input type="text"
+                   maxlength="4"
+                   inputmode="numeric"
+                   formControlName="expiryYear"
+                   class="form-control"
+                   [class.is-invalid]="purchaseForm.get('expiryYear')?.invalid && purchaseForm.get('expiryYear')?.touched"
+                   (keypress)="allowOnlyDigits($event)">
+            <div class="invalid-feedback">Formato YYYY.</div>
+          </div>
+          <div class="col-12">
+            <label class="form-label">CVV</label>
+            <input type="text"
+                   maxlength="3"
+                   inputmode="numeric"
+                   formControlName="cvv"
+                   class="form-control"
+                   [class.is-invalid]="purchaseForm.get('cvv')?.invalid && purchaseForm.get('cvv')?.touched"
+                   (keypress)="allowOnlyDigits($event)">
+            <div class="invalid-feedback">Esattamente 3 cifre.</div>
+          </div>
+          <div class="col-12 text-end">
+            <button class="btn btn-primary"
+                    (click)="payWithCard()"
+                    [disabled]="processing">
+              Paga €{{ priceToPay | number:'1.2-2' }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5b) Modal PayPal -->
+      <div *ngIf="paypalModalOpen" class="modal-backdrop fade show"></div>
+      <div *ngIf="paypalModalOpen" class="modal d-block" tabindex="-1" style="background:transparent;">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Accedi con PayPal</h5>
+              <button type="button" class="btn-close" (click)="closePaypalModal()"></button>
+            </div>
+            <div class="modal-body">
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email"
+                       formControlName="paypalEmail"
+                       class="form-control"
+                       [class.is-invalid]="purchaseForm.get('paypalEmail')?.invalid && purchaseForm.get('paypalEmail')?.touched">
+                <div class="invalid-feedback">Email non valida.</div>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password"
+                       formControlName="paypalPassword"
+                       class="form-control"
+                       [class.is-invalid]="purchaseForm.get('paypalPassword')?.invalid && purchaseForm.get('paypalPassword')?.touched">
+                <div class="invalid-feedback">Password obbligatoria.</div>
+              </div>
+              <div class="text-end">
+                <button type="button" class="btn btn-secondary me-2" (click)="closePaypalModal()">Annulla</button>
+                <button type="button" class="btn btn-primary" (click)="payWithPaypal()">
+                  Accedi e Paga €{{ priceToPay | number:'1.2-2' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="errorMsg" class="alert alert-danger mt-3">
+        {{ errorMsg }}
+      </div>
+    </div>
+  </div>
+</div>

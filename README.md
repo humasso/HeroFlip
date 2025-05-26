@@ -11,8 +11,9 @@
       - Auth
         - login
         - register
-      - shop
-    - Pachetti
+      - dashboard Shop
+        - credits shop
+        - Pachetti shop
 
 
 
@@ -28,6 +29,7 @@
 - [ ] facendo login una seconda volta senza aver fatto il logout, nella navbar rimane il nome del vecchio account 
 - [ ] per qualche motivo, facendo cambio account e rimettendo lo stesso account nella navbar non appare il username, rimane vuoto
 - [ ] Se non c'è l'account non da l'errore giusto. (errore server)
+- [ ] avere un timer per disconnettere l'utente
 
 ### User creation 
 - Struttura: 
@@ -42,13 +44,23 @@
 
 
 
+### Shop Struttura
+
+Una dashboard per lo shop dove ci sono informazioni principali e in grande anche i crediti disponibili 
+il componente di shop creditis fa la simulazione per comprare dei crediti 
+pachetti ci devo pensare ancora 
+
+i crediti sono in rapporto 5:1 con euro
+un pachetto costa 6 crediti
+5 euro compro 25 crediti = 4 pachetti e mi rimangono crediti in piu 
+in piu ci sono disponibili dei bundule che si possono comprare, esempio 50 dovrei prendere 250 crediti invece prendo 300 = 50 pachetti precisi
+cosi via dando sempre piu crediti piu soldi spende l'utente 
+
 
 
 ### Interfaccia Carte
 
 - [ ] Usare progress bar di bootstrap per le stats dei supereroi
-
-
 
 
 
