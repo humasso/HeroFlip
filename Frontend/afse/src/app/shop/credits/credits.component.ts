@@ -106,12 +106,23 @@ export class CreditsComponent implements OnInit {
       this.purchaseForm.markAllAsTouched();
       return;
     }
+    const userId = localStorage.getItem('userid')?.split('"')[3];
+    if (!userId) {
+      this.errorMsg = 'Utente non valido.';
+      return;
+    }
     this.processing = true;
-    setTimeout(() => {
-      this.processing = false;
-      alert(`Hai acquistato ${this.creditsToBuy} crediti per €${this.priceToPay}!`);
-      this.router.navigate(['/profile']);
-    }, 2000);
+    this.shopService.purchaseCredits(userId, this.creditsToBuy).subscribe({
+      next: () => {
+        this.processing = false;
+        alert(`Hai acquistato ${this.creditsToBuy} crediti per €${this.priceToPay}!`);
+        this.router.navigate(['/profile']);
+      },
+      error: err => {
+        this.processing = false;
+        this.errorMsg = err.error?.message || 'Errore durante l\'acquisto.';
+      }
+    });
   }
 
   // submit PayPal
@@ -122,13 +133,25 @@ export class CreditsComponent implements OnInit {
       this.purchaseForm.markAllAsTouched();
       return;
     }
+    const userId = localStorage.getItem('userid')?.split('"')[3];
+    if (!userId) {
+      this.errorMsg = 'Utente non valido.';
+      return;
+    }
     this.processing = true;
-    setTimeout(() => {
-      this.processing = false;
-      this.closePaypalModal();
-      alert(`Pagato con PayPal e acquistati ${this.creditsToBuy} crediti!`);
-      this.router.navigate(['/profile']);
-    }, 2000);
+    this.shopService.purchaseCredits(userId, this.creditsToBuy).subscribe({
+      next: () => {
+        this.processing = false;
+        this.closePaypalModal();
+        alert(`Pagato con PayPal e acquistati ${this.creditsToBuy} crediti!`);
+        this.router.navigate(['/profile']);
+      },
+      error: err => {
+        this.processing = false;
+        this.closePaypalModal();
+        this.errorMsg = err.error?.message || 'Errore durante l\'acquisto.';
+      }
+    });
   }
 
   // filtro solo cifre

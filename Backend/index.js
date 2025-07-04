@@ -1,6 +1,7 @@
 const express = require('express');
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
+const shopRoutes = require('./routes/shop');
 const cors = require('cors');
 require('dotenv').config();
 const connectDB = require('./functions/dbconnection');
@@ -16,11 +17,15 @@ app.get('/', (req, res) => {
   res.send('<h1>Hello, Express.js Server!</h1>');
 });
 
-// Monta le rotte di auth sotto /api/auth
+// Rotte di auth sotto /api/auth
 app.use('/auth', authRoutes);
 
-// Monta le rotte di user sotto /api/users
+// Rotte di user sotto /api/users
 app.use('/user', userRoutes);
+
+// Rotte per lo shop
+app.use('/shop', shopRoutes);
+
 
 // Avvio del server
 const PORT = process.env.PORT || 3000;
