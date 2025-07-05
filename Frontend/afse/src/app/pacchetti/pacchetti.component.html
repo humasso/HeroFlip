@@ -5,6 +5,7 @@
            (mousemove)="onMouseMove($event, i)"
            (mouseenter)="onMouseEnter(i)"
            (mouseleave)="onMouseLeave(i)"
+           (click)="openPacks(i)"
            [style.transform]="cardTransforms[i] || 'perspective(600px)'">
             <img src="assets/pachetto.png" class="img-fluid" alt="pack">
          <span class="badge bg-success quantity-badge">{{ p.quantity }}</span>
@@ -21,7 +22,7 @@
       <option [ngValue]="5">5</option>
       <option [ngValue]="10">10</option>
     </select>
-    <button class="btn btn-primary" (click)="openPacks()" [disabled]="opening">Apri</button>
+    <button class="btn btn-primary" (click)="openPacks(0, selectedQty)" [disabled]="opening">Apri</button>
   </div>
 
   <div class="row mt-4" *ngIf="openedCards.length > 0">

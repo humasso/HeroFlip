@@ -42,16 +42,16 @@ export class PacchettiComponent implements OnInit {
     }
   }
 
-  openPacks() {
+  openPacks(index = 0, qty = 1) {
     if (!this.userId || this.packs.length === 0) { return; }
-    const packType = this.packs[0].packType;
+    const packType = this.packs[index].packType;
     this.opening = true;
-    this.packService.openPacks(this.userId, packType, this.selectedQty).subscribe({
+    this.packService.openPacks(this.userId, packType, qty).subscribe({
       next: res => {
         this.packs = res.packs;
         this.cardTransforms = new Array(this.packs.length).fill('perspective(600px)');
         const requests = [] as Promise<Card>[];
-        for (let i = 0; i < this.selectedQty * 5; i++) {
+        for (let i = 0; i < qty * 5; i++) {
           const id = Math.floor(Math.random() * 731) + 1;
           requests.push(firstValueFrom(this.heroService.getHero(id)));
         }
