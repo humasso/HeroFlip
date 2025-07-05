@@ -19,7 +19,7 @@ router.post('/credits/:id', async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: 'Utente non trovato' });
     }
-
+    console.log(`Crediti aggiunti: ${credits} a ${user.username}`);
     res.json({ message: 'Crediti aggiunti', credits: user.credits });
   } catch (err) {
     console.error(err);
