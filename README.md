@@ -48,6 +48,7 @@
   - eroe preferto
   - crediti
   - profile pic
+  - pacchetti
 
 
 

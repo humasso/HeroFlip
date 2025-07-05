@@ -6,12 +6,35 @@
            (mouseenter)="onMouseEnter(i)"
            (mouseleave)="onMouseLeave(i)"
            [style.transform]="cardTransforms[i] || 'perspective(600px)'">
-        <img src="assets/pachetto.png" class="img-fluid" alt="pack">
-        <span class="badge bg-success quantity-badge">{{ p.quantity }}</span>
-      </div>
+            <img src="assets/pachetto.png" class="img-fluid" alt="pack">
+         <span class="badge bg-success quantity-badge">{{ p.quantity }}</span>
+        </div>
     </div>
-  </div>
+</div>
   <ng-template #noPack>
     <p class="text-center">Nessun pacchetto disponibile.</p>
   </ng-template>
+<div class="text-center mt-4" *ngIf="packs.length > 0">
+    <select [(ngModel)]="selectedQty" class="form-select d-inline-block w-auto me-2">
+      <option [ngValue]="1">1</option>
+      <option [ngValue]="2">2</option>
+      <option [ngValue]="5">5</option>
+      <option [ngValue]="10">10</option>
+    </select>
+    <button class="btn btn-primary" (click)="openPacks()" [disabled]="opening">Apri</button>
+  </div>
+
+  <div class="row mt-4" *ngIf="openedCards.length > 0">
+    <div class="col-6 col-md-4 col-lg-3 mb-3" *ngFor="let c of openedCards">
+      <div class="card flash">
+        <img [src]="c.image" class="card-img-top" alt="hero">
+        <div class="card-body p-2">
+          <h6 class="card-title mb-0">{{ c.name }}</h6>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 text-center mt-2">
+      <button class="btn btn-success" (click)="insertIntoAlbum()">Inserisci nel album</button>
+    </div>
+  </div>
 </div>

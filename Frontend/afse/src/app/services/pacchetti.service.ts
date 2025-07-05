@@ -9,6 +9,7 @@ import { UserPack } from '../models/user.model';
 export class PacchettiService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:3000/shop';
+  private albumUrl = 'http://localhost:3000/album';
 
   constructor() {}
 
@@ -17,5 +18,15 @@ export class PacchettiService {
       `${this.apiUrl}/packs/${userId}`,
       { packType, qty, cost }
     );
+  }
+   openPacks(userId: string, packType: string, qty: number): Observable<{message: string; packs: UserPack[]}> {
+    return this.http.post<{message: string; packs: UserPack[]}>(
+      `${this.apiUrl}/open/${userId}`,
+      { packType, qty }
+    );
+  }
+
+  addCardsToAlbum(userId: string, cards: any[]): Observable<any> {
+    return this.http.post(`${this.albumUrl}/add/${userId}`, { cards });
   }
 }

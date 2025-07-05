@@ -64,4 +64,34 @@ router.post('/packs/:id', async (req, res) => {
     res.status(500).json({ message: 'Errore server' });
   }
 });
+
+// Apertura pacchetti
+router.post('/open/:id', async (req, res) => {
+  try {
+    const { packType, qty } = req.body;
+    const quantity = parseInt(qty, 10);
+    if (!packType || !quantity || quantity <= 0) {
+      return res.status(400).json({ message: 'Dati non validi' });
+    }
+
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'Utente non trovato' });
+    }
+
+    const pack = user.packs.find(p => p.packType === packType);
+    if (!pack || pack.quantity < quantity) {
+      return res.status(400).json({ message: 'Pacchetti insufficienti' });
+    }
+
+    pack.quantity -= quantity;
+    await user.save();
+
+    res.json({ message: 'Pacchetti aperti', packs: user.packs });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Errore server' });
+  }
+});
+
 module.exports = router;

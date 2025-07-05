@@ -1,21 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { UserService } from '../services/user.service';
+import { PacchettiService } from '../services/pacchetti.service';
+import { HeroService } from '../services/hero.service';
 import { UserPack } from '../models/user.model';
+import { Card } from '../models/card.model';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-pacchetti',
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './pacchetti.component.html',
   styleUrl: './pacchetti.component.css'
 })
 export class PacchettiComponent implements OnInit {
   packs: UserPack[] = [];
   cardTransforms: string[] = [];
+  openedCards: Card[] = [];
+  selectedQty = 1;
+  opening = false;
 
   private userId = localStorage.getItem('userid')?.split('"')[3];
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService,
+              private packService: PacchettiService,
+              private heroService: HeroService) {}
 
   ngOnInit(): void {
     if (this.userId) {
@@ -30,6 +40,38 @@ export class PacchettiComponent implements OnInit {
         }
       });
     }
+  }
+
+  openPacks() {
+    if (!this.userId || this.packs.length === 0) { return; }
+    const packType = this.packs[0].packType;
+    this.opening = true;
+    this.packService.openPacks(this.userId, packType, this.selectedQty).subscribe({
+      next: res => {
+        this.packs = res.packs;
+        this.cardTransforms = new Array(this.packs.length).fill('perspective(600px)');
+        const requests = [] as Promise<Card>[];
+        for (let i = 0; i < this.selectedQty * 5; i++) {
+          const id = Math.floor(Math.random() * 731) + 1;
+          requests.push(firstValueFrom(this.heroService.getHero(id)));
+        }
+        Promise.all(requests).then(cards => {
+          this.openedCards = cards;
+          this.opening = false;
+        });
+      },
+      error: () => this.opening = false
+    });
+  }
+
+  insertIntoAlbum() {
+    if (!this.userId || this.openedCards.length === 0) { return; }
+    this.packService.addCardsToAlbum(this.userId, this.openedCards).subscribe({
+      next: () => {
+        this.openedCards = [];
+        alert('Carte inserite nel album');
+      }
+    });
   }
   onMouseEnter(i: number) {
     this.cardTransforms[i] = 'perspective(600px) scale(1.05)';
