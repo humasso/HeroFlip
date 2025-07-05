@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../services/user.service';
 import { PacchettiService } from '../../services/pacchetti.service';
+import { delay } from 'rxjs';
 
 @Component({
   selector: 'app-shopdash',
@@ -82,6 +83,7 @@ export class ShopdashComponent implements OnInit {
     if (!this.userId || !this.selectedPack) { return; }
     this.loading = true;
     this.pacchettiService.buyPacks(this.userId, this.selectedPack.name, qty, this.totalCost)
+      .pipe(delay(2000))
       .subscribe({
         next: res => {
           this.loading = false;
@@ -91,11 +93,11 @@ export class ShopdashComponent implements OnInit {
           this.toastMessage = res.message;
           setTimeout(() => this.toastMessage = null, 3000);
         },
-        error: () => {
+        error: err => {
           this.loading = false;
           modalRef.close();
           this.toastType = 'danger';
-          this.toastMessage = 'Errore durante l\'acquisto.';
+          this.toastMessage = err.error?.message || 'Errore durante l\'acquisto.';
           setTimeout(() => this.toastMessage = null, 3000);
         }
       });
