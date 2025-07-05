@@ -1,19 +1,6 @@
-.carousel-item img {
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.carousel-item img:hover {
-  transform: scale(1.02);
-}
-
-
 .pack-card {
   cursor: pointer;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.pack-card:hover {
-  transform: scale(1.1) rotate3d(1, 1, 0, 15deg);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  width: 220px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-bottom: 1rem;
 }

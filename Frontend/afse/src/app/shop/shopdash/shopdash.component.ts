@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { NgbCarouselModule, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../services/user.service';
 
 @Component({
@@ -11,8 +11,7 @@ import { UserService } from '../../services/user.service';
   imports: [
     CommonModule,
     RouterLink,
-    FormsModule,
-    NgbCarouselModule
+    FormsModule
   ],
   templateUrl: './shopdash.component.html',
   styleUrl: './shopdash.component.css'
@@ -24,8 +23,14 @@ export class ShopdashComponent implements OnInit {
     { name: 'Pacchetto Base', image: 'assets/pachetto.png', price: 5 }
   ];
 
+  cardTransform = 'perspective(600px)';
+
   selectedQty: number | null = null;
   selectedPack: { name: string; image: string; price: number } | null = null;
+
+  get totalCost(): number {
+    return (this.selectedQty || 1) * (this.selectedPack?.price ?? 0);
+  }
 
   private userId = localStorage.getItem('userid')?.split('"')[3];
 
@@ -34,6 +39,24 @@ export class ShopdashComponent implements OnInit {
     private modalService: NgbModal,
     private router: Router
   ) {}
+
+  onMouseEnter() {
+    this.cardTransform = 'perspective(600px) scale(1.05)';
+  }
+
+  onMouseMove(event: MouseEvent) {
+    const card = event.currentTarget as HTMLElement;
+    const rect = card.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    const rotateX = -((y - rect.height / 2) / rect.height) * 10;
+    const rotateY = ((x - rect.width / 2) / rect.width) * 10;
+    this.cardTransform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+  }
+
+  onMouseLeave() {
+    this.cardTransform = 'perspective(600px)';
+  }
 
   ngOnInit(): void {
     if (this.userId) {
@@ -52,7 +75,7 @@ export class ShopdashComponent implements OnInit {
 
   confirmPurchase(modalRef: any) {
     const qty = this.selectedQty || 1;
-    alert(`Hai acquistato ${qty} pacchetto${qty > 1 ? 'i' : ''}!`);
+    alert(`Hai acquistato ${qty} pacchetto${qty > 1 ? 'i' : ''} per ${this.totalCost} crediti!`);
     modalRef.close();
   }
 

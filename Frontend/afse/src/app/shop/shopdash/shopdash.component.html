@@ -8,14 +8,20 @@
 
       <h5 class="text-center mb-3">Collezione Intera</h5>
 
-      <ngb-carousel [interval]="0">
-        <ng-template ngbSlide *ngFor="let pack of packs">
-          <img [src]="pack.image" class="d-block w-100" alt="{{ pack.name }}" style="cursor:pointer" (click)="openPack(pack)">
-          <div class="carousel-caption d-none d-md-block">
-            <h5>{{ pack.name }}</h5>
+      <div class="d-flex justify-content-center">
+        <div *ngFor="let pack of packs"
+             class="pack-card text-center"
+             (click)="openPack(pack)"
+             (mousemove)="onMouseMove($event)"
+             (mouseenter)="onMouseEnter()"
+             (mouseleave)="onMouseLeave()"
+             [style.transform]="cardTransform">
+          <img [src]="pack.image" class="img-fluid" alt="{{ pack.name }}">
+          <div class="mt-2">
+            <span class="badge bg-primary">{{ pack.price }} crediti</span>
           </div>
-        </ng-template>
-      </ngb-carousel>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -25,20 +31,17 @@
     <h5 class="modal-title">{{ selectedPack?.name }}</h5>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
   </div>
-  <div class="modal-body">
-    <p>Un pacchetto costa {{ selectedPack?.price }} crediti.</p>
-    <div class="mb-3">
-      <label class="form-label">Scegli quanti pacchetti acquistare</label>
-      <div class="btn-group w-100">
-        <input type="radio" class="btn-check" id="qty2" name="qty" [value]="2" [(ngModel)]="selectedQty">
-        <label class="btn btn-outline-primary" for="qty2">2</label>
-        <input type="radio" class="btn-check" id="qty5" name="qty" [value]="5" [(ngModel)]="selectedQty">
-        <label class="btn btn-outline-primary" for="qty5">5</label>
-        <input type="radio" class="btn-check" id="qty10" name="qty" [value]="10" [(ngModel)]="selectedQty">
-        <label class="btn btn-outline-primary" for="qty10">10</label>
-      </div>
-      <small class="d-block mt-2">Se non selezioni nulla acquisterai 1 pacchetto.</small>
+  <div class="modal-body text-center">
+    <p class="mb-2">Quanti pacchetti vuoi acquistare?</p>
+    <div class="btn-group mb-3" role="group">
+      <input type="radio" class="btn-check" id="qty2" name="qty" [value]="2" [(ngModel)]="selectedQty">
+      <label class="btn btn-outline-primary" for="qty2">2</label>
+      <input type="radio" class="btn-check" id="qty5" name="qty" [value]="5" [(ngModel)]="selectedQty">
+      <label class="btn btn-outline-primary" for="qty5">5</label>
+      <input type="radio" class="btn-check" id="qty10" name="qty" [value]="10" [(ngModel)]="selectedQty">
+      <label class="btn btn-outline-primary" for="qty10">10</label>
     </div>
+    <p class="mb-0">Totale: {{ totalCost }} crediti</p>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Annulla</button>
