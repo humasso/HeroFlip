@@ -1,1 +1,26 @@
-<p>shopdash works!</p>
+<div class="container py-4">
+  <div class="card mx-auto" style="max-width: 800px;">
+    <div class="card-body">
+      <h4 class="text-center mb-3">Shop</h4>
+      <p class="text-center">
+        Crediti disponibili:
+        <span class="badge bg-primary">{{ credits }}</span>
+      </p>
+      <div class="text-end mb-4">
+        <a routerLink="/shop/credits" class="btn btn-success">
+          Aggiungi altri crediti
+        </a>
+      </div>
+      <div class="row g-3">
+        <div class="col-6 col-md-4 col-lg-3" *ngFor="let qty of packOptions">
+          <div class="pack-card" (click)="buyPacks(qty)">
+            <img src="assets/pachetto.png" alt="Pacchetto" class="img-fluid" />
+            <div class="mt-2 text-center fw-bold">
+              {{ qty }} pacchetto{{ qty > 1 ? 'i' : '' }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
