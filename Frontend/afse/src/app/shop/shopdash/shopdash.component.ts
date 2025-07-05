@@ -24,6 +24,9 @@ export class ShopdashComponent implements OnInit {
   ];
 
   cardTransform = 'perspective(600px)';
+  loading = false;
+  toastMessage: string | null = null;
+  toastType: 'success' | 'danger' = 'success';
 
   selectedQty: number | null = null;
   selectedPack: { name: string; image: string; price: number } | null = null;
@@ -77,16 +80,23 @@ export class ShopdashComponent implements OnInit {
   confirmPurchase(modalRef: any) {
     const qty = this.selectedQty || 1;
     if (!this.userId || !this.selectedPack) { return; }
+    this.loading = true;
     this.pacchettiService.buyPacks(this.userId, this.selectedPack.name, qty, this.totalCost)
       .subscribe({
         next: res => {
+          this.loading = false;
           this.credits = res.credits;
           modalRef.close();
-          alert(res.message);
+          this.toastType = 'success';
+          this.toastMessage = res.message;
+          setTimeout(() => this.toastMessage = null, 3000);
         },
         error: () => {
+          this.loading = false;
           modalRef.close();
-          alert('Errore durante l\'acquisto.');
+          this.toastType = 'danger';
+          this.toastMessage = 'Errore durante l\'acquisto.';
+          setTimeout(() => this.toastMessage = null, 3000);
         }
       });
   }

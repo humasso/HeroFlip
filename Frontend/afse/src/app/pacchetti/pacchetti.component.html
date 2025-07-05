@@ -1,9 +1,13 @@
 <div class="container py-4">
   <div class="row" *ngIf="packs.length > 0; else noPack">
-    <div class="col-6 col-md-4 col-lg-3 mb-3" *ngFor="let p of packs">
-      <div class="position-relative">
+    <div class="col-6 col-md-4 col-lg-3 mb-3" *ngFor="let p of packs; let i = index">
+      <div class="pack-card position-relative"
+           (mousemove)="onMouseMove($event, i)"
+           (mouseenter)="onMouseEnter(i)"
+           (mouseleave)="onMouseLeave(i)"
+           [style.transform]="cardTransforms[i] || 'perspective(600px)'">
         <img src="assets/pachetto.png" class="img-fluid" alt="pack">
-        <span class="badge bg-success position-absolute top-0 end-0">{{ p.quantity }}</span>
+        <span class="badge bg-success quantity-badge">{{ p.quantity }}</span>
       </div>
     </div>
   </div>

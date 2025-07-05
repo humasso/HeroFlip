@@ -25,13 +25,20 @@
     </div>
   </div>
 </div>
-
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+  <div class="toast text-white bg-{{toastType}} show" role="alert" *ngIf="toastMessage">
+    <div class="d-flex">
+      <div class="toast-body">{{ toastMessage }}</div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" (click)="toastMessage = null"></button>
+    </div>
+  </div>
+</div>
 <ng-template #packModal let-modal>
   <div class="modal-header">
     <h5 class="modal-title">{{ selectedPack?.name }}</h5>
     <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
   </div>
-  <div class="modal-body text-center">
+  <div class="modal-body text-center" *ngIf="!loading; else loadingTpl">
     <p class="mb-2">Quanti pacchetti vuoi acquistare?</p>
     <div class="btn-group mb-3" role="group">
       <input type="radio" class="btn-check" id="qty2" name="qty" [value]="2" [(ngModel)]="selectedQty">
@@ -43,8 +50,14 @@
     </div>
     <p class="mb-0">Totale: {{ totalCost }} crediti</p>
   </div>
+<ng-template #loadingTpl>
+    <div class="py-4 text-center">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-3 mb-0">Acquisto in corso...</p>
+    </div>
+  </ng-template>
   <div class="modal-footer">
-    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Annulla</button>
-    <button type="button" class="btn btn-primary" (click)="confirmPurchase(modal)">Compra</button>
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()" [disabled]="loading">Annulla</button>
+    <button type="button" class="btn btn-primary" (click)="confirmPurchase(modal)" [disabled]="loading">Compra</button>
   </div>
 </ng-template>

@@ -1,3 +1,15 @@
 img {
   border-radius: 4px;
 }
+.pack-card {
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.quantity-badge {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  font-size: 1rem;
+  padding: 0.5em 0.6em;
+}
