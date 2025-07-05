@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink } from '@angular/router';
+import { Router} from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../services/user.service';
@@ -10,7 +10,6 @@ import { UserService } from '../../services/user.service';
   standalone: true,
   imports: [
     CommonModule,
-    RouterLink,
     FormsModule
   ],
   templateUrl: './shopdash.component.html',
