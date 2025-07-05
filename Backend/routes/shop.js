@@ -27,4 +27,41 @@ router.post('/credits/:id', async (req, res) => {
   }
 });
 
+// Acquisto pacchetti per l'utente specificato
+router.post('/packs/:id', async (req, res) => {
+  try {
+    const { packType, qty, cost } = req.body;
+    const quantity = parseInt(qty, 10);
+    const totalCost = parseInt(cost, 10);
+
+    if (!packType || !quantity || quantity <= 0 || !totalCost || totalCost <= 0) {
+      return res.status(400).json({ message: 'Dati non validi' });
+    }
+
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: 'Utente non trovato' });
+    }
+
+    if (user.credits < totalCost) {
+      return res.status(400).json({ message: 'Crediti insufficienti' });
+    }
+
+    user.credits -= totalCost;
+
+    const pack = user.packs.find(p => p.packType === packType);
+    if (pack) {
+      pack.quantity += quantity;
+    } else {
+      user.packs.push({ packType, quantity });
+    }
+
+    await user.save();
+
+    res.json({ message: 'Pacchetti acquistati', credits: user.credits, packs: user.packs });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Errore server' });
+  }
+});
 module.exports = router;

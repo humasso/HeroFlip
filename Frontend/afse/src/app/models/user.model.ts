@@ -8,6 +8,13 @@ export interface User {
     favoriteHero: string;
     credits: number;
     avatar: string;
+    packs?: UserPack[];
+}
+
+// Interfaccia per il pachetto
+export interface UserPack {
+  packType: string;
+  quantity: number;
 }
 
 // Interfacce per la richiesta e risposta di registrazione

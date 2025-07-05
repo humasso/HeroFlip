@@ -4,6 +4,7 @@ import { Router} from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../services/user.service';
+import { PacchettiService } from '../../services/pacchetti.service';
 
 @Component({
   selector: 'app-shopdash',
@@ -35,6 +36,7 @@ export class ShopdashComponent implements OnInit {
 
   constructor(
     private userService: UserService,
+    private pacchettiService: PacchettiService,
     private modalService: NgbModal,
     private router: Router
   ) {}
@@ -74,8 +76,19 @@ export class ShopdashComponent implements OnInit {
 
   confirmPurchase(modalRef: any) {
     const qty = this.selectedQty || 1;
-    alert(`Hai acquistato ${qty} pacchetto${qty > 1 ? 'i' : ''} per ${this.totalCost} crediti!`);
-    modalRef.close();
+    if (!this.userId || !this.selectedPack) { return; }
+    this.pacchettiService.buyPacks(this.userId, this.selectedPack.name, qty, this.totalCost)
+      .subscribe({
+        next: res => {
+          this.credits = res.credits;
+          modalRef.close();
+          alert(res.message);
+        },
+        error: () => {
+          modalRef.close();
+          alert('Errore durante l\'acquisto.');
+        }
+      });
   }
 
   goToCredits() {
