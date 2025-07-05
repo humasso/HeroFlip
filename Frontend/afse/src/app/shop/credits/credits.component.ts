@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ShopService } from '../../services/shop.service';
 import { Router } from '@angular/router';
+import { delay } from 'rxjs';
 
 @Component({
   selector: 'app-credits',
@@ -38,7 +39,7 @@ export class CreditsComponent implements OnInit {
       bundleIndex:     [null],
 
       // method placeholder
-      paymentMethod:   ['card', Validators.required],
+      paymentMethod:   [null, Validators.required],
 
       // carte
       cardNumber:      ['', [Validators.required, Validators.pattern(/^\d{16}$/)]],
@@ -112,12 +113,14 @@ export class CreditsComponent implements OnInit {
       return;
     }
     this.processing = true;
-    this.shopService.purchaseCredits(userId, this.creditsToBuy).subscribe({
-      next: () => {
-        this.processing = false;
-        alert(`Hai acquistato ${this.creditsToBuy} crediti per €${this.priceToPay}!`);
-        this.router.navigate(['/profile']);
-      },
+    this.shopService.purchaseCredits(userId, this.creditsToBuy)
+      .pipe(delay(2000))
+      .subscribe({
+        next: () => {
+          this.processing = false;
+          alert(`Hai acquistato ${this.creditsToBuy} crediti per €${this.priceToPay}!`);
+          this.router.navigate(['/profile']);
+        },
       error: err => {
         this.processing = false;
         this.errorMsg = err.error?.message || 'Errore durante l\'acquisto.';
@@ -139,12 +142,14 @@ export class CreditsComponent implements OnInit {
       return;
     }
     this.processing = true;
-    this.shopService.purchaseCredits(userId, this.creditsToBuy).subscribe({
-      next: () => {
-        this.processing = false;
-        this.closePaypalModal();
-        alert(`Pagato con PayPal e acquistati ${this.creditsToBuy} crediti!`);
-        this.router.navigate(['/profile']);
+    this.shopService.purchaseCredits(userId, this.creditsToBuy)
+      .pipe(delay(2000))
+      .subscribe({
+        next: () => {
+          this.processing = false;
+          this.closePaypalModal();
+          alert(`Pagato con PayPal e acquistati ${this.creditsToBuy} crediti!`);
+          this.router.navigate(['/profile']);
       },
       error: err => {
         this.processing = false;

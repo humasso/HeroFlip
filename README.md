@@ -57,6 +57,8 @@ Una dashboard per lo shop dove ci sono informazioni principali e in grande anche
 il componente di shop creditis fa la simulazione per comprare dei crediti 
 pachetti ci devo pensare ancora 
 
+nella pagina di espazione c'è anche un opzione per visualizzare informazioni su quella espasione. tipo quanti 
+
 i crediti sono in rapporto 5:1 con euro
 un pachetto costa 6 crediti
 5 euro compro 25 crediti = 4 pachetti e mi rimangono crediti in piu 
