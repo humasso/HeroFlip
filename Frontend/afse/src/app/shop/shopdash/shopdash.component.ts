@@ -72,12 +72,6 @@ export class ShopdashComponent implements OnInit {
     }
   }
 
-  openPack(pack: { name: string; image: string; price: number }) {
-    this.selectedPack = pack;
-    this.selectedQty = null;
-    this.modalService.open(this.packModal, { centered: true });
-  }
-
   confirmPurchase(modalRef: any) {
     const qty = this.selectedQty || 1;
     if (!this.userId || !this.selectedPack) { return; }
