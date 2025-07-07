@@ -34,7 +34,7 @@ export class ProfileComponent implements OnInit {
     private auth: AuthService
   ) {}
 
-  private userId = localStorage.getItem('userid')?.split('"')[3];
+  private userId: string | null = localStorage.getItem('userId');
 
   ngOnInit(): void {
     if (!this.userId) {
