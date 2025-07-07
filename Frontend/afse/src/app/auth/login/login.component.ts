@@ -38,9 +38,8 @@ export class LoginComponent {
     this.authService.login(payload).subscribe({
       next: res => {
         console.log('Login riuscito:', res);
-        localStorage.setItem('userid', JSON.stringify(res));
         localStorage.setItem('username', this.username);
-        console.log('ID utente salvato in localStorage:', localStorage.getItem('userid'));
+        console.log('ID utente salvato in localStorage:', localStorage.getItem('userId'));
         this.router.navigate(['/']);
       },
       error: err => {

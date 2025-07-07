@@ -36,7 +36,7 @@ export class ShopdashComponent implements OnInit {
     return (this.selectedQty || 1) * (this.selectedPack?.price ?? 0);
   }
 
-  private userId = localStorage.getItem('userid')?.split('"')[3];
+  private userId = localStorage.getItem('userId');
 
   constructor(
     private userService: UserService,

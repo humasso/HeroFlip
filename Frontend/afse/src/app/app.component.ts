@@ -30,7 +30,7 @@ export class AppComponent implements OnInit {
       this.isLoggedIn = status;
     });
 
-    const userId = localStorage.getItem('userid')?.split('"')[3];
+    const userId = localStorage.getItem('userId');
     if (userId) {
       this.userService.getUser(userId).subscribe(user => {
         console.log('User:', user.username);

@@ -65,7 +65,7 @@ router.post('/login', async (req, res) => {
       return res.status(400).send('Credenziali errate');
     }
 
-    res.send({ _id: user._id });
+    res.send({ userid: user._id });
   } catch (err) {
     console.error('Errore in /login:', err);
     res.status(500).send('Errore Server Interno');

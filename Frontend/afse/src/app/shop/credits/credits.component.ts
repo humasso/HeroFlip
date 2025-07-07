@@ -107,7 +107,7 @@ export class CreditsComponent implements OnInit {
       this.purchaseForm.markAllAsTouched();
       return;
     }
-    const userId = localStorage.getItem('userid')?.split('"')[3];
+    const userId = localStorage.getItem('userId');
     if (!userId) {
       this.errorMsg = 'Utente non valido.';
       return;
@@ -136,7 +136,7 @@ export class CreditsComponent implements OnInit {
       this.purchaseForm.markAllAsTouched();
       return;
     }
-    const userId = localStorage.getItem('userid')?.split('"')[3];
+    const userId = localStorage.getItem('userId');
     if (!userId) {
       this.errorMsg = 'Utente non valido.';
       return;

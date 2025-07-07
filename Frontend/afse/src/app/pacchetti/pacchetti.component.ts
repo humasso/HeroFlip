@@ -23,7 +23,7 @@ export class PacchettiComponent implements OnInit {
   openingIndex: number | null = null;
   //carouselInterval = 2000;
 
-  private userId = localStorage.getItem('userid')?.split('"')[3];
+  private userId = localStorage.getItem('userId');
 
   constructor(private userService: UserService,
               private packService: PacchettiService) {}
