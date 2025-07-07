@@ -31,18 +31,29 @@ img {
   padding: 1rem;
   border-radius: 8px;
 }
-
+/*
 .opened-carousel .card-item {
   animation: popIn 0.6s ease-out;
+}
+  */
+
+
+.opened-cards {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  gap: 1rem;
 }
 
 .opened-cards .card-item {
   animation: popIn 0.6s ease-out;
+  flex: 0 0 auto;
 }
 
 .card-item {
   width: 250px;
   border-width: 4px;
+  border-color: #dc3545;
 }
 
 .hero-img {
@@ -53,6 +64,7 @@ img {
 .stat-label {
   width: 80px;
 }
+
 
 
 
