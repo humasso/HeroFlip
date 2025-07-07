@@ -3,7 +3,7 @@ const router = express.Router();
 const User = require('../models/User');
 const Album = require('../models/Album');
 
-const API_URL = process.env.HERO_API;
+const API_URL = process.env.HERO_API || 'https://superheroapi.com/api.php/6fd8bb6fff536afc90104c44cb501428';
 
 router.post('/open/:id', async (req, res) => {
   try {
