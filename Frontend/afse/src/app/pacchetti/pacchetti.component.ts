@@ -3,9 +3,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { PacchettiService } from '../services/pacchetti.service';
+import { HeroService } from '../services/hero.service';
 //import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserPack } from '../models/user.model';
 import { Card } from '../models/card.model';
+import { forkJoin } from 'rxjs';
 
 
 @Component({
@@ -14,6 +16,7 @@ import { Card } from '../models/card.model';
   templateUrl: './pacchetti.component.html',
   styleUrl: './pacchetti.component.css'
 })
+
 export class PacchettiComponent implements OnInit {
   packs: UserPack[] = [];
   cardTransforms: string[] = [];
@@ -26,7 +29,8 @@ export class PacchettiComponent implements OnInit {
   private userId = localStorage.getItem('userId');
 
   constructor(private userService: UserService,
-              private packService: PacchettiService) {}
+              private packService: PacchettiService,
+              private heroService: HeroService) {}
 
   ngOnInit(): void {
     if (this.userId) {
@@ -53,9 +57,11 @@ export class PacchettiComponent implements OnInit {
       next: res => {
         this.packs = (res.packs ?? []).filter(p => p.quantity > 0);
         this.cardTransforms = new Array(this.packs.length).fill('perspective(600px)');
-        this.openedCards = res.heroes;
-        this.opening = false;
-        this.openingIndex = null;
+        forkJoin(res.ids.map(id => this.heroService.getHero(id))).subscribe(cards => {
+          this.openedCards = cards;
+          this.opening = false;
+          this.openingIndex = null;
+        });
       },
       error: () => {
         this.opening = false;
@@ -89,5 +95,10 @@ export class PacchettiComponent implements OnInit {
 
   onMouseLeave(i: number) {
     this.cardTransforms[i] = 'perspective(600px)';
+  }
+
+  statValue(value: string): number | null {
+    const num = parseInt(value, 10);
+    return isNaN(num) ? null : num;
   }
 }

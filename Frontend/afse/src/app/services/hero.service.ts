@@ -11,7 +11,13 @@ export class HeroService {
 
   getHero(id: number): Observable<Card> {
     return this.http.get<any>(`${this.baseUrl}/${id}`).pipe(
-      map(hero => ({ heroId: hero.id, name: hero.name, image: hero.image?.url }))
+      map(hero => ({
+        heroId: hero.id,
+        name: hero.name,
+        image: hero.image?.url,
+        publisher: hero.biography?.publisher || 'unknown',
+        powerstats: hero.powerstats,
+      }))
     );
   }
 }
