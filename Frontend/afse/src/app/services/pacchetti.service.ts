@@ -10,6 +10,7 @@ export class PacchettiService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:3000/shop';
   private albumUrl = 'http://localhost:3000/album';
+  private heroUrl = 'http://localhost:3000/hero';
 
   constructor() {}
 
@@ -19,10 +20,10 @@ export class PacchettiService {
       { packType, qty, cost }
     );
   }
-   openPacks(userId: string, packType: string, qty: number): Observable<{message: string; packs: UserPack[]}> {
-    return this.http.post<{message: string; packs: UserPack[]}>(
-      `${this.apiUrl}/open/${userId}`,
-      { packType, qty }
+  openPack(userId: string, packType: string): Observable<{ids: number[]; packs: UserPack[]}> {
+    return this.http.post<{ids: number[]; packs: UserPack[]}>(
+      `${this.heroUrl}/open/${userId}`,
+      { packType }
     );
   }
 

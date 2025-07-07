@@ -18,7 +18,7 @@ export class PacchettiComponent implements OnInit {
   packs: UserPack[] = [];
   cardTransforms: string[] = [];
   openedCards: Card[] = [];
-  selectedQty = 1;
+  //selectedQty = 1;
   opening = false;
 
   private userId = localStorage.getItem('userid')?.split('"')[3];
@@ -42,19 +42,15 @@ export class PacchettiComponent implements OnInit {
     }
   }
 
-  openPacks(index = 0, qty = 1) {
+  openPack(index = 0) {
     if (!this.userId || this.packs.length === 0) { return; }
     const packType = this.packs[index].packType;
     this.opening = true;
-    this.packService.openPacks(this.userId, packType, qty).subscribe({
+    this.packService.openPack(this.userId, packType).subscribe({
       next: res => {
         this.packs = res.packs;
         this.cardTransforms = new Array(this.packs.length).fill('perspective(600px)');
-        const requests = [] as Promise<Card>[];
-        for (let i = 0; i < qty * 5; i++) {
-          const id = Math.floor(Math.random() * 731) + 1;
-          requests.push(firstValueFrom(this.heroService.getHero(id)));
-        }
+        const requests = res.ids.map(id => firstValueFrom(this.heroService.getHero(id)));
         Promise.all(requests).then(cards => {
           this.openedCards = cards;
           this.opening = false;
