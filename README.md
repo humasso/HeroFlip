@@ -37,6 +37,7 @@
 - [ ] per qualche motivo, facendo cambio account e rimettendo lo stesso account nella navbar non appare il username, rimane vuoto
 - [ ] Se non c'è l'account non da l'errore giusto. (errore server)
 - [ ] avere un timer per disconnettere l'utente
+- [ ] cambiare colore dello sfondo
 
 ### User creation 
 - Struttura: 

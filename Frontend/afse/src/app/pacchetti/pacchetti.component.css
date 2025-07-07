@@ -35,6 +35,11 @@ img {
 .opened-carousel .card-item {
   animation: popIn 0.6s ease-out;
 }
+.opened-carousel .carousel-control-next-icon,
+.opened-carousel .carousel-control-prev-icon {
+  filter: invert(1);
+}
+
 
 @keyframes popIn {
   0% { transform: scale(0.5); opacity: 0; }

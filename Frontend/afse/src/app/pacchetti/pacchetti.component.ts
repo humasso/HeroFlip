@@ -31,7 +31,7 @@ export class PacchettiComponent implements OnInit {
     if (this.userId) {
       this.userService.getUser(this.userId).subscribe({
         next: user => {
-          this.packs = user.packs ?? [];
+          this.packs = (user.packs ?? []).filter(p => p.quantity > 0);
           this.cardTransforms = new Array(this.packs.length).fill('perspective(600px)');
         },
         error: () => {
@@ -50,7 +50,7 @@ export class PacchettiComponent implements OnInit {
     this.openedCards = [];
     this.packService.openPack(this.userId, packType).subscribe({
       next: res => {
-        this.packs = res.packs;
+        this.packs = (res.packs ?? []).filter(p => p.quantity > 0);
         this.cardTransforms = new Array(this.packs.length).fill('perspective(600px)');
         this.openedCards = res.heroes;
         this.opening = false;
