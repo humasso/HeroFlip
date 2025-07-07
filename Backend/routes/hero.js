@@ -44,7 +44,8 @@ router.post('/open/:id', async (req, res) => {
     }
     await album.save();
 
-    res.json({ ids, packs: user.packs });
+    // Return anche degli eroi appena trovati 
+    res.json({ ids, heroes, packs: user.packs });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Errore server' });

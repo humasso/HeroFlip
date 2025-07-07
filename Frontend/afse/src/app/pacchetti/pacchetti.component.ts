@@ -4,10 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { PacchettiService } from '../services/pacchetti.service';
 import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
-import { HeroService } from '../services/hero.service';
 import { UserPack } from '../models/user.model';
 import { Card } from '../models/card.model';
-import { firstValueFrom } from 'rxjs';
+
 
 @Component({
   selector: 'app-pacchetti',
@@ -25,8 +24,7 @@ export class PacchettiComponent implements OnInit {
   private userId = localStorage.getItem('userid')?.split('"')[3];
 
   constructor(private userService: UserService,
-              private packService: PacchettiService,
-              private heroService: HeroService) {}
+              private packService: PacchettiService) {}
 
   ngOnInit(): void {
     if (this.userId) {
@@ -51,11 +49,11 @@ export class PacchettiComponent implements OnInit {
       next: res => {
         this.packs = res.packs;
         this.cardTransforms = new Array(this.packs.length).fill('perspective(600px)');
-        const requests = res.ids.map(id => firstValueFrom(this.heroService.getHero(id)));
-        Promise.all(requests).then(cards => {
-          this.openedCards = cards;
-          this.opening = false;
-        });
+        // The backend now returns the hero data directly. This avoids
+        // additional API calls and ensures the carousel shows the cards
+        // immediately after the pack is opened.
+        this.openedCards = res.heroes;
+        this.opening = false;
       },
       error: () => this.opening = false
     });

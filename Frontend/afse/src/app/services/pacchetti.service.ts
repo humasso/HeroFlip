@@ -20,8 +20,9 @@ export class PacchettiService {
       { packType, qty, cost }
     );
   }
-  openPack(userId: string, packType: string): Observable<{ids: number[]; packs: UserPack[]}> {
-    return this.http.post<{ids: number[]; packs: UserPack[]}>(
+  
+  openPack(userId: string, packType: string): Observable<{ids: number[]; heroes: any[]; packs: UserPack[]}> {
+    return this.http.post<{ids: number[]; heroes: any[]; packs: UserPack[]}>(
       `${this.heroUrl}/open/${userId}`,
       { packType }
     );
