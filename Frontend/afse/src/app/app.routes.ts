@@ -7,6 +7,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { ShopdashComponent } from './shop/shopdash/shopdash.component';
 import { CreditsComponent } from './shop/credits/credits.component';
 import { PacchettiComponent } from './pacchetti/pacchetti.component';
+import { AlbumComponent } from './album/album.component';
 
 
 export const routes: Routes = [
@@ -18,5 +19,6 @@ export const routes: Routes = [
     { path: 'shop', component: ShopdashComponent },
     { path: 'shop/credits', component: CreditsComponent },
     { path: 'pacchetti', component: PacchettiComponent },
+    { path: 'album', component: AlbumComponent },
     { path: '**', redirectTo: '' }
 ];
