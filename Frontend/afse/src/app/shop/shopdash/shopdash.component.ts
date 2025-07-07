@@ -97,6 +97,12 @@ export class ShopdashComponent implements OnInit {
       });
   }
 
+  openPackBuy(pack: { name: string; image: string; price: number }) {
+    this.selectedPack = pack;
+    this.selectedQty = null;
+    this.modalService.open(this.packModal, { centered: true });
+  }
+
   goToCredits() {
     this.router.navigate(['/shop/credits']);
   }

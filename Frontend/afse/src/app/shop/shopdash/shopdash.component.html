@@ -14,6 +14,7 @@
              (mousemove)="onMouseMove($event)"
              (mouseenter)="onMouseEnter()"
              (mouseleave)="onMouseLeave()"
+              (click)="openPackBuy(pack)"
              [style.transform]="cardTransform">
           <img [src]="pack.image" class="img-fluid" alt="{{ pack.name }}">
           <div class="mt-2">
