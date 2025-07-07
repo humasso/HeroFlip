@@ -3,14 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { PacchettiService } from '../services/pacchetti.service';
-import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserPack } from '../models/user.model';
 import { Card } from '../models/card.model';
 
 
 @Component({
   selector: 'app-pacchetti',
-  imports: [CommonModule, FormsModule, NgbCarouselModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './pacchetti.component.html',
   styleUrl: './pacchetti.component.css'
 })
@@ -21,7 +20,7 @@ export class PacchettiComponent implements OnInit {
   //selectedQty = 1;
   opening = false;
   openingIndex: number | null = null;
-  carouselInterval = 5000;
+  //carouselInterval = 2000;
 
   private userId = localStorage.getItem('userid')?.split('"')[3];
 

@@ -18,18 +18,18 @@
   </ng-template>
 
 <div class="mt-4 opened-area" *ngIf="openedCards.length > 0">
-    <ngb-carousel class="opened-carousel" [interval]="carouselInterval" [showNavigationArrows]="true" [showNavigationIndicators]="true">
-      <ng-template ngbSlide *ngFor="let c of openedCards">
-        <div class="card card-item mx-auto" style="width: 18rem;">
+    <div class="row opened-cards row-cols-2 row-cols-md-3 g-3 justify-content-center">
+      <div class="col" *ngFor="let c of openedCards">
+        <div class="card card-item h-100 text-center">
           <img [src]="c.image" class="card-img-top" alt="hero">
           <div class="card-body p-2">
             <h6 class="card-title mb-0">{{ c.name }}</h6>
           </div>
         </div>
-      </ng-template>
-    </ngb-carousel>
+      </div>
+    </div>
     <div class="text-center mt-2">
-      <button class="btn btn-success" (click)="insertIntoAlbum()">Inserisci nel album</button>
+      <button class="btn btn-success" (click)="insertIntoAlbum()">Inserisci nell'album</button>
     </div>
   </div>
 </div>
