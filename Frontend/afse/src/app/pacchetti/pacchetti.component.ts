@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { PacchettiService } from '../services/pacchetti.service';
+//import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserPack } from '../models/user.model';
 import { Card } from '../models/card.model';
 
