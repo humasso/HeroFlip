@@ -18,7 +18,7 @@
   </ng-template>
 
 <div class="mt-4 opened-area" *ngIf="openedCards.length > 0">
-    <ngb-carousel class="opened-carousel" [interval]="0" [showNavigationArrows]="true" [showNavigationIndicators]="true">
+    <ngb-carousel class="opened-carousel" [interval]="carouselInterval" [showNavigationArrows]="true" [showNavigationIndicators]="true">
       <ng-template ngbSlide *ngFor="let c of openedCards">
         <div class="card card-item mx-auto" style="width: 18rem;">
           <img [src]="c.image" class="card-img-top" alt="hero">

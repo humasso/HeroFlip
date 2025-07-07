@@ -21,6 +21,7 @@ export class PacchettiComponent implements OnInit {
   //selectedQty = 1;
   opening = false;
   openingIndex: number | null = null;
+  carouselInterval = 5000;
 
   private userId = localStorage.getItem('userid')?.split('"')[3];
 
