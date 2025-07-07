@@ -17,7 +17,7 @@
   </ng-template>
 
 
-  <div class="mt-4" *ngIf="openedCards.length > 0">
+ <div class="mt-4" *ngIf="openedCards.length > 0">
     <ngb-carousel class="opened-carousel" [interval]="0">
       <ng-template ngbSlide *ngFor="let c of openedCards">
         <div class="card flash mx-auto" style="width: 18rem;">
@@ -29,7 +29,7 @@
       </ng-template>
     </ngb-carousel>
     <div class="text-center mt-2">
-        <button class="btn btn-success" (click)="insertIntoAlbum()">Inserisci nel album</button>
-      </div>
+      <button class="btn btn-success" (click)="insertIntoAlbum()">Inserisci nel album</button>
     </div>
+  </div>
 </div>
