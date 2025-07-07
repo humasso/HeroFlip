@@ -17,7 +17,7 @@
     <p class="text-center">Nessun pacchetto disponibile.</p>
   </ng-template>
   <div class="mt-4 opened-area" *ngIf="openedCards.length > 0">
-    <div class="row opened-cards row-cols-4 row-cols-md-5 g-4 justify-content-center">
+    <div class="row opened-cards row-cols-3 g-4 justify-content-center">
       <div class="col" *ngFor="let c of openedCards">
         <div class="card card-item h-100 text-center border-danger">
           <img [src]="c.image" class="card-img-top hero-img" alt="hero">
