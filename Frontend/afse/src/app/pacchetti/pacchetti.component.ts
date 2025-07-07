@@ -6,7 +6,7 @@ import { PacchettiService } from '../services/pacchetti.service';
 import { HeroService } from '../services/hero.service';
 //import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserPack } from '../models/user.model';
-import { Card } from '../models/card.model';
+import { Card, Powerstats } from '../models/card.model';
 import { forkJoin } from 'rxjs';
 
 
@@ -21,6 +21,7 @@ export class PacchettiComponent implements OnInit {
   packs: UserPack[] = [];
   cardTransforms: string[] = [];
   openedCards: Card[] = [];
+  statKeys: (keyof Powerstats)[] = ['intelligence','strength','speed','durability','power','combat'];
   //selectedQty = 1;
   opening = false;
   openingIndex: number | null = null;

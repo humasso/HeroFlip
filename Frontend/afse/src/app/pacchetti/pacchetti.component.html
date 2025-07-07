@@ -24,7 +24,7 @@
           <div class="card-body p-2">
             <h6 class="card-title mb-1">{{ c.name }}</h6>
             <p class="mb-2"><small>{{ c.publisher || 'unknown' }}</small></p>
-            <ng-container *ngFor="let stat of ['intelligence','strength','speed','durability','power','combat']">
+            <ng-container *ngFor="let stat of statKeys">
               <div class="mb-1">
                 <div class="progress position-relative" style="height: 0.75rem;">
                   <div class="progress-bar" role="progressbar"
