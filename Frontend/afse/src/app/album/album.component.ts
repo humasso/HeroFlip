@@ -1,6 +1,3 @@
-+37
--3
-
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AlbumService } from '../services/album.service';
@@ -14,6 +11,7 @@ import { Card } from '../models/card.model';
   styleUrl: './album.component.css'
 })
 export class AlbumComponent implements OnInit {
+  Math = Math;
   cards: Card[] = [];
   page = 1;
   readonly pageSize = 20;

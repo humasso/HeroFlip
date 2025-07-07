@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { PacchettiService } from '../services/pacchetti.service';
 import { HeroService } from '../services/hero.service';
@@ -25,13 +26,15 @@ export class PacchettiComponent implements OnInit {
   //selectedQty = 1;
   opening = false;
   openingIndex: number | null = null;
+  albumOpening = false;
   //carouselInterval = 2000;
 
   private userId = localStorage.getItem('userId');
 
   constructor(private userService: UserService,
               private packService: PacchettiService,
-              private heroService: HeroService) {}
+              private heroService: HeroService,
+              private router: Router) {}
 
   ngOnInit(): void {
     if (this.userId) {
@@ -113,5 +116,12 @@ export class PacchettiComponent implements OnInit {
       combat: '#198754'        // green
     };
     return colors[stat];
+  }
+
+    openAlbum() {
+    this.albumOpening = true;
+    setTimeout(() => {
+      this.router.navigate(['/album']);
+    }, 600);
   }
 }
