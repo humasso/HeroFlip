@@ -97,9 +97,21 @@ export class PacchettiComponent implements OnInit {
   onMouseLeave(i: number) {
     this.cardTransforms[i] = 'perspective(600px)';
   }
-
+  
   statValue(value: string): number | null {
     const num = parseInt(value, 10);
     return isNaN(num) ? null : num;
+  }
+
+  statColor(stat: keyof Powerstats): string {
+    const colors: Record<keyof Powerstats, string> = {
+      intelligence: '#0d6efd', // blue
+      strength: '#dc3545',     // red
+      speed: '#ffc107',        // yellow
+      durability: '#fd7e14',   // orange
+      power: '#6f42c1',        // purple
+      combat: '#198754'        // green
+    };
+    return colors[stat];
   }
 }

@@ -17,8 +17,9 @@
     <p class="text-center">Nessun pacchetto disponibile.</p>
   </ng-template>
   <div class="mt-4 opened-area" *ngIf="openedCards.length > 0">
-    <div class="opened-cards d-flex flex-nowrap justify-content-center gap-3">
-      <div *ngFor="let c of openedCards" class="card card-item h-100 text-center border-danger">
+    <div class="row opened-cards row-cols-4 row-cols-md-5 g-4 justify-content-center">
+      <div class="col" *ngFor="let c of openedCards">
+        <div class="card card-item h-100 text-center border-danger">
           <img [src]="c.image" class="card-img-top hero-img" alt="hero">
           <div class="card-body p-2">
             <h6 class="card-title mb-1">{{ c.name }}</h6>

@@ -38,16 +38,8 @@ img {
   */
 
 
-.opened-cards {
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: center;
-  gap: 1rem;
-}
-
 .opened-cards .card-item {
   animation: popIn 0.6s ease-out;
-  flex: 0 0 auto;
 }
 
 .card-item {
