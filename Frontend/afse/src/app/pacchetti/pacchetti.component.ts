@@ -49,9 +49,6 @@ export class PacchettiComponent implements OnInit {
       next: res => {
         this.packs = res.packs;
         this.cardTransforms = new Array(this.packs.length).fill('perspective(600px)');
-        // The backend now returns the hero data directly. This avoids
-        // additional API calls and ensures the carousel shows the cards
-        // immediately after the pack is opened.
         this.openedCards = res.heroes;
         this.opening = false;
       },
