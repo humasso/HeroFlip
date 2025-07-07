@@ -20,6 +20,7 @@ export class PacchettiComponent implements OnInit {
   openedCards: Card[] = [];
   //selectedQty = 1;
   opening = false;
+  openingIndex: number | null = null;
 
   private userId = localStorage.getItem('userid')?.split('"')[3];
 
@@ -44,15 +45,21 @@ export class PacchettiComponent implements OnInit {
   openPack(index = 0) {
     if (!this.userId || this.packs.length === 0) { return; }
     const packType = this.packs[index].packType;
+    this.openingIndex = index;
     this.opening = true;
+    this.openedCards = [];
     this.packService.openPack(this.userId, packType).subscribe({
       next: res => {
         this.packs = res.packs;
         this.cardTransforms = new Array(this.packs.length).fill('perspective(600px)');
         this.openedCards = res.heroes;
         this.opening = false;
+        this.openingIndex = null;
       },
-      error: () => this.opening = false
+      error: () => {
+        this.opening = false;
+        this.openingIndex = null;
+      }
     });
   }
 

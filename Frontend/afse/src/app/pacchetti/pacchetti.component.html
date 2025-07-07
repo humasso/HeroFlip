@@ -2,6 +2,7 @@
   <div class="row" *ngIf="packs.length > 0; else noPack">
     <div class="col-6 col-md-4 col-lg-3 mb-3" *ngFor="let p of packs; let i = index">
       <div class="pack-card position-relative"
+          [class.opening]="opening && openingIndex===i"
            (mousemove)="onMouseMove($event, i)"
            (mouseenter)="onMouseEnter(i)"
            (mouseleave)="onMouseLeave(i)"
@@ -16,10 +17,10 @@
     <p class="text-center">Nessun pacchetto disponibile.</p>
   </ng-template>
 
- <div class="mt-4" *ngIf="openedCards.length > 0">
-    <ngb-carousel class="opened-carousel" [interval]="0">
+<div class="mt-4 opened-area" *ngIf="openedCards.length > 0">
+    <ngb-carousel class="opened-carousel" [interval]="0" [showNavigationArrows]="true" [showNavigationIndicators]="true">
       <ng-template ngbSlide *ngFor="let c of openedCards">
-        <div class="card flash mx-auto" style="width: 18rem;">
+        <div class="card card-item mx-auto" style="width: 18rem;">
           <img [src]="c.image" class="card-img-top" alt="hero">
           <div class="card-body p-2">
             <h6 class="card-title mb-0">{{ c.name }}</h6>
