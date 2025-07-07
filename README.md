@@ -34,8 +34,6 @@
 - [ ] mettere nel usercheck tutte le funzioni di controllo dei dati del utente
 - [ ] nel aggiorna password usare le funzioni di usercheck per controllare la nuova pass
 - [ ] facendo login una seconda volta senza aver fatto il logout, nella navbar rimane il nome del vecchio account 
-- [ ] per qualche motivo, facendo cambio account e rimettendo lo stesso account nella navbar non appare il username, rimane vuoto
-- [ ] Se non c'è l'account non da l'errore giusto. (errore server)
 - [ ] avere un timer per disconnettere l'utente
 - [ ] cambiare colore dello sfondo
 
@@ -91,3 +89,5 @@ cosi via dando sempre piu crediti piu soldi spende l'utente
 - [X] controllare meglio i campi login
 - [X] far vedere errori sul form quando si inserisce un campo sbagliato
 - [X] doppia psd per registrazione
+- [X] per qualche motivo, facendo cambio account e rimettendo lo stesso account nella navbar non appare il username, rimane vuoto
+- [X] Se non c'è l'account non da l'errore giusto. (errore server)
