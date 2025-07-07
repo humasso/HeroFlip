@@ -1,6 +1,10 @@
 img {
   border-radius: 4px;
 }
+.carousel-img {
+  max-width: 100%;
+  border-radius: 4px;
+}
 .pack-card {
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;

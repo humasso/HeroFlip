@@ -17,13 +17,20 @@
   </ng-template>
 
 
-  <div class="row mt-4" *ngIf="openedCards.length > 0">
-    <div class="col-6 col-md-4 col-lg-3 mb-3" *ngFor="let c of openedCards">
-      <div class="card flash">
-        <img [src]="c.image" class="card-img-top" alt="hero">
-        <div class="card-body p-2">
-          <h6 class="card-title mb-0">{{ c.name }}</h6>
-        </div>
+ <div class="row mt-4" *ngIf="openedCards.length > 0">
+    <div class="col-12">
+      <ngb-carousel [interval]="0" [wrap]="false">
+        <ng-template ngbSlide *ngFor="let c of openedCards">
+          <div class="d-flex justify-content-center">
+            <img [src]="c.image" class="carousel-img flash" alt="hero">
+          </div>
+          <div class="carousel-caption">
+            <h6>{{ c.name }}</h6>
+          </div>
+        </ng-template>
+      </ngb-carousel>
+      <div class="text-center mt-2">
+        <button class="btn btn-success" (click)="insertIntoAlbum()">Inserisci nel album</button>
       </div>
     </div>
   </div>

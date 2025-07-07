@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { PacchettiService } from '../services/pacchetti.service';
+import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { HeroService } from '../services/hero.service';
 import { UserPack } from '../models/user.model';
 import { Card } from '../models/card.model';
@@ -10,7 +11,7 @@ import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-pacchetti',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, NgbCarouselModule],
   templateUrl: './pacchetti.component.html',
   styleUrl: './pacchetti.component.css'
 })
