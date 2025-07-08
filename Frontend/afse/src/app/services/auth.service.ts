@@ -3,13 +3,14 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { RegisterRequest, RegisterResponse } from '../models/user.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private http = inject(HttpClient)
-  private apiUrl = 'http://localhost:3000/auth';
+  private apiUrl = `${environment.backendApi}/auth`;
 
   // 1) BehaviorSubject per tenere lo stato di login
   private loggedInSubject = new BehaviorSubject<boolean>(!!localStorage.getItem('userId'));

@@ -2,15 +2,16 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { UserPack } from '../models/user.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PacchettiService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/shop';
-  private albumUrl = 'http://localhost:3000/album';
-  private heroUrl = 'http://localhost:3000/hero';
+  private apiUrl = `${environment.backendApi}/shop`;
+  private albumUrl = `${environment.backendApi}/album`;
+  private heroUrl = `${environment.backendApi}/hero`;
 
   constructor() {}
 

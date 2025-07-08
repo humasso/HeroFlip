@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 
 
@@ -10,7 +11,7 @@ import { Observable } from 'rxjs';
 })
 export class UserService {
   private http = inject(HttpClient)
-  private apiUrl = 'http://localhost:3000/user';
+  private apiUrl = `${environment.backendApi}/user`;
 
   constructor() { }
 
