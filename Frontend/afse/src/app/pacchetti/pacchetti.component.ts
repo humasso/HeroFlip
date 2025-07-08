@@ -24,12 +24,17 @@ export class PacchettiComponent implements OnInit {
   openedCards: Card[] = [];
   openedCardTransforms: string[] = [];
   revealed: boolean[] = [];
+  selectedQuantities: number[] = [];
+  remainingToOpen = 0;
+  currentPackType: string | null = null;
   statKeys: (keyof Powerstats)[] = ['intelligence','strength','speed','durability','power','combat'];
   //selectedQty = 1;
   opening = false;
   openingIndex: number | null = null;
   albumOpening = false;
   //carouselInterval = 2000;
+
+  Math = Math; 
 
   private userId = localStorage.getItem('userId');
 
@@ -44,10 +49,12 @@ export class PacchettiComponent implements OnInit {
         next: user => {
           this.packs = (user.packs ?? []).filter(p => p.quantity > 0);
           this.cardTransforms = new Array(this.packs.length).fill('perspective(600px)');
+          this.selectedQuantities = this.packs.map(() => 1);
         },
         error: () => {
           this.packs = [];
           this.cardTransforms = [];
+          this.selectedQuantities = this.packs.map(() => 1);
         }
       });
     }
@@ -56,30 +63,56 @@ export class PacchettiComponent implements OnInit {
   openPack(index = 0) {
     if (!this.userId || this.packs.length === 0) { return; }
     const packType = this.packs[index].packType;
+    const qty = Math.min(this.selectedQuantities[index] || 1, this.packs[index].quantity);
+    if (qty < 1) { return; }
+    this.currentPackType = packType;
+    this.remainingToOpen = qty;
     this.openingIndex = index;
+    this.openNextPack();
+  }
+
+  private openNextPack() {
+    if (!this.userId || !this.currentPackType || this.remainingToOpen <= 0) { return; }
     this.opening = true;
     this.openedCards = [];
-    this.packService.openPack(this.userId, packType).subscribe({
+    this.packService.openPack(this.userId, this.currentPackType).subscribe({
       next: res => {
         this.packs = (res.packs ?? []).filter(p => p.quantity > 0);
         this.cardTransforms = new Array(this.packs.length).fill('perspective(600px)');
+        this.selectedQuantities = this.packs.map(() => 1);
         forkJoin(res.ids.map(id => this.heroService.getHero(id))).subscribe(cards => {
           this.openedCards = cards;
           this.revealed = new Array(cards.length).fill(false);
           this.openedCardTransforms = new Array(cards.length).fill('perspective(600px)');
           this.opening = false;
-          this.openingIndex = null;
+          this.remainingToOpen--;
+          if (this.remainingToOpen <= 0) {
+            this.openingIndex = null;
+            this.currentPackType = null;
+          }
         });
       },
       error: () => {
         this.opening = false;
         this.openingIndex = null;
+        this.remainingToOpen = 0;
+        this.currentPackType = null;
       }
     });
   }
 
   insertIntoAlbum() {
     this.openedCards = [];
+    if (this.remainingToOpen > 0) {
+      this.openNextPack();
+    }
+  }
+
+  stopOpening() {
+    this.remainingToOpen = 0;
+    this.currentPackType = null;
+    this.openedCards = [];
+    this.openingIndex = null;
   }
   onMouseEnter(i: number) {
     this.cardTransforms[i] = 'perspective(600px) scale(1.05)';

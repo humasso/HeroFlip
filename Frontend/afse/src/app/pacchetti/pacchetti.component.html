@@ -7,6 +7,7 @@
   </div>
   <div class="row" *ngIf="packs.length > 0; else noPack">
     <div class="col-6 col-md-4 col-lg-3 mb-3" *ngFor="let p of packs; let i = index">
+      <div class="text-center fw-bold mb-1">{{ p.packType }}</div>
       <div class="pack-card position-relative"
           [class.opening]="opening && openingIndex===i"
            (mousemove)="onMouseMove($event, i)"
@@ -17,6 +18,10 @@
             <img src="assets/pachetto.png" class="img-fluid" alt="pack">
          <span class="badge bg-success quantity-badge">{{ p.quantity }}</span>
         </div>
+      <div class="d-flex align-items-center mt-2">
+        <input type="range" class="form-range me-2 flex-grow-1" [min]="1" [max]="p.quantity" [(ngModel)]="selectedQuantities[i]" (ngModelChange)="selectedQuantities[i]= Math.min(Math.max(1, selectedQuantities[i]||1), p.quantity)">
+        <input type="number" class="form-control text-center" style="width: 70px;" [min]="1" [max]="p.quantity" [(ngModel)]="selectedQuantities[i]" (ngModelChange)="selectedQuantities[i]= Math.min(Math.max(1, selectedQuantities[i]||1), p.quantity)">
+      </div>
     </div>
 </div>
   <ng-template #noPack>
@@ -65,8 +70,10 @@
         </div>
       </div>
      </div>
-  <div class="text-center mt-2">
-      <button class="btn btn-success" (click)="insertIntoAlbum()">Inserisci nell'album</button>
+    <div class="text-center mt-4">
+      <button *ngIf="remainingToOpen > 0" class="btn btn-danger" (click)="stopOpening()">Aggiungi tutte {{ remainingToOpen * 5 }} carte nell'album</button>
+      <button *ngIf="remainingToOpen > 0" class="btn btn-primary me-2" (click)="insertIntoAlbum()">Prossimo pacchetto</button>
+      <button *ngIf="remainingToOpen === 0" class="btn btn-success" (click)="insertIntoAlbum()">Inserisci nell'album</button>
     </div>
   </div>
 <!--
