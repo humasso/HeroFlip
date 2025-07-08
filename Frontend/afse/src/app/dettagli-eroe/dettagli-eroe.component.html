@@ -10,8 +10,20 @@
     <div class="col-md-8">
       <h5>Powerstats</h5>
       <ul class="list-group mb-3">
-        <li class="list-group-item" *ngFor="let stat of (card.powerstats | keyvalue)">
-          <strong class="text-capitalize">{{ stat.key }}:</strong> {{ stat.value }}
+        <li class="list-group-item" *ngFor="let stat of statKeys">
+          <div class="d-flex align-items-center">
+            <strong class="me-2 text-capitalize stat-label">{{ stat }}</strong>
+            <div class="progress position-relative flex-grow-1" style="height: 0.75rem;">
+              <div class="progress-bar" role="progressbar"
+                   [ngClass]="{'bg-secondary': !statValue(card.powerstats[stat])}"
+                   [style.width.%]="statValue(card.powerstats[stat]) || 100"
+                   [style.backgroundColor]="statValue(card.powerstats[stat]) ? statColor(stat) : ''">
+              </div>
+              <small class="position-absolute top-0 end-0 me-1" style="font-size: 0.65rem; font-weight: 700;">
+                {{ statValue(card.powerstats[stat]) ?? 'unknown' }}
+              </small>
+            </div>
+          </div>
         </li>
       </ul>
       <div *ngIf="card.biography">

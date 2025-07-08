@@ -3,7 +3,7 @@ import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { HeroService } from '../services/hero.service';
 import { AlbumService } from '../services/album.service';
-import { Card } from '../models/card.model';
+import { Card, Powerstats } from '../models/card.model';
 
 @Component({
   selector: 'app-dettagli-eroe',
@@ -22,6 +22,7 @@ export class DettagliEroeComponent {
     quantity: number;
   };
   loading = true;
+  statKeys: (keyof Powerstats)[] = ['intelligence','strength','speed','durability','power','combat'];
 
   constructor(
     private route: ActivatedRoute,
@@ -45,6 +46,23 @@ export class DettagliEroeComponent {
         this.loading = false;
       });
     });
+  }
+
+  statValue(value: string): number | null {
+    const num = parseInt(value, 10);
+    return isNaN(num) ? null : num;
+  }
+
+  statColor(stat: keyof Powerstats): string {
+    const colors: Record<keyof Powerstats, string> = {
+      intelligence: '#0d6efd',
+      strength: '#dc3545',
+      speed: '#ffc107',
+      durability: '#fd7e14',
+      power: '#6f42c1',
+      combat: '#198754'
+    };
+    return colors[stat];
   }
 
   goBack() {
