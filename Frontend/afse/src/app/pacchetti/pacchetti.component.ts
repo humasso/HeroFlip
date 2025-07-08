@@ -79,13 +79,7 @@ export class PacchettiComponent implements OnInit {
   }
 
   insertIntoAlbum() {
-    if (!this.userId || this.openedCards.length === 0) { return; }
-    this.packService.addCardsToAlbum(this.userId, this.openedCards).subscribe({
-      next: () => {
-        this.openedCards = [];
-        alert('Carte inserite nel album');
-      }
-    });
+    this.openedCards = [];
   }
   onMouseEnter(i: number) {
     this.cardTransforms[i] = 'perspective(600px) scale(1.05)';
