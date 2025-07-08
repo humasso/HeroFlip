@@ -62,12 +62,15 @@ export class PacchettiComponent implements OnInit {
 
   openPack(index = 0) {
     if (!this.userId || this.packs.length === 0) { return; }
-    const packType = this.packs[index].packType;
-    const qty = Math.min(this.selectedQuantities[index] || 1, this.packs[index].quantity);
+    const pack = this.packs[index];
+    const qty = Math.min(this.selectedQuantities[index] || 1, pack.quantity);
     if (qty < 1) { return; }
-    this.currentPackType = packType;
+    this.currentPackType = pack.packType;
     this.remainingToOpen = qty;
     this.openingIndex = index;
+    pack.quantity -= qty;
+    this.cardTransforms = new Array(this.packs.length).fill('perspective(600px)');
+    this.selectedQuantities = this.packs.map(() => 1);
     this.openNextPack();
   }
 
@@ -77,9 +80,6 @@ export class PacchettiComponent implements OnInit {
     this.openedCards = [];
     this.packService.openPack(this.userId, this.currentPackType).subscribe({
       next: res => {
-        this.packs = (res.packs ?? []).filter(p => p.quantity > 0);
-        this.cardTransforms = new Array(this.packs.length).fill('perspective(600px)');
-        this.selectedQuantities = this.packs.map(() => 1);
         forkJoin(res.ids.map(id => this.heroService.getHero(id))).subscribe(cards => {
           this.openedCards = cards;
           this.revealed = new Array(cards.length).fill(false);
@@ -87,6 +87,9 @@ export class PacchettiComponent implements OnInit {
           this.opening = false;
           this.remainingToOpen--;
           if (this.remainingToOpen <= 0) {
+            this.packs = (res.packs ?? []).filter(p => p.quantity > 0);
+            this.cardTransforms = new Array(this.packs.length).fill('perspective(600px)');
+            this.selectedQuantities = this.packs.map(() => 1);
             this.openingIndex = null;
             this.currentPackType = null;
           }
