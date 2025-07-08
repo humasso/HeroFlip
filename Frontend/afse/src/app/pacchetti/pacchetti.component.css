@@ -43,15 +43,15 @@ img {
 }
 
 .card-item {
-  width: 250px;
+  width: 300px;
   height: 100%;
   border-width: 4px;
   border-color: #dc3545;
 }
 
 .hero-img {
-  height: 240px;
-  object-fit: cover;
+  height: 225px;
+  object-fit:fill;
 }
 
 .card-back-img {
@@ -65,11 +65,15 @@ img {
 }
 
 .album-container {
+  position: relative;
   perspective: 800px;
 }
 
 .album-link {
   display: inline-block;
+  position: absolute;
+  top: 0;
+  right: 0;
   cursor: pointer;
 }
 
@@ -89,8 +93,8 @@ img {
 }
 
 .flip-card {
-  width: 250px;
-  height: 375px;
+  width: 300px;
+  height: 450px;
   perspective: 600px;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
