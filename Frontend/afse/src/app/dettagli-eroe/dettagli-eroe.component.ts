@@ -67,16 +67,17 @@ export class DettagliEroeComponent {
 
   filteredEntries(section: any): { key: string; value: string }[] {
     if (!section) { return []; }
+
     return Object.entries(section)
-      .filter(([_, v]) => {
-        if (v === null || v === undefined) { return false; }
-        let val = Array.isArray(v) ? v.join(', ') : String(v);
-        val = val.trim();
-        if (!val) { return false; }
-        const lower = val.toLowerCase();
-        return lower !== '-' && lower !== 'unknown' && lower !== 'null' && lower !== '0';
+      .map(([key, value]) => {
+        const val = Array.isArray(value) ? value.join(', ') : String(value).trim();
+        return { key, value: val };
       })
-      .map(([key, value]) => ({ key, value: Array.isArray(value) ? value.join(', ') : value }));
+      .filter(({ value }) => {
+        if (!value) { return false; }
+        const lower = value.toLowerCase();
+        return lower !== '-' && lower !== 'unknown' && lower !== 'null' && lower !== '0';
+      });
   }
 
 
