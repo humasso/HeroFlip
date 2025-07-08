@@ -1,4 +1,10 @@
 <div class="container py-4">
+  <div class="album-container text-end mb-3">
+    <div class="album-link" [class.opening]="albumOpening" (click)="openAlbum()">
+      <img src="assets/album.png" alt="album" class="img-fluid">
+      <p class="mt-2">Apri Album</p>
+    </div>
+  </div>
   <div class="row" *ngIf="packs.length > 0; else noPack">
     <div class="col-6 col-md-4 col-lg-3 mb-3" *ngFor="let p of packs; let i = index">
       <div class="pack-card position-relative"
@@ -27,7 +33,7 @@
              [style.transform]="openedCardTransforms[i] || 'perspective(600px)'">
           <div class="flip-card-inner">
             <div class="flip-card-front">
-              <img src="assets/retro carta.png" class="card-img-top hero-img" alt="retro">
+              <img src="assets/retro carta.png" class="card-img-top card-back-img" alt="retro">
             </div>
             <div class="flip-card-back">
               <div class="card card-item h-100 text-center border-danger">
@@ -61,12 +67,6 @@
      </div>
   <div class="text-center mt-2">
       <button class="btn btn-success" (click)="insertIntoAlbum()">Inserisci nell'album</button>
-    </div>
-  </div>
-  <div class="album-container mt-5 text-center">
-    <div class="album-link" [class.opening]="albumOpening" (click)="openAlbum()">
-      <img src="assets/album.png" alt="album" class="img-fluid">
-      <p class="mt-2">Apri Album</p>
     </div>
   </div>
 <!--
