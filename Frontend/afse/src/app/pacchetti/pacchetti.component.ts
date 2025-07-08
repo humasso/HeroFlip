@@ -110,6 +110,21 @@ export class PacchettiComponent implements OnInit {
     this.revealed[i] = true;
   }
 
+  openHero(i: number) {
+    const card = this.openedCards[i];
+    if (card) {
+      this.router.navigate(['/album/hero', card.heroId]);
+    }
+  }
+
+  onCardClick(i: number) {
+    if (!this.revealed[i]) {
+      this.flipCard(i);
+    } else {
+      this.openHero(i);
+    }
+  }
+
   onOpenedMouseEnter(i: number) {
     this.openedCardTransforms[i] = 'perspective(600px) scale(1.05)';
   }

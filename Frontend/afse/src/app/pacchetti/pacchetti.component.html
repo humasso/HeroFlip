@@ -26,7 +26,7 @@
     <div class="row opened-cards row-cols-4 row-cols-md-3 g-5 justify-content-center">
       <div class="col" *ngFor="let c of openedCards; let i = index">
         <div class="flip-card" [class.flipped]="revealed[i]"
-             (click)="flipCard(i)"
+             (click)="onCardClick(i)"
              (mousemove)="onOpenedMouseMove($event, i)"
              (mouseenter)="onOpenedMouseEnter(i)"
              (mouseleave)="onOpenedMouseLeave(i)"
