@@ -20,4 +20,25 @@ export class HeroService {
       }))
     );
   }
+
+  getFullHero(id: number): Observable<Card & {
+    biography: any;
+    appearance: any;
+    work: any;
+    connections: any;
+  }> {
+    return this.http.get<any>(`${this.baseUrl}/${id}`).pipe(
+      map(hero => ({
+        heroId: hero.id,
+        name: hero.name,
+        image: hero.image?.url,
+        publisher: hero.biography?.publisher || 'unknown',
+        powerstats: hero.powerstats,
+        biography: hero.biography,
+        appearance: hero.appearance,
+        work: hero.work,
+        connections: hero.connections
+      }))
+    );
+  }
 }

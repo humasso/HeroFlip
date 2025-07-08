@@ -14,4 +14,8 @@ export interface Card {
   publisher: string;
   powerstats: Powerstats;
   quantity?: number;
+  biography?: any;
+  appearance?: any;
+  work?: any;
+  connections?: any;
 }

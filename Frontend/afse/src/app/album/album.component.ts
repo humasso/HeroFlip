@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { AlbumService } from '../services/album.service';
 import { Card } from '../models/card.model';
 
 @Component({
   selector: 'app-album',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './album.component.html',
   styleUrl: './album.component.css'
 })
@@ -21,8 +22,15 @@ export class AlbumComponent implements OnInit {
   ngOnInit(): void {
     const userId = localStorage.getItem('userId');
     if (!userId) { return; }
+    this.page = +(localStorage.getItem('albumPage') || '1');
     this.albumService.getAlbum(userId).subscribe({
-      next: album => this.cards = album.cards || [],
+      next: album => {
+        this.cards = album.cards || [];
+        setTimeout(() => {
+          const scroll = +(localStorage.getItem('albumScroll') || '0');
+          window.scrollTo({ top: scroll });
+        });
+      },
       error: () => this.cards = []
     });
   }
@@ -42,5 +50,10 @@ export class AlbumComponent implements OnInit {
     if (this.page > 1) {
       this.page--;
     }
+  }
+
+  savePosition() {
+    localStorage.setItem('albumPage', this.page.toString());
+    localStorage.setItem('albumScroll', window.scrollY.toString());
   }
 }
