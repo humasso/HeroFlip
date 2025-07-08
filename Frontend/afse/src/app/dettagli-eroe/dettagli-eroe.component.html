@@ -26,29 +26,31 @@
           </div>
         </li>
       </ul>
-      <div *ngIf="card.biography">
-        <h5>Biography</h5>
-        <p *ngFor="let b of (card.biography | keyvalue)">
-          <strong class="text-capitalize">{{ b.key }}:</strong> {{ b.value }}
-        </p>
-      </div>
-      <div *ngIf="card.appearance">
-        <h5>Appearance</h5>
-        <p *ngFor="let a of (card.appearance | keyvalue)">
-          <strong class="text-capitalize">{{ a.key }}:</strong> {{ a.value }}
-        </p>
-      </div>
-      <div *ngIf="card.work">
-        <h5>Work</h5>
-        <p *ngFor="let w of (card.work | keyvalue)">
-          <strong class="text-capitalize">{{ w.key }}:</strong> {{ w.value }}
-        </p>
-      </div>
-      <div *ngIf="card.connections">
-        <h5>Connections</h5>
-        <p *ngFor="let c of (card.connections | keyvalue)">
-          <strong class="text-capitalize">{{ c.key }}:</strong> {{ c.value }}
-        </p>
+      <div class="row row-cols-1 row-cols-md-2 g-3">
+        <div *ngIf="filteredEntries(card.biography).length" class="col section">
+          <h5>Biography</h5>
+          <p *ngFor="let b of filteredEntries(card.biography)">
+            <strong class="text-capitalize">{{ b.key }}:</strong> {{ b.value }}
+          </p>
+        </div>
+        <div *ngIf="filteredEntries(card.appearance).length" class="col section">
+          <h5>Appearance</h5>
+          <p *ngFor="let a of filteredEntries(card.appearance)">
+            <strong class="text-capitalize">{{ a.key }}:</strong> {{ a.value }}
+          </p>
+        </div>
+        <div *ngIf="filteredEntries(card.work).length" class="col section">
+          <h5>Work</h5>
+          <p *ngFor="let w of filteredEntries(card.work)">
+            <strong class="text-capitalize">{{ w.key }}:</strong> {{ w.value }}
+          </p>
+        </div>
+        <div *ngIf="filteredEntries(card.connections).length" class="col section">
+          <h5>Connections</h5>
+          <p *ngFor="let c of filteredEntries(card.connections)">
+            <strong class="text-capitalize">{{ c.key }}:</strong> {{ c.value }}
+          </p>
+        </div>
       </div>
     </div>
   </div>

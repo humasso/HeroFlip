@@ -65,6 +65,21 @@ export class DettagliEroeComponent {
     return colors[stat];
   }
 
+  filteredEntries(section: any): { key: string; value: string }[] {
+    if (!section) { return []; }
+    return Object.entries(section)
+      .filter(([_, v]) => {
+        if (v === null || v === undefined) { return false; }
+        let val = Array.isArray(v) ? v.join(', ') : String(v);
+        val = val.trim();
+        if (!val) { return false; }
+        const lower = val.toLowerCase();
+        return lower !== '-' && lower !== 'unknown' && lower !== 'null' && lower !== '0';
+      })
+      .map(([key, value]) => ({ key, value: Array.isArray(value) ? value.join(', ') : value }));
+  }
+
+
   goBack() {
     this.location.back();
   }
