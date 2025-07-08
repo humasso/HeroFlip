@@ -16,7 +16,7 @@ app.use(express.json());
 connectDB();
 
 app.get('/', (req, res) => {
-  res.send('<h1>Hello, Express.js Server!</h1>');
+  res.send('<h1>Funziona il server</h1>');
 });
 
 // Rotte di auth sotto /api/auth
