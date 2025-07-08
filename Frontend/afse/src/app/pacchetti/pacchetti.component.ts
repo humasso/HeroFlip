@@ -91,7 +91,7 @@ export class PacchettiComponent implements OnInit {
           this.revealed = new Array(cards.length).fill(false);
           this.openedCardTransforms = new Array(cards.length).fill('perspective(600px)');
           this.opening = false;
-          this.modalRef = this.modalService.open(this.openedModal, { size: 'lg', centered: true });
+          this.modalRef = this.modalService.open(this.openedModal, { size: 'xl', centered: true });
           this.remainingToOpen--;
           if (this.remainingToOpen <= 0) {
             this.packs = (res.packs ?? []).filter(p => p.quantity > 0);
@@ -152,6 +152,7 @@ export class PacchettiComponent implements OnInit {
   openHero(i: number) {
     const card = this.openedCards[i];
     if (card) {
+      this.modalRef?.close();
       this.router.navigate(['/album/hero', card.heroId]);
     }
   }
