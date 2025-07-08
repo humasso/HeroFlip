@@ -22,6 +22,8 @@ export class PacchettiComponent implements OnInit {
   packs: UserPack[] = [];
   cardTransforms: string[] = [];
   openedCards: Card[] = [];
+  openedCardTransforms: string[] = [];
+  revealed: boolean[] = [];
   statKeys: (keyof Powerstats)[] = ['intelligence','strength','speed','durability','power','combat'];
   //selectedQty = 1;
   opening = false;
@@ -63,6 +65,8 @@ export class PacchettiComponent implements OnInit {
         this.cardTransforms = new Array(this.packs.length).fill('perspective(600px)');
         forkJoin(res.ids.map(id => this.heroService.getHero(id))).subscribe(cards => {
           this.openedCards = cards;
+          this.revealed = new Array(cards.length).fill(false);
+          this.openedCardTransforms = new Array(cards.length).fill('perspective(600px)');
           this.opening = false;
           this.openingIndex = null;
         });
@@ -99,6 +103,29 @@ export class PacchettiComponent implements OnInit {
 
   onMouseLeave(i: number) {
     this.cardTransforms[i] = 'perspective(600px)';
+  }
+
+  
+  flipCard(i: number) {
+    this.revealed[i] = true;
+  }
+
+  onOpenedMouseEnter(i: number) {
+    this.openedCardTransforms[i] = 'perspective(600px) scale(1.05)';
+  }
+
+  onOpenedMouseMove(event: MouseEvent, i: number) {
+    const card = event.currentTarget as HTMLElement;
+    const rect = card.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+    const rotateX = -((y - rect.height / 2) / rect.height) * 10;
+    const rotateY = ((x - rect.width / 2) / rect.width) * 10;
+    this.openedCardTransforms[i] = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+  }
+
+  onOpenedMouseLeave(i: number) {
+    this.openedCardTransforms[i] = 'perspective(600px)';
   }
   
   statValue(value: string): number | null {
