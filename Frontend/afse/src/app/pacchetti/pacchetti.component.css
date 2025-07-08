@@ -49,6 +49,11 @@ img {
   border-color: #dc3545;
 }
 
+.opened-cards {
+  gap: 20px !important;
+}
+
+
 .hero-img {
   height: 225px;
   object-fit: fill;
