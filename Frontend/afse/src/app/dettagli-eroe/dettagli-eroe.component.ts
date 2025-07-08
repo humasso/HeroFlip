@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { HeroService } from '../services/hero.service';
 import { AlbumService } from '../services/album.service';
@@ -6,7 +7,8 @@ import { Card } from '../models/card.model';
 
 @Component({
   selector: 'app-dettagli-eroe',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './dettagli-eroe.component.html',
   styleUrl: './dettagli-eroe.component.css'
 })
