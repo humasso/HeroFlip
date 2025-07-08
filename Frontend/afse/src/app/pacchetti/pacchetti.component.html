@@ -32,55 +32,58 @@
   <ng-template #noPack>
     <p class="text-center">Nessun pacchetto disponibile.</p>
   </ng-template>
-  <div class="mt-4 opened-area" *ngIf="openedCards.length > 0">
-    <div class="row opened-cards row-cols-4 row-cols-md-3 g-5 justify-content-center">
-      <div class="col" *ngFor="let c of openedCards; let i = index">
-        <div class="flip-card" [class.flipped]="revealed[i]"
-             (click)="onCardClick(i)"
-             (mousemove)="onOpenedMouseMove($event, i)"
-             (mouseenter)="onOpenedMouseEnter(i)"
-             (mouseleave)="onOpenedMouseLeave(i)"
-             [style.transform]="openedCardTransforms[i] || 'perspective(600px)'">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="assets/retro carta.png" class="card-img-top card-back-img" alt="retro">
-            </div>
-            <div class="flip-card-back">
-              <div class="card card-item h-100 text-center border-danger">
-                <img [src]="c.image" class="card-img-top hero-img" alt="hero">
-                <div class="card-body p-2">
-                  <h6 class="card-title mb-1">{{ c.name }}</h6>
-                  <p class="mb-2"><small>{{ c.publisher || 'unknown' }}</small></p>
-                  <ng-container *ngFor="let stat of statKeys">
-                    <div class="mb-1">
-                      <div class="d-flex align-items-center">
-                        <small class="me-2 text-capitalize stat-label">{{ stat }}</small>
-                        <div class="progress position-relative flex-grow-1" style="height: 0.75rem;">
-                          <div class="progress-bar" role="progressbar"
-                               [ngClass]="{'bg-secondary': !statValue(c.powerstats[stat])}"
-                               [style.width.%]="statValue(c.powerstats[stat]) || 100"
-                               [style.backgroundColor]="statValue(c.powerstats[stat]) ? statColor(stat) : ''">
+  <!-- area shown in modal -->
+  <ng-template #openedModal let-modal>
+    <div class="opened-area">
+      <div class="row opened-cards row-cols-4 row-cols-md-3 g-5 justify-content-center">
+        <div class="col" *ngFor="let c of openedCards; let i = index">
+          <div class="flip-card" [class.flipped]="revealed[i]"
+               (click)="onCardClick(i)"
+               (mousemove)="onOpenedMouseMove($event, i)"
+               (mouseenter)="onOpenedMouseEnter(i)"
+               (mouseleave)="onOpenedMouseLeave(i)"
+               [style.transform]="openedCardTransforms[i] || 'perspective(600px)'">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <img src="assets/retro carta.png" class="card-img-top card-back-img" alt="retro">
+              </div>
+              <div class="flip-card-back">
+                <div class="card card-item h-100 text-center border-danger">
+                  <img [src]="c.image" class="card-img-top hero-img" alt="hero">
+                  <div class="card-body p-2">
+                    <h6 class="card-title mb-1">{{ c.name }}</h6>
+                    <p class="mb-2"><small>{{ c.publisher || 'unknown' }}</small></p>
+                    <ng-container *ngFor="let stat of statKeys">
+                      <div class="mb-1">
+                        <div class="d-flex align-items-center">
+                          <small class="me-2 text-capitalize stat-label">{{ stat }}</small>
+                          <div class="progress position-relative flex-grow-1" style="height: 0.75rem;">
+                            <div class="progress-bar" role="progressbar"
+                                 [ngClass]="{'bg-secondary': !statValue(c.powerstats[stat])}"
+                                 [style.width.%]="statValue(c.powerstats[stat]) || 100"
+                                 [style.backgroundColor]="statValue(c.powerstats[stat]) ? statColor(stat) : ''">
+                            </div>
+                            <small class="position-absolute top-0 end-0 me-1" style="font-size: 0.65rem; font-weight: 700;">
+                              {{ statValue(c.powerstats[stat]) ?? 'unknown' }}
+                            </small>
                           </div>
-                          <small class="position-absolute top-0 end-0 me-1" style="font-size: 0.65rem; font-weight: 700;">
-                            {{ statValue(c.powerstats[stat]) ?? 'unknown' }}
-                          </small>
                         </div>
                       </div>
-                    </div>
-                  </ng-container>
+                    </ng-container>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-     </div>
-    <div class="text-center mt-4">
-      <button *ngIf="remainingToOpen > 0" class="btn btn-danger me-2" (click)="stopOpening()">Aggiungi tutte {{ remainingToOpen * 5 }} carte nell'album</button>
-      <button *ngIf="remainingToOpen > 0" class="btn btn-primary" (click)="insertIntoAlbum()">Prossimo pacchetto</button>
-      <button *ngIf="remainingToOpen === 0" class="btn btn-success" (click)="insertIntoAlbum()">Inserisci nell'album</button>
+      <div class="text-center mt-4">
+        <button *ngIf="remainingToOpen > 0" class="btn btn-danger me-2" (click)="stopOpening()">Aggiungi tutte {{ remainingToOpen * 5 }} carte nell'album</button>
+        <button *ngIf="remainingToOpen > 0" class="btn btn-primary" (click)="insertIntoAlbum()">Prossimo pacchetto</button>
+        <button *ngIf="remainingToOpen === 0" class="btn btn-success" (click)="insertIntoAlbum()">Inserisci nell'album</button>
+      </div>
     </div>
-  </div>
+  </ng-template>
 <!--
 <div class="mt-4 opened-area" *ngIf="openedCards.length > 0">
     <ngb-carousel class="opened-carousel" [interval]="carouselInterval" [showNavigationArrows]="true" [showNavigationIndicators]="true">

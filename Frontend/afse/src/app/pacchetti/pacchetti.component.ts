@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../services/user.service';
 import { PacchettiService } from '../services/pacchetti.service';
 import { HeroService } from '../services/hero.service';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 //import { NgbCarouselModule } from '@ng-bootstrap/ng-bootstrap';
 import { UserPack } from '../models/user.model';
 import { Card, Powerstats } from '../models/card.model';
@@ -34,13 +35,18 @@ export class PacchettiComponent implements OnInit {
   albumOpening = false;
   //carouselInterval = 2000;
 
-  Math = Math; 
+  @ViewChild('openedModal') openedModal!: TemplateRef<any>;
+  modalRef: NgbModalRef | null = null;
+
+  Math = Math;
+
 
   private userId = localStorage.getItem('userId');
 
   constructor(private userService: UserService,
               private packService: PacchettiService,
               private heroService: HeroService,
+              private modalService: NgbModal,
               private router: Router) {}
 
   ngOnInit(): void {
@@ -85,6 +91,7 @@ export class PacchettiComponent implements OnInit {
           this.revealed = new Array(cards.length).fill(false);
           this.openedCardTransforms = new Array(cards.length).fill('perspective(600px)');
           this.opening = false;
+          this.modalRef = this.modalService.open(this.openedModal, { size: 'lg', centered: true });
           this.remainingToOpen--;
           if (this.remainingToOpen <= 0) {
             this.packs = (res.packs ?? []).filter(p => p.quantity > 0);
@@ -105,6 +112,7 @@ export class PacchettiComponent implements OnInit {
   }
 
   insertIntoAlbum() {
+    this.modalRef?.close();
     this.openedCards = [];
     if (this.remainingToOpen > 0) {
       this.openNextPack();
@@ -116,6 +124,7 @@ export class PacchettiComponent implements OnInit {
     this.currentPackType = null;
     this.openedCards = [];
     this.openingIndex = null;
+    this.modalRef?.close();
   }
   onMouseEnter(i: number) {
     this.cardTransforms[i] = 'perspective(600px) scale(1.05)';
