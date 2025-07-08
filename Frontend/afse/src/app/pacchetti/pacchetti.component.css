@@ -7,6 +7,15 @@ img {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+.confirm-btn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
 .quantity-badge {
   position: absolute;
   bottom: 0.5rem;

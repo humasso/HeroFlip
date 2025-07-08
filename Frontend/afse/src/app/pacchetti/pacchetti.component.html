@@ -20,7 +20,12 @@
         </div>
       <div class="d-flex align-items-center mt-2">
         <input type="range" class="form-range me-2 flex-grow-1" [min]="1" [max]="p.quantity" [(ngModel)]="selectedQuantities[i]" (ngModelChange)="selectedQuantities[i]= Math.min(Math.max(1, selectedQuantities[i]||1), p.quantity)">
-        <input type="number" class="form-control text-center" style="width: 70px;" [min]="1" [max]="p.quantity" [(ngModel)]="selectedQuantities[i]" (ngModelChange)="selectedQuantities[i]= Math.min(Math.max(1, selectedQuantities[i]||1), p.quantity)">
+        <input type="number" class="form-control text-center me-2" style="width: 70px;" [min]="1" [max]="p.quantity" [(ngModel)]="selectedQuantities[i]" (ngModelChange)="selectedQuantities[i]= Math.min(Math.max(1, selectedQuantities[i]||1), p.quantity)">
+        <button type="button" class="btn btn-outline-success confirm-btn" (click)="openPack(i)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
+            <path d="M13.485 1.657a.75.75 0 0 1 1.06 1.06L6.247 11.014a.75.75 0 0 1-1.06 0L1.454 7.28a.75.75 0 1 1 1.06-1.06L5.717 9.42l7.768-7.764z"/>
+          </svg>
+        </button>
       </div>
     </div>
 </div>
@@ -71,8 +76,8 @@
       </div>
      </div>
     <div class="text-center mt-4">
-      <button *ngIf="remainingToOpen > 0" class="btn btn-danger" (click)="stopOpening()">Aggiungi tutte {{ remainingToOpen * 5 }} carte nell'album</button>
-      <button *ngIf="remainingToOpen > 0" class="btn btn-primary me-2" (click)="insertIntoAlbum()">Prossimo pacchetto</button>
+      <button *ngIf="remainingToOpen > 0" class="btn btn-danger me-2" (click)="stopOpening()">Aggiungi tutte {{ remainingToOpen * 5 }} carte nell'album</button>
+      <button *ngIf="remainingToOpen > 0" class="btn btn-primary" (click)="insertIntoAlbum()">Prossimo pacchetto</button>
       <button *ngIf="remainingToOpen === 0" class="btn btn-success" (click)="insertIntoAlbum()">Inserisci nell'album</button>
     </div>
   </div>
