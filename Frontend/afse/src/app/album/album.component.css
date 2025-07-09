@@ -13,9 +13,11 @@
 
 .empty-card {
   background-color: #f8f9fa;
+  min-height: 300px;
 }
 
 .empty-number {
   font-family: Impact, sans-serif;
   font-size: 2rem;
+  color: #212529;
 }

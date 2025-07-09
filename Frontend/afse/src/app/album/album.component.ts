@@ -92,6 +92,10 @@ export class AlbumComponent implements OnInit {
     this.pageInput = 1;
   }
 
+  formatId(id: number): string {
+    return id.toString().padStart(3, '0');
+  }
+
   savePosition() {
     localStorage.setItem('albumPage', this.page.toString());
     localStorage.setItem('albumScroll', window.scrollY.toString());
