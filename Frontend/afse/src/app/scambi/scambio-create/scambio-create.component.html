@@ -4,15 +4,48 @@
     <label class="form-label">Descrizione</label>
     <textarea class="form-control" [(ngModel)]="description"></textarea>
   </div>
-  <div class="mb-3">
-    <label class="form-label">Crediti richiesti</label>
-    <input type="number" class="form-control" [(ngModel)]="creditsWanted" min="0">
-  </div>
-  <div>
-    <h5>Carte doppie</h5>
-    <div *ngFor="let c of duplicates" class="badge bg-secondary me-1 mb-1" (click)="addOffer(c)">
-      {{c.name}}
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <h5>Offri</h5>
+      <div class="mb-2">
+        <span class="badge bg-primary me-1 mb-1" *ngFor="let c of offer; let i = index">
+          {{c.name}}
+          <button type="button" class="btn-close btn-close-white ms-1" aria-label="Rimuovi" (click)="removeOffer(i)"></button>
+        </span>
+      </div>
+      <div>
+        <h6>Carte doppie</h6>
+        <div *ngFor="let c of duplicates" class="badge bg-secondary me-1 mb-1" (click)="addOffer(c)">
+          {{c.name}}
+        </div>
+      </div>
+      <div class="mt-2">
+        <label class="form-label">Crediti offerti</label>
+        <input type="number" class="form-control" [(ngModel)]="creditsOffered" min="0">
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <h5>Richiedi</h5>
+      <div class="mb-2">
+        <span class="badge bg-primary me-1 mb-1" *ngFor="let c of want; let i = index">
+          {{c.name}}
+          <button type="button" class="btn-close btn-close-white ms-1" aria-label="Rimuovi" (click)="removeWant(i)"></button>
+        </span>
+      </div>
+      <div class="mb-2 position-relative">
+        <input type="text" class="form-control" placeholder="Cerca carta" [(ngModel)]="searchTerm" (input)="searchHero()" autocomplete="off">
+        <ul *ngIf="heroResults.length" class="list-group position-absolute w-100" style="z-index:1000; max-height:200px; overflow:auto;">
+          <li class="list-group-item list-group-item-action" *ngFor="let h of heroResults" (click)="addWant(h.id)">{{h.name}}</li>
+        </ul>
+      </div>
+      <div class="mt-2">
+        <label class="form-label">Crediti richiesti</label>
+        <input type="number" class="form-control" [(ngModel)]="creditsWanted" min="0">
+      </div>
     </div>
   </div>
+
   <button class="btn btn-success mt-3" (click)="create()">Pubblica</button>
 </div>

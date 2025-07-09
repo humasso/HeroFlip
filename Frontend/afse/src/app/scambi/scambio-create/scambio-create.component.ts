@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { Card } from '../../models/card.model';
 import { AlbumService } from '../../services/album.service';
 import { TradeService } from '../../services/trade.service';
+import { HeroService } from '../../services/hero.service';
 
 
 @Component({
@@ -20,10 +21,14 @@ export class ScambioCreateComponent implements OnInit {
   want: Card[] = [];
   description = '';
   creditsWanted = 0;
+  creditsOffered = 0;
+  searchTerm = '';
+  heroResults: { id: number; name: string }[] = [];
 
   constructor(
     private albumService: AlbumService,
     private tradeService: TradeService,
+    private heroService: HeroService,
     private router: Router
   ) {}
 
@@ -39,6 +44,31 @@ export class ScambioCreateComponent implements OnInit {
     this.offer.push({ ...card, quantity: 1 });
   }
 
+  removeOffer(index: number) {
+    this.offer.splice(index, 1);
+  }
+
+  addWant(id: number) {
+    this.heroService.getHero(id).subscribe(card => {
+      this.want.push({ ...card, quantity: 1 });
+      this.searchTerm = '';
+      this.heroResults = [];
+    });
+  }
+
+  removeWant(index: number) {
+    this.want.splice(index, 1);
+  }
+
+  searchHero() {
+    if (!this.searchTerm.trim()) {
+      this.heroResults = [];
+      return;
+    }
+    this.heroService.searchHeroes(this.searchTerm).subscribe(res => this.heroResults = res);
+  }
+
+
   create() {
     const userId = localStorage.getItem('userId');
     if (!userId) { return; }
@@ -48,7 +78,7 @@ export class ScambioCreateComponent implements OnInit {
       offerCards: this.offer,
       wantCards: this.want,
       creditsWanted: this.creditsWanted,
-      creditsOffered: 0
+      creditsOffered: this.creditsOffered
     }).subscribe(tr => {
       this.router.navigate(['/scambi', tr._id]);
     });
