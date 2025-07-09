@@ -1,12 +1,12 @@
-import { Component, OnInit, TemplateRef, ViewChild }           from '@angular/core';
-import { CommonModule }                from '@angular/common';
-import { ReactiveFormsModule }         from '@angular/forms';
-import { Router }                      from '@angular/router';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-
-import { UserService }                 from '../services/user.service';
-import { AuthService }                 from '../services/auth.service';
-import { User }                        from '../models/user.model';
+import { UserService } from '../services/user.service';
+import { AuthService } from '../services/auth.service';
+import { HeroService } from '../services/hero.service';
+import { User } from '../models/user.model';
 
 @Component({
   selector: 'app-profile',
@@ -31,7 +31,8 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private fb: FormBuilder,
     private router: Router,
-    private auth: AuthService
+    private auth: AuthService,
+    private heroService: HeroService
   ) {}
 
   private userId: string | null = localStorage.getItem('userId');
@@ -125,6 +126,40 @@ export class ProfileComponent implements OnInit {
       });
     }
 
+    if (field === 'favoriteHero') {
+      if (this.editForm.value.favoriteHero === this.user.favoriteHero) {
+        this.editingField = null;
+        this.loading = false;
+        alert('Eroe preferito aggiornato con successo.');
+        return;
+      }
+      this.userService.updateFavoriteHero(this.user._id, this.editForm.value.favoriteHero).subscribe({
+        next: () => {
+          this.user.favoriteHero = this.editForm.value.favoriteHero;
+          this.editingField = null;
+          this.loading = false;
+          this.errorMsg = '';
+          alert('Eroe preferito aggiornato con successo.');
+        },
+        error: error => {
+          this.errorMsg = error.error.message || 'Errore durante l\'aggiornamento dell\'eroe preferito.';
+          this.loading = false;
+        }
+      });
+    }
+
+  }
+
+  viewFavoriteHero() {
+    const name = this.user.favoriteHero;
+    this.heroService.searchHeroes(name).subscribe(heroes => {
+      const found = heroes.find(h => h.name.toLowerCase() === name.toLowerCase()) || heroes[0];
+      if (found) {
+        this.router.navigate(['/album/hero', found.id]);
+      } else {
+        alert('Dettagli non disponibili per questo eroe.');
+      }
+    });
   }
 
   deleteProfile() {

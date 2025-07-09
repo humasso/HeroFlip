@@ -21,6 +21,18 @@ export class HeroService {
     );
   }
 
+  searchHeroes(name: string): Observable<{ id: number; name: string }[]> {
+    if (!name.trim()) {
+      return new Observable(observer => {
+        observer.next([]);
+        observer.complete();
+      });
+    }
+    return this.http.get<any>(`${this.baseUrl}/search/${name}`).pipe(
+      map(res => res.results?.map((h: any) => ({ id: +h.id, name: h.name })) || [])
+    );
+  }
+
   getFullHero(id: number): Observable<Card & {
     biography: any;
     appearance: any;

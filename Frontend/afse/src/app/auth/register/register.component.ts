@@ -6,6 +6,7 @@ import { AuthService } from '../../services/auth.service';
 import { RegisterRequest } from '../../models/user.model';
 import { NgIf } from '@angular/common';
 import { CommonModule } from '@angular/common';
+import { HeroService } from '../../services/hero.service';
 
 @Component({
   selector: 'app-register',
@@ -22,6 +23,7 @@ export class RegisterComponent {
   password = '';
   confirmPassword = '';
   favoriteHero = '';
+  heroOptions: { id: number; name: string }[] = [];
 
   errorMessage: string | null = null;
 
@@ -30,7 +32,8 @@ export class RegisterComponent {
 
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private heroService: HeroService
   ) {}
 
   toggleShowPassword() {
@@ -40,6 +43,20 @@ export class RegisterComponent {
   toggleShowConfirmPassword() {
     this.showConfirmPassword = !this.showConfirmPassword;
   }
+
+  searchHero() {
+    if (!this.favoriteHero.trim()) {
+      this.heroOptions = [];
+      return;
+    }
+    this.heroService.searchHeroes(this.favoriteHero).subscribe(options => this.heroOptions = options);
+  }
+
+  selectHero(name: string) {
+    this.favoriteHero = name;
+    this.heroOptions = [];
+  }
+
 
   register() {
     const payload: RegisterRequest = {

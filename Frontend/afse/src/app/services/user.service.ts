@@ -19,6 +19,9 @@ export class UserService {
     return this.http.get<User>(`${this.apiUrl}/${id}`);
   }
 
+  updateFavoriteHero(id: string, favoriteHero: string): Observable<{ message: string }> {
+    return this.http.put<{ message: string }>(`${this.apiUrl}/favoritehero/${id}`, { favoriteHero });
+  }
 
   updatePassword(id: string, oldPassword: string, newPassword: string): Observable<{ message: string }> {
     return this.http.put<{ message: string }>(`${this.apiUrl}/pass/${id}`, { oldPassword, newPassword });

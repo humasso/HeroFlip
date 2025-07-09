@@ -66,9 +66,12 @@
         </button>
       </div>
     </div>
-    <div class="mb-3">
+      <div class="mb-3 position-relative">
         <label for="favoriteHero" class="form-label">Eroe preferito</label>
-        <input id="favoriteHero" class="form-control" [(ngModel)]="favoriteHero" name="favoriteHero" required>
+        <input id="favoriteHero" class="form-control" [(ngModel)]="favoriteHero" name="favoriteHero" (input)="searchHero()" autocomplete="off" required>
+        <ul *ngIf="heroOptions.length" class="list-group position-absolute w-100" style="z-index:1000; max-height:200px; overflow:auto;">
+            <li class="list-group-item list-group-item-action" *ngFor="let h of heroOptions" (click)="selectHero(h.name)">{{ h.name }}</li>
+        </ul>
     </div>
     <button type="submit" class="btn btn-success">Registrati</button>
     </form>

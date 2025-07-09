@@ -38,7 +38,8 @@
         </li>
         <li class="list-group-item d-flex justify-content-between align-items-center">
           <span>
-            <strong>Eroe preferito</strong> {{ user.favoriteHero }}
+            <strong>Eroe preferito</strong>
+            <a class="ms-2" href="javascript:void(0)" (click)="viewFavoriteHero()">{{ user.favoriteHero }}</a>
           </span>
           <button type="button"
                   class="btn btn-link p-0 small"
