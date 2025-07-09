@@ -22,9 +22,8 @@ export class AppComponent implements OnInit {
   isDarkMode = false;
   logoTransform = 'perspective(600px)';
 
-  constructor(private auth: AuthService, private userService: UserService, private router: Router) {}
-
-
+  constructor(private auth: AuthService, private userService: UserService, public router: Router) {}
+  
   ngOnInit(): void {
     this.username = null;
     const savedTheme = localStorage.getItem('isDarkMode');
@@ -59,9 +58,14 @@ export class AppComponent implements OnInit {
   logout() {
     this.auth.logout();
     this.isLoggedIn = false;
-    this.username = null; 
+    this.username = null;
     this.avatar = null;
     this.credits = 0;
+    
+    // Reset dark mode al logout
+    this.isDarkMode = false;
+    document.body.setAttribute('data-bs-theme', 'light');
+    localStorage.setItem('isDarkMode', 'false');
 
     this.router.navigate(['/login']);
   }

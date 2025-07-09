@@ -1,7 +1,8 @@
-<div class="container mt-5">
-    <h1 class="mb-4">Registrazione</h1>
+<div class="register-page">
+  <div class="register-card">
+    <h1 class="mb-4 text-center">Registrazione</h1>
     <!-- alert di errore -->
-    <div *ngIf="errorMessage" class="alert alert-danger">
+    <div *ngIf="errorMessage" class="alert alert-danger text-center">
         {{ errorMessage }}
     </div>
     <form (ngSubmit)="register()">
@@ -73,7 +74,8 @@
             <li class="list-group-item list-group-item-action" *ngFor="let h of heroOptions" (click)="selectHero(h.name)">{{ h.name }}</li>
         </ul>
     </div>
-    <button type="submit" class="btn btn-success">Registrati</button>
+<button type="submit" class="btn btn-success w-100">Registrati</button>
     </form>
-    <p class="mt-3">Hai già un account? <a routerLink="/login">Accedi</a></p>
+    <p class="mt-3 text-center">Hai già un account? <a routerLink="/login">Accedi</a></p>
+  </div>
 </div>
