@@ -21,3 +21,7 @@
   font-size: 2rem;
   color: #212529;
 }
+
+[data-bs-theme='dark'] .empty-card {
+  background-color: #ff0000;
+}
