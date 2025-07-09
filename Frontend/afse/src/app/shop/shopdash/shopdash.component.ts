@@ -21,7 +21,9 @@ export class ShopdashComponent implements OnInit {
    @ViewChild('packModal') packModal!: TemplateRef<any>;
   credits = 0;
   packs = [
-    { name: 'Pacchetto Base', image: 'assets/pachetto.png', price: 5 }
+    { name: 'Pacchetto Base',   image: 'assets/pachetto.png', price: 5 },
+    { name: 'Pacchetto Marvel', image: 'assets/pachetto.png', price: 6 },
+    { name: 'Pacchetto DC',     image: 'assets/pachetto.png', price: 6 }
   ];
 
   cardTransform = 'perspective(600px)';

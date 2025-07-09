@@ -22,12 +22,25 @@ router.post('/open/:id', async (req, res) => {
     pack.quantity -= 1;
     await user.save();
 
-    const ids = Array.from({ length: 5 }, () => Math.floor(Math.random() * 732) + 1);
+    // Filtra i publisher in base al tipo di pacchetto
+    let publisherFilter = null;
+    const lower = packType.toLowerCase();
+    if (lower.includes('marvel')) {
+      publisherFilter = 'Marvel Comics';
+    } else if (lower.includes('dc')) {
+      publisherFilter = 'DC Comics';
+    }
+
+    const ids = [];
     const heroes = [];
-    for (const id of ids) {
+    while (ids.length < 5) {
+      const id = Math.floor(Math.random() * 732) + 1;
       const response = await fetch(`${API_URL}/${id}`);
       const data = await response.json();
-      heroes.push({ heroId: data.id, name: data.name, image: data.image?.url });
+      if (!publisherFilter || data.biography?.publisher === publisherFilter) {
+        ids.push(data.id);
+        heroes.push({ heroId: data.id, name: data.name, image: data.image?.url });
+      }
     }
 
     let album = await Album.findOne({ user: req.params.id });
@@ -45,7 +58,6 @@ router.post('/open/:id', async (req, res) => {
     }
     await album.save();
 
-    // Return anche degli eroi appena trovati 
     res.json({ ids, heroes, packs: user.packs });
   } catch (err) {
     console.error(err);
