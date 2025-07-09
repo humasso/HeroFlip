@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { AuthService } from '../services/auth.service';
 import { HeroService } from '../services/hero.service';
+import { AlbumService } from '../services/album.service';
 import { User } from '../models/user.model';
 
 @Component({
@@ -27,14 +28,16 @@ export class ProfileComponent implements OnInit {
   errorMsg = '';
   heroOptions: { id: number; name: string }[] = [];
   favoriteHeroExists = true;
-  temp = 300; 
+  cardCount = 0;
+  temp = 300;
 
   constructor(
     private userService: UserService,
     private fb: FormBuilder,
     private router: Router,
     private auth: AuthService,
-    private heroService: HeroService
+    private heroService: HeroService,
+    private albumService: AlbumService
   ) {}
 
   private userId: string | null = localStorage.getItem('userId');
@@ -53,6 +56,10 @@ export class ProfileComponent implements OnInit {
         });
       },
       error: () => this.errorMsg = 'Impossibile caricare i dati.'
+    });
+    this.albumService.getAlbum(this.userId).subscribe({
+      next: album => this.cardCount = album.cards.length,
+      error: () => this.cardCount = 0
     });
   }
 

@@ -1,20 +1,41 @@
 <div class="container py-4">
+  <div class="d-flex mb-3">
+    <div class="btn-group" role="group">
+      <button class="btn" [class.btn-primary]="view==='owned'" [class.btn-outline-primary]="view!=='owned'" (click)="setView('owned')">Carte Possedute</button>
+      <button class="btn" [class.btn-primary]="view==='full'" [class.btn-outline-primary]="view!=='full'" (click)="setView('full')">Album completo</button>
+    </div>
+    <div class="ms-auto" *ngIf="view === 'full'">
+      <div class="input-group input-group-sm" style="width: 120px;">
+        <input type="number" class="form-control" [(ngModel)]="pageInput" [min]="1" [max]="totalPages">
+        <button class="btn btn-secondary" type="button" (click)="goToPage()">Vai</button>
+      </div>
+    </div>
+  </div>
   <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4">
-    <div class="col" *ngFor="let card of pagedCards">
-      <a [routerLink]="['/album/hero', card.heroId]" (click)="savePosition()" class="text-decoration-none text-dark">
-        <div class="card h-100 text-center hover">
-          <img [src]="card.image" class="card-img-top" alt="{{ card.name }}">
-          <div class="card-body p-2">
-            <h6 class="card-title mb-1">{{ card.name }}</h6>
-            <span class="badge bg-primary">x{{ card.quantity }}</span>
+    <div class="col" *ngFor="let slot of pagedSlots">
+      <ng-container *ngIf="slot.card; else emptyTpl">
+        <a [routerLink]="['/album/hero', slot.card.heroId]" (click)="savePosition()" class="text-decoration-none text-dark">
+          <div class="card h-100 text-center hover">
+            <img [src]="slot.card.image" class="card-img-top" alt="{{ slot.card.name }}">
+            <div class="card-body p-2">
+              <h6 class="card-title mb-1">{{ slot.card.name }}</h6>
+              <span class="badge bg-primary">x{{ slot.card.quantity }}</span>
+            </div>
+          </div>
+        </a>
+      </ng-container>
+      <ng-template #emptyTpl>
+        <div class="card h-100 text-center empty-card">
+          <div class="card-body d-flex align-items-center justify-content-center">
+            <span class="empty-number">{{ slot.id }}</span>
           </div>
         </div>
-      </a>
+      </ng-template>
     </div>
   </div>
   <div class="d-flex justify-content-between align-items-center mt-3">
     <button class="btn btn-secondary" (click)="prevPage()" [disabled]="page === 1">Precedente</button>
-    <span>{{ page }} / {{ Math.ceil(cards.length / pageSize) || 1 }}</span>
-    <button class="btn btn-secondary" (click)="nextPage()" [disabled]="page * pageSize >= cards.length">Successiva</button>
+    <span>{{ page }} / {{ totalPages }}</span>
+    <button class="btn btn-secondary" (click)="nextPage()" [disabled]="page >= totalPages">Successiva</button>
   </div>
 </div>

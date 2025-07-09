@@ -10,3 +10,12 @@
 .hover:hover {
   transform: scale(1.03);
 }
+
+.empty-card {
+  background-color: #f8f9fa;
+}
+
+.empty-number {
+  font-family: Impact, sans-serif;
+  font-size: 2rem;
+}

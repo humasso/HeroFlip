@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AlbumService } from '../services/album.service';
 import { Card } from '../models/card.model';
@@ -7,7 +8,7 @@ import { Card } from '../models/card.model';
 @Component({
   selector: 'app-album',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, FormsModule],
   templateUrl: './album.component.html',
   styleUrl: './album.component.css'
 })
@@ -16,6 +17,10 @@ export class AlbumComponent implements OnInit {
   cards: Card[] = [];
   page = 1;
   readonly pageSize = 20;
+  view: 'owned' | 'full' = 'owned';
+  pageInput = 1;
+  readonly totalCards = 732;  
+  private cardMap = new Map<number, Card>();
 
   constructor(private albumService: AlbumService) {}
 
@@ -26,30 +31,65 @@ export class AlbumComponent implements OnInit {
     this.albumService.getAlbum(userId).subscribe({
       next: album => {
         this.cards = album.cards || [];
+        this.cardMap = new Map(this.cards.map(c => [+c.heroId, c]));
+        this.pageInput = this.page;
         setTimeout(() => {
           const scroll = +(localStorage.getItem('albumScroll') || '0');
           window.scrollTo({ top: scroll });
         });
       },
-      error: () => this.cards = []
+      error: () => {
+        this.cards = [];
+        this.cardMap.clear();
+      }
     });
   }
 
-  get pagedCards(): Card[] {
-    const start = (this.page - 1) * this.pageSize;
-    return this.cards.slice(start, start + this.pageSize);
+  get totalPages(): number {
+    return this.view === 'owned'
+      ? Math.ceil(this.cards.length / this.pageSize) || 1
+      : Math.ceil(this.totalCards / this.pageSize);
+  }
+
+  get pagedSlots(): { card?: Card; id: number }[] {
+    if (this.view === 'owned') {
+      const start = (this.page - 1) * this.pageSize;
+      return this.cards.slice(start, start + this.pageSize)
+        .map(c => ({ card: c, id: +c.heroId }));
+    }
+    const slots: { card?: Card; id: number }[] = [];
+    const startId = (this.page - 1) * this.pageSize + 1;
+    const endId = Math.min(startId + this.pageSize - 1, this.totalCards);
+    for (let id = startId; id <= endId; id++) {
+      slots.push({ card: this.cardMap.get(id), id });
+    }
+    return slots;
   }
 
   nextPage() {
-    if (this.page * this.pageSize < this.cards.length) {
+    if (this.page < this.totalPages) {
       this.page++;
+      this.pageInput = this.page;
     }
   }
 
   prevPage() {
     if (this.page > 1) {
       this.page--;
+      this.pageInput = this.page;
     }
+  }
+
+  goToPage() {
+    if (this.pageInput >= 1 && this.pageInput <= this.totalPages) {
+      this.page = this.pageInput;
+    }
+  }
+
+  setView(mode: 'owned' | 'full') {
+    this.view = mode;
+    this.page = 1;
+    this.pageInput = 1;
   }
 
   savePosition() {
