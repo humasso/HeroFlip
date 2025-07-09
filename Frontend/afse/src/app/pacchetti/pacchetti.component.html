@@ -15,7 +15,7 @@
            (mouseleave)="onMouseLeave(i)"
            (click)="openPack(i)"
            [style.transform]="cardTransforms[i] || 'perspective(600px)'">
-            <img src="assets/pacchetto.png" class="img-fluid" alt="pack">
+            <img [src]="getPackImage(p.packType)" class="img-fluid" alt="pack">
          <span class="badge bg-success quantity-badge">{{ p.quantity }}</span>
         </div>
       <div class="d-flex align-items-center mt-2">

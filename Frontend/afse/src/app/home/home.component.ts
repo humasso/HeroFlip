@@ -2,6 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
+import { AlbumService } from '../services/album.service';
+
 
 
 @Component({
@@ -15,10 +18,41 @@ export class HomeComponent implements OnInit {
   isLoggedIn = false;
   logoTransform = 'perspective(600px)';
 
-  constructor(private auth: AuthService) {}
+  username: string | null = null;
+  avatar: string | null = null;
+  credits = 0;
+  packCount = 0;
+  cardCount = 0;
+
+  constructor(
+    private auth: AuthService,
+    private userService: UserService,
+    private albumService: AlbumService
+  ) {}
 
   ngOnInit(): void {
-    this.auth.loggedIn$.subscribe(status => (this.isLoggedIn = status));
+    this.auth.loggedIn$.subscribe(status => {
+      this.isLoggedIn = status;
+      if (status) {
+        const userId = localStorage.getItem('userId');
+        if (!userId) { return; }
+        this.userService.getUser(userId).subscribe(user => {
+          this.username = user.username;
+          this.avatar = user.avatar;
+          this.credits = user.credits;
+          this.packCount = (user.packs ?? []).reduce((sum, p) => sum + p.quantity, 0);
+        });
+        this.albumService.getAlbum(userId).subscribe(album => {
+          this.cardCount = album.cards.length;
+        });
+      } else {
+        this.username = null;
+        this.avatar = null;
+        this.credits = 0;
+        this.packCount = 0;
+        this.cardCount = 0;
+      }
+    });
   }
 
   onMouseEnter() {

@@ -35,6 +35,13 @@ export class PacchettiComponent implements OnInit {
   albumOpening = false;
   //carouselInterval = 2000;
 
+  packImages: Record<string, string> = {
+    'Pacchetto Base': 'assets/pacchetto.png',
+    'Pacchetto Marvel': 'assets/pacchetto marvel.png',
+    'Pacchetto DC': 'assets/pacchetto dc.png'
+  };
+
+
   @ViewChild('openedModal') openedModal!: TemplateRef<any>;
   modalRef: NgbModalRef | null = null;
 
@@ -126,6 +133,11 @@ export class PacchettiComponent implements OnInit {
     this.openingIndex = null;
     this.modalRef?.close();
   }
+
+  getPackImage(type: string): string {
+    return this.packImages[type] || 'assets/pacchetto.png';
+  }
+
   onMouseEnter(i: number) {
     this.cardTransforms[i] = 'perspective(600px) scale(1.05)';
   }
