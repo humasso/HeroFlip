@@ -8,6 +8,19 @@
 }
 
 .stat-label {
+  width: 100px;
+}
+
+.hero-img {
+  border: 2px solid #dee2e6;
+}
+
+.section-title {
+  letter-spacing: 1px;
+}
+
+
+.stat-label {
   width: 80px;
 }
 
