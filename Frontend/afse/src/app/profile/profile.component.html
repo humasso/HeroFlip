@@ -39,7 +39,12 @@
         <li class="list-group-item d-flex justify-content-between align-items-center">
           <span>
             <strong>Eroe preferito</strong>
-            <a class="ms-2" href="javascript:void(0)" (click)="viewFavoriteHero()">{{ user.favoriteHero }}</a>
+            <ng-container *ngIf="favoriteHeroExists; else noHero">
+              <a class="ms-2" href="javascript:void(0)" (click)="viewFavoriteHero()">{{ user.favoriteHero }}</a>
+            </ng-container>
+            <ng-template #noHero>
+              <span class="ms-2">{{ user.favoriteHero }}</span>
+            </ng-template>
           </span>
           <button type="button"
                   class="btn btn-link p-0 small"
@@ -80,9 +85,12 @@
             </div>
           </div>
 
-          <div class="mb-3" *ngIf="editingField === 'favoriteHero'">
+          <div class="mb-3 position-relative" *ngIf="editingField === 'favoriteHero'">
             <label class="form-label">Eroe Preferito</label>
-            <input type="text" formControlName="favoriteHero" class="form-control" [class.is-invalid]="editForm.get('favoriteHero')?.invalid && editForm.get('favoriteHero')?.touched">
+            <input type="text" formControlName="favoriteHero" class="form-control" (input)="searchHero()" autocomplete="off" [class.is-invalid]="editForm.get('favoriteHero')?.invalid && editForm.get('favoriteHero')?.touched">
+            <ul *ngIf="heroOptions.length" class="list-group position-absolute w-100" style="z-index:1000; max-height:200px; overflow:auto;">
+              <li class="list-group-item list-group-item-action" *ngFor="let h of heroOptions" (click)="selectHero(h.name)">{{ h.name }}</li>
+            </ul>
             <div class="invalid-feedback">
               Questo campo è obbligatorio.
             </div>

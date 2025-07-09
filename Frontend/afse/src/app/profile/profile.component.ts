@@ -25,6 +25,8 @@ export class ProfileComponent implements OnInit {
   editingField: 'username' | 'password' | 'favoriteHero' | null = null;
   loading = false;
   errorMsg = '';
+  heroOptions: { id: number; name: string }[] = [];
+  favoriteHeroExists = true;
   temp = 300; 
 
   constructor(
@@ -46,6 +48,9 @@ export class ProfileComponent implements OnInit {
       next: user => {
         this.user = user;
         this.initForm();
+        this.heroService.searchHeroes(this.user.favoriteHero).subscribe(res => {
+          this.favoriteHeroExists = res.some(h => h.name.toLowerCase() === this.user.favoriteHero.toLowerCase());
+        });
       },
       error: () => this.errorMsg = 'Impossibile caricare i dati.'
     });
@@ -62,6 +67,7 @@ export class ProfileComponent implements OnInit {
 
   startEdit(field: 'username' | 'password' | 'favoriteHero') {
     this.editingField = field;
+    this.heroOptions = [];
     if (field === 'password') {
     // reset di entrambi i campi sulla password
     this.editForm.patchValue({ oldPassword: '', password: '' });
@@ -73,11 +79,26 @@ export class ProfileComponent implements OnInit {
 
   cancelEdit() {
     this.editingField = null;
+    this.heroOptions = [];
     this.editForm.reset({
       username: this.user.username,
       password: '',
       favoriteHero: this.user.favoriteHero
     });
+  }
+
+  searchHero() {
+    const term = this.editForm.value.favoriteHero || '';
+    if (!term.trim()) {
+      this.heroOptions = [];
+      return;
+    }
+    this.heroService.searchHeroes(term).subscribe(options => this.heroOptions = options);
+  }
+
+  selectHero(name: string) {
+    this.editForm.patchValue({ favoriteHero: name });
+    this.heroOptions = [];
   }
 
   saveField(field: 'username' | 'password' | 'favoriteHero') {
@@ -136,6 +157,9 @@ export class ProfileComponent implements OnInit {
       this.userService.updateFavoriteHero(this.user._id, this.editForm.value.favoriteHero).subscribe({
         next: () => {
           this.user.favoriteHero = this.editForm.value.favoriteHero;
+          this.heroService.searchHeroes(this.user.favoriteHero).subscribe(res => {
+            this.favoriteHeroExists = res.some(h => h.name.toLowerCase() === this.user.favoriteHero.toLowerCase());
+          });
           this.editingField = null;
           this.loading = false;
           this.errorMsg = '';
@@ -151,6 +175,7 @@ export class ProfileComponent implements OnInit {
   }
 
   viewFavoriteHero() {
+    if (!this.favoriteHeroExists) { return; }
     const name = this.user.favoriteHero;
     this.heroService.searchHeroes(name).subscribe(heroes => {
       const found = heroes.find(h => h.name.toLowerCase() === name.toLowerCase()) || heroes[0];

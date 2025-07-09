@@ -27,10 +27,9 @@ export class UserService {
     return this.http.put<{ message: string }>(`${this.apiUrl}/pass/${id}`, { oldPassword, newPassword });
   }
 
-  updateUsername(id: string, newUsername: string): Observable<{ message: string }> {
-    return this.http.put<{ message: string }>(`${this.apiUrl}/username/${id}`, { newUsername });
+  updateUsername(id: string, username: string): Observable<{ message: string }> {
+    return this.http.put<{ message: string }>(`${this.apiUrl}/username/${id}`, { username });
   }
-
 
   deleteUser(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
