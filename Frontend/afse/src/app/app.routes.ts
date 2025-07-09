@@ -8,6 +8,9 @@ import { CreditsComponent } from './shop/credits/credits.component';
 import { PacchettiComponent } from './pacchetti/pacchetti.component';
 import { AlbumComponent } from './album/album.component';
 import { DettagliEroeComponent } from './dettagli-eroe/dettagli-eroe.component';
+import { ScambiBoardComponent } from './scambi/scambi-board/scambi-board.component';
+import { ScambioCreateComponent } from './scambi/scambo-create/scambo-create.component';
+import { ScambioDetailComponent } from './scambi/scambo-detail/scambo-detail.component';
 
 
 export const routes: Routes = [
@@ -22,5 +25,8 @@ export const routes: Routes = [
     { path: 'pacchetti', component: PacchettiComponent },
     { path: 'album', component: AlbumComponent },
     { path: 'album/hero/:id', component: DettagliEroeComponent },
+    { path: 'scambi', component: ScambiBoardComponent },
+    { path: 'scambi/new', component: ScambioCreateComponent },
+    { path: 'scambi/:id', component: ScambioDetailComponent },
     { path: '**', redirectTo: '' }
 ];

@@ -1,0 +1,18 @@
+<div class="container mt-4">
+  <h4>Nuovo Scambio</h4>
+  <div class="mb-3">
+    <label class="form-label">Descrizione</label>
+    <textarea class="form-control" [(ngModel)]="description"></textarea>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Crediti richiesti</label>
+    <input type="number" class="form-control" [(ngModel)]="creditsWanted" min="0">
+  </div>
+  <div>
+    <h5>Carte doppie</h5>
+    <div *ngFor="let c of duplicates" class="badge bg-secondary me-1 mb-1" (click)="addOffer(c)">
+      {{c.name}}
+    </div>
+  </div>
+  <button class="btn btn-success mt-3" (click)="create()">Pubblica</button>
+</div>

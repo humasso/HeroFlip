@@ -4,6 +4,9 @@ const userRoutes = require('./routes/user');
 const shopRoutes = require('./routes/shop');
 const albumRoutes = require('./routes/album');
 const heroRoutes = require('./routes/hero');
+const tradeRoutes = require('./routes/trade');
+
+
 const cors = require('cors');
 require('dotenv').config();
 const connectDB = require('./functions/dbconnection');
@@ -33,6 +36,9 @@ app.use('/album', albumRoutes);
 
 // Rotte per apertura pacchetti e gestione eroi
 app.use('/hero', heroRoutes);
+
+// Rotte per gli scambi
+app.use('/trade', tradeRoutes);
 
 
 // Avvio del server
