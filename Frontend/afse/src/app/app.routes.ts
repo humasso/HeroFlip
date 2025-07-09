@@ -9,8 +9,9 @@ import { PacchettiComponent } from './pacchetti/pacchetti.component';
 import { AlbumComponent } from './album/album.component';
 import { DettagliEroeComponent } from './dettagli-eroe/dettagli-eroe.component';
 import { ScambiBoardComponent } from './scambi/scambi-board/scambi-board.component';
-import { ScambioCreateComponent } from './scambi/scambo-create/scambo-create.component';
-import { ScambioDetailComponent } from './scambi/scambo-detail/scambo-detail.component';
+import { ScambioCreateComponent } from './scambi/scambio-create/scambio-create.component';
+import { ScambioDetailComponent } from './scambi/scambio-detail/scambio-detail.component';
+
 
 
 export const routes: Routes = [

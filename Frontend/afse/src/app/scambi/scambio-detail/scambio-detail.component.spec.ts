@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ScamboCreateComponent } from './scambo-create.component';
+import { ScambioDetailComponent } from './scambio-detail.component';
 
-describe('ScamboCreateComponent', () => {
-  let component: ScamboCreateComponent;
-  let fixture: ComponentFixture<ScamboCreateComponent>;
+describe('ScambioDetailComponent', () => {
+  let component: ScambioDetailComponent;
+  let fixture: ComponentFixture<ScambioDetailComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ScamboCreateComponent]
+      imports: [ScambioDetailComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ScamboCreateComponent);
+    fixture = TestBed.createComponent(ScambioDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
