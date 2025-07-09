@@ -20,7 +20,6 @@ export class AppComponent implements OnInit {
   avatar: string | null = null;
   credits = 0;
   isDarkMode = false;
-  logoTransform = 'perspective(600px)';
 
   constructor(private auth: AuthService, private userService: UserService, public router: Router) {}
   
@@ -68,23 +67,5 @@ export class AppComponent implements OnInit {
     localStorage.setItem('isDarkMode', 'false');
 
     this.router.navigate(['/login']);
-  }
-
-  onMouseEnter() {
-    this.logoTransform = 'perspective(600px) scale(1.05)';
-  }
-
-  onMouseMove(event: MouseEvent) {
-    const el = event.currentTarget as HTMLElement;
-    const rect = el.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    const rotateX = -((y - rect.height / 2) / rect.height) * 10;
-    const rotateY = ((x - rect.width / 2) / rect.width) * 10;
-    this.logoTransform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
-  }
-
-  onMouseLeave() {
-    this.logoTransform = 'perspective(600px)';
   }
 }

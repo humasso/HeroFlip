@@ -21,12 +21,12 @@ export class ShopdashComponent implements OnInit {
    @ViewChild('packModal') packModal!: TemplateRef<any>;
   credits = 0;
   packs = [
-    { name: 'Pacchetto Base',   image: 'assets/pachetto.png', price: 5 },
-    { name: 'Pacchetto Marvel', image: 'assets/pachetto.png', price: 6 },
-    { name: 'Pacchetto DC',     image: 'assets/pachetto.png', price: 6 }
+    { name: 'Pacchetto Base',   image: 'assets/pacchetto.png', price: 5 },
+    { name: 'Pacchetto Marvel', image: 'assets/pacchetto marvel.png', price: 6 },
+    { name: 'Pacchetto DC',     image: 'assets/pacchetto dc.png', price: 6 }
   ];
 
-  cardTransform = 'perspective(600px)';
+  packTransforms: string[] = this.packs.map(() => 'perspective(600px)');
   loading = false;
   toastMessage: string | null = null;
   toastType: 'success' | 'danger' = 'success';
@@ -47,22 +47,22 @@ export class ShopdashComponent implements OnInit {
     private router: Router
   ) {}
 
-  onMouseEnter() {
-    this.cardTransform = 'perspective(600px) scale(1.05)';
+  onMouseEnter(index: number) {
+    this.packTransforms[index] = 'perspective(600px) scale(1.05)';
   }
 
-  onMouseMove(event: MouseEvent) {
+  onMouseMove(event: MouseEvent, index: number) {
     const card = event.currentTarget as HTMLElement;
     const rect = card.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     const rotateX = -((y - rect.height / 2) / rect.height) * 10;
     const rotateY = ((x - rect.width / 2) / rect.width) * 10;
-    this.cardTransform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
+    this.packTransforms[index] = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`;
   }
 
-  onMouseLeave() {
-    this.cardTransform = 'perspective(600px)';
+  onMouseLeave(index: number) {
+    this.packTransforms[index] = 'perspective(600px)';
   }
 
   ngOnInit(): void {

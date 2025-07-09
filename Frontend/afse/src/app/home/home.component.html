@@ -1,1 +1,12 @@
-<h1>Home</h1>
+<div class="welcome-container text-center" *ngIf="!isLoggedIn">
+  <div class="logo-wrapper mx-auto mb-4"
+       (mousemove)="onMouseMove($event)"
+       (mouseenter)="onMouseEnter()"
+       (mouseleave)="onMouseLeave()"
+       [style.transform]="logoTransform">
+    <img src="assets/logo.png" alt="HeroFlip" class="img-fluid welcome-logo" />
+  </div>
+  <h1 class="mb-3">Benvenuto su HeroFlip</h1>
+  <p class="mb-4">Accedi per iniziare a collezionare carte!</p>
+  <button class="btn btn-primary" routerLink="/login">Login</button>
+</div>

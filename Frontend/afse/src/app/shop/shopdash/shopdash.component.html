@@ -6,14 +6,13 @@
         <span class="badge bg-primary" style="cursor:pointer" (click)="goToCredits()">{{ credits }}</span>
       </div>
       <div class="d-flex justify-content-center">
-        <div *ngFor="let pack of packs"
+        <div *ngFor="let pack of packs; let i = index"
              class="pack-card text-center"
-             (mousemove)="onMouseMove($event)"
-             (mouseenter)="onMouseEnter()"
-             (mouseleave)="onMouseLeave()"
-              (click)="openPackBuy(pack)"
-              (click)="openPackBuy(pack)"
-             [style.transform]="cardTransform">
+             (mousemove)="onMouseMove($event, i)"
+             (mouseenter)="onMouseEnter(i)"
+             (mouseleave)="onMouseLeave(i)"
+             (click)="openPackBuy(pack)"
+             [style.transform]="packTransforms[i]">
             <h6 class="pack-name mb-1">{{ pack.name }}</h6>
           <img [src]="pack.image" class="img-fluid" alt="{{ pack.name }}">
           <div class="mt-2">
