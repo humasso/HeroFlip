@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
 
   isLoggedIn = false;
   username: string | null = null;
+  avatar: string | null = null;
   credits = 0;
   isDarkMode = false;
 
@@ -37,11 +38,13 @@ export class AppComponent implements OnInit {
         if (userId) {
           this.userService.getUser(userId).subscribe(user => {
             this.username = user.username;
+            this.avatar = user.avatar;
             // this.credits = user.credits;
           });
         }
       } else {
         this.username = null;
+        this.avatar = null;
         this.credits = 0;
       }
     });
@@ -56,7 +59,8 @@ export class AppComponent implements OnInit {
   logout() {
     this.auth.logout();
     this.isLoggedIn = false;
-    this.username = null;
+    this.username = null; 
+    this.avatar = null;
     this.credits = 0;
 
     this.router.navigate(['/login']);

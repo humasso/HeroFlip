@@ -80,6 +80,18 @@ export class DettagliEroeComponent {
       });
   }
 
+  isMale(gender: string): boolean {
+    return gender.toLowerCase() === 'male';
+  }
+
+  isFemale(gender: string): boolean {
+    return gender.toLowerCase() === 'female';
+  }
+
+  firstColor(value: string): string {
+    if (!value) { return ''; }
+    return value.split(/[,/]/)[0].trim();
+  }
 
   goBack() {
     this.location.back();

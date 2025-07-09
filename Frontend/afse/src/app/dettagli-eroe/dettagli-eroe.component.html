@@ -29,25 +29,45 @@
         <span class="badge bg-primary mt-2">Possedute: {{ card.quantity }}</span>
       </div>
       <div class="row row-cols-1 row-cols-md-2 g-3">
-        <div *ngIf="filteredEntries(card.biography).length" class="col section">
+        <div *ngIf="filteredEntries(card.biography).length" class="col section info-box">
           <h5 class="section-title">Biography</h5>
           <p *ngFor="let b of filteredEntries(card.biography)">
             <strong class="text-capitalize">{{ b.key }}:</strong> {{ b.value }}
           </p>
         </div>
-        <div *ngIf="filteredEntries(card.appearance).length" class="col section">
+        <div *ngIf="filteredEntries(card.appearance).length" class="col section info-box">
           <h5 class="section-title">Appearance</h5>
           <p *ngFor="let a of filteredEntries(card.appearance)">
-            <strong class="text-capitalize">{{ a.key }}:</strong> {{ a.value }}
+            <strong class="text-capitalize">{{ a.key }}:</strong>
+            <ng-container [ngSwitch]="a.key">
+              <ng-container *ngSwitchCase="'gender'">
+                <svg *ngIf="isMale(a.value)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gender-male text-primary me-1" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8"/>
+                </svg>
+                <svg *ngIf="isFemale(a.value)" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gender-female text-pink me-1" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd" d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8M3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5"/>
+                </svg>
+                {{ a.value }}
+              </ng-container>
+              <ng-container *ngSwitchCase="'eye-color'">
+                <span class="color-box me-1" [style.backgroundColor]="firstColor(a.value)"></span>{{ a.value }}
+              </ng-container>
+              <ng-container *ngSwitchCase="'hair-color'">
+                <span class="color-box me-1" [style.backgroundColor]="firstColor(a.value)"></span>{{ a.value }}
+              </ng-container>
+              <ng-container *ngSwitchDefault>
+                {{ a.value }}
+              </ng-container>
+            </ng-container>
           </p>
         </div>
-        <div *ngIf="filteredEntries(card.work).length" class="col section">
+        <div *ngIf="filteredEntries(card.work).length" class="col section info-box">
           <h5 class="section-title">Work</h5>
           <p *ngFor="let w of filteredEntries(card.work)">
             <strong class="text-capitalize">{{ w.key }}:</strong> {{ w.value }}
           </p>
         </div>
-        <div *ngIf="filteredEntries(card.connections).length" class="col section">
+        <div *ngIf="filteredEntries(card.connections).length" class="col section info-box">
           <h5 class="section-title">Connections</h5>
           <p *ngFor="let c of filteredEntries(card.connections)">
             <strong class="text-capitalize">{{ c.key }}:</strong> {{ c.value }}
