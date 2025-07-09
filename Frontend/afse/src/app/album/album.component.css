@@ -12,7 +12,7 @@
 }
 
 .empty-card {
-  background-color: #f8f9fa;
+  background-color: #6b6969;
   min-height: 300px;
 }
 
@@ -22,6 +22,10 @@
   color: #212529;
 }
 
-[data-bs-theme='dark'] .empty-card {
-  background-color: #ff0000;
+:host-context([data-bs-theme='dark']) .empty-card {
+  background-color: #272626;
+}
+
+:host-context([data-bs-theme='dark']) .empty-number {
+  color: #f8f9fa;
 }
