@@ -6,6 +6,7 @@ import { Card } from '../../models/card.model';
 import { AlbumService } from '../../services/album.service';
 import { TradeService } from '../../services/trade.service';
 import { HeroService } from '../../services/hero.service';
+import { UserService } from '../../services/user.service';
 
 
 @Component({
@@ -23,12 +24,16 @@ export class ScambioCreateComponent implements OnInit {
   creditsWanted = 0;
   creditsOffered = 0;
   searchTerm = '';
-  heroResults: { id: number; name: string }[] = [];
+  heroResults: { id: number; name: string; quantity: number }[] = [];
+
+  userCredits = 0;
+  cardQuantityMap: Record<string, number> = {};
 
   constructor(
     private albumService: AlbumService,
     private tradeService: TradeService,
     private heroService: HeroService,
+    private userService: UserService,
     private router: Router
   ) {}
 
@@ -36,8 +41,11 @@ export class ScambioCreateComponent implements OnInit {
     const userId = localStorage.getItem('userId');
     if (!userId) { return; }
     this.albumService.getAlbum(userId).subscribe(album => {
-      this.duplicates = (album.cards || []).filter(c => (c.quantity || 0) > 1);
+      const cards = album.cards || [];
+      this.duplicates = cards.filter(c => (c.quantity || 0) > 1);
+      cards.forEach(c => this.cardQuantityMap[c.heroId] = c.quantity || 0);
     });
+    this.userService.getUser(userId).subscribe(user => this.userCredits = user.credits);
   }
 
   addOffer(card: Card) {
@@ -46,6 +54,15 @@ export class ScambioCreateComponent implements OnInit {
 
   removeOffer(index: number) {
     this.offer.splice(index, 1);
+  }
+
+  ensureValidOffer() {
+    if (this.creditsOffered > this.userCredits) {
+      this.creditsOffered = this.userCredits;
+    }
+    if (this.creditsOffered < 0) {
+      this.creditsOffered = 0;
+    }
   }
 
   addWant(id: number) {
@@ -65,13 +82,19 @@ export class ScambioCreateComponent implements OnInit {
       this.heroResults = [];
       return;
     }
-    this.heroService.searchHeroes(this.searchTerm).subscribe(res => this.heroResults = res);
+    this.heroService.searchHeroes(this.searchTerm).subscribe(res => {
+      this.heroResults = res.map(h => ({
+        ...h,
+        quantity: this.cardQuantityMap[h.id] || 0
+      }));
+    });
   }
 
 
   create() {
     const userId = localStorage.getItem('userId');
     if (!userId) { return; }
+    this.ensureValidOffer();
     this.tradeService.createTrade({
       user: userId,
       description: this.description,
