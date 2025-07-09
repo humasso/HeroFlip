@@ -29,3 +29,33 @@
 :host-context([data-bs-theme='dark']) .empty-number {
   color: #f8f9fa;
 }
+
+/* Floating arrows for page navigation */
+.page-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1050;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-arrow.left {
+  left: 10px;
+}
+
+.page-arrow.right {
+  right: 10px;
+}
+
+.page-arrow:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

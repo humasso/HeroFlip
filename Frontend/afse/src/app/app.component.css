@@ -1,0 +1,13 @@
+.welcome-container {
+  margin-top: 3rem;
+}
+
+.logo-wrapper {
+  width: 60%;
+  max-width: 400px;
+  transition: transform 0.1s ease;
+}
+
+.welcome-logo {
+  width: 100%;
+}
