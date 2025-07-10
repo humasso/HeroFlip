@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="ms-auto" *ngIf="view === 'owned'">
-      <input type="text" class="form-control form-control-sm" placeholder="Cerca carta" [(ngModel)]="searchTerm" (input)="page=1; pageInput=1">
+      <input type="text" class="form-control search-bar" placeholder="Cerca carta" [(ngModel)]="searchTerm" (input)="page=1; pageInput=1">
     </div>
   </div>
   <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4">

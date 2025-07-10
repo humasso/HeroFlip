@@ -59,3 +59,9 @@
   opacity: 0.5;
   cursor: not-allowed;
 }
+
+.search-bar {
+  width: 250px;
+  border-width: 2px;
+  border-color: #0d6efd;
+}
