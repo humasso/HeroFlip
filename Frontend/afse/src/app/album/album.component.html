@@ -1,4 +1,7 @@
 <div class="container py-4">
+    <div class="text-center fw-semibold fs-5 mb-3">
+    Carte possedute: {{ ownedCardsCount }}
+  </div>
   <div class="d-flex mb-3 gap-2">
     <button class="btn" [class.btn-primary]="view==='owned'" [class.btn-outline-primary]="view!=='owned'" (click)="setView('owned')">Carte Possedute</button>
     <button class="btn" [class.btn-primary]="view==='full'" [class.btn-outline-primary]="view!=='full'" (click)="setView('full')">Album completo</button>
@@ -34,20 +37,20 @@
       </ng-template>
     </div>
   </div>
-  <div class="d-flex justify-content-between align-items-center mt-3">
+  <div class="d-flex justify-content-between align-items-center mt-3" *ngIf="totalPages > 1">
     <button class="btn btn-secondary" (click)="prevPage()" [disabled]="page === 1">Precedente</button>
     <span>{{ page }} / {{ totalPages }}</span>
     <button class="btn btn-secondary" (click)="nextPage()" [disabled]="page >= totalPages">Successiva</button>
   </div>
 </div>
 
-<!-- Floating arrows for quick navigation -->
-<button class="page-arrow left" (click)="prevPage()" [disabled]="page === 1" aria-label="Pagina precedente">
+<!-- Frecce -->
+<button class="page-arrow left" (click)="prevPage()" *ngIf="totalPages > 1" [disabled]="page === 1" aria-label="Pagina precedente">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16">
     <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L6.707 7l4.647 4.646a.5.5 0 0 1-.708.708l-5-5a.5.5 0 0 1 0-.708l5-5a.5.5 0 0 1 .708 0z"/>
   </svg>
 </button>
-<button class="page-arrow right" (click)="nextPage()" [disabled]="page >= totalPages" aria-label="Pagina successiva">
+<button class="page-arrow right" (click)="nextPage()" *ngIf="totalPages > 1" [disabled]="page >= totalPages" aria-label="Pagina successiva">
   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-right" viewBox="0 0 16 16">
     <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l5 5a.5.5 0 0 1 0 .708l-5 5a.5.5 0 0 1-.708-.708L9.293 7 4.646 2.354a.5.5 0 0 1 0-.708z"/>
   </svg>
