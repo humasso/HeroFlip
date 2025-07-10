@@ -69,7 +69,7 @@
           <span class="badge bg-secondary position-absolute top-0 start-0 m-1">x{{c.quantity}}</span>
         </div>
       </div>
-      <p *ngIf="p.creditsOffered" class="fw-bold text-success">Crediti offerti: {{p.creditsOffered}}</p>
+      <p *ngIf="p.creditsOffered" class="fw-bold text-success">Offri Crediti: {{p.creditsOffered}}</p>
       <button class="btn btn-sm btn-success me-2" *ngIf="p.status === 'pending'" (click)="acceptProposal(p._id!)">Accetta</button>
       <button class="btn btn-sm btn-danger" *ngIf="p.status === 'pending'" (click)="rejectProposal(p._id!)">Rifiuta</button>
     </div>
