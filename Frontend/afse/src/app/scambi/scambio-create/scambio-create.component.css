@@ -13,3 +13,12 @@
   height: 100px;
   object-fit: cover;
 }
+
+.list-group-item.disabled {
+  background-color: #a59b9b;
+  color: #000000;
+}
+.list-group-item {
+  background-color: #c9d60b;
+  color: #000000;
+}

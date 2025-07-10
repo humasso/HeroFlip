@@ -1,0 +1,14 @@
+.card-item {
+  width: 80px;
+  flex: 0 0 auto;
+}
+
+.card-item img {
+  height: 100px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.credits {
+  font-size: 1.1rem;
+}

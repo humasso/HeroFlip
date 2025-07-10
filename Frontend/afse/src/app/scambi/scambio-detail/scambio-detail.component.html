@@ -1,20 +1,33 @@
 <div class="container mt-4" *ngIf="trade">
-  <h3>Scambio di {{getUsername()}}</h3>
-  <p>{{trade.description}}</p>
+  <button class="btn btn-link mb-3" (click)="goBack()">&larr; Indietro</button>
+  <h3>Scambio di {{ getUsername() }}</h3>
+  <p>{{ trade.description }}</p>
   <div class="row">
     <div class="col-md-6">
       <h5>Offre</h5>
-      <ul>
-        <li *ngFor="let c of trade.offerCards">{{c.name}} x{{c.quantity}}</li>
-      </ul>
-      <p *ngIf="trade.creditsOffered">Crediti offerti: {{trade.creditsOffered}}</p>
+      <div class="card-list d-flex gap-2 flex-wrap mb-2">
+        <div *ngFor="let c of trade.offerCards" class="card-item text-center position-relative">
+          <img [src]="c.image" class="img-fluid" alt="{{ c.name }}">
+          <span class="badge bg-secondary position-absolute top-0 start-0 m-1">x{{ c.quantity }}</span>
+          <small class="d-block mt-1">{{ c.name }}</small>
+        </div>
+      </div>
+      <p *ngIf="trade.creditsOffered" class="credits text-success fw-bold">
+        Crediti offerti: {{ trade.creditsOffered }}
+      </p>
     </div>
     <div class="col-md-6">
       <h5>Richiede</h5>
-      <ul>
-        <li *ngFor="let c of trade.wantCards">{{c.name}} x{{c.quantity}}</li>
-      </ul>
-      <p *ngIf="trade.creditsWanted">Crediti richiesti: {{trade.creditsWanted}}</p>
+      <div class="card-list d-flex gap-2 flex-wrap mb-2">
+        <div *ngFor="let c of trade.wantCards" class="card-item text-center position-relative">
+          <img [src]="c.image" class="img-fluid" alt="{{ c.name }}">
+          <span class="badge bg-secondary position-absolute top-0 start-0 m-1">x{{ c.quantity }}</span>
+          <small class="d-block mt-1">{{ c.name }}</small>
+        </div>
+      </div>
+      <p *ngIf="trade.creditsWanted" class="credits text-danger fw-bold">
+        Crediti richiesti: {{ trade.creditsWanted }}
+      </p>
     </div>
   </div>
 </div>
