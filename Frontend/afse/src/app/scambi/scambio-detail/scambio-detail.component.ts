@@ -135,6 +135,11 @@ export class ScambioDetailComponent implements OnInit {
         setTimeout(() => this.showToast = false, 3000);
       });
   }
+  
+  getPendingProposals(): TradeProposal[] {
+    return this.trade?.proposals?.filter(p => p.status === 'pending') || [];
+  }
+
 
   private updateRequestedCards() {
     if (!this.trade) { return; }
