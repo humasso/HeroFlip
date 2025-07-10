@@ -36,4 +36,8 @@ export class TradeService {
   rejectProposal(tradeId: string, proposalId: string): Observable<Trade> {
     return this.http.patch<Trade>(`${this.baseUrl}/${tradeId}/proposal/${proposalId}/reject`, {});
   }
+
+  deleteTrade(id: string): Observable<{ message: string }> {
+    return this.http.delete<{ message: string }>(`${this.baseUrl}/${id}`);
+  }
 }

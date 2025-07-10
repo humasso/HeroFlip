@@ -191,4 +191,18 @@ router.patch('/:tradeId/proposal/:proposalId/accept', async (req, res) => {
   }
 });
 
+// Elimina uno scambio
+router.delete('/:id', async (req, res) => {
+  try {
+    const trade = await Trade.findByIdAndDelete(req.params.id);
+    if (!trade) {
+      return res.status(404).json({ message: 'Scambio non trovato' });
+    }
+    res.json({ message: 'Annuncio eliminato' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Errore server' });
+  }
+});
+
 module.exports = router;

@@ -26,6 +26,7 @@ export class ScambioDetailComponent implements OnInit {
   showToast = false;
   toastMessage: string | null = null;
   toastType: 'success' | 'danger' = 'success';
+  tradeCompleted = false;
   private ownedCardMap: Record<string, number> = {};
   private userId: string | null = localStorage.getItem('userId');
 
@@ -43,6 +44,7 @@ export class ScambioDetailComponent implements OnInit {
       this.tradeService.getTrade(id).subscribe(tr => {
         this.trade = tr;
         this.updateRequestedCards();
+        this.tradeCompleted = tr.proposals?.some(p => p.status === 'accepted') || false;
       });
     }
     if (this.userId) {
@@ -129,11 +131,23 @@ export class ScambioDetailComponent implements OnInit {
       .acceptProposal(this.trade._id, proposalId)
       .subscribe(tr => {
         this.trade = tr;
+        this.tradeCompleted = true;
         this.toastType = 'success';
         this.toastMessage = 'Scambio completato!';
         this.showToast = true;
         setTimeout(() => this.showToast = false, 3000);
       });
+  }
+
+  deleteTrade() {
+    if (!this.trade) { return; }
+    this.tradeService.deleteTrade(this.trade._id).subscribe(() => {
+      this.toastType = 'success';
+      this.toastMessage = 'Annuncio eliminato';
+      this.showToast = true;
+      setTimeout(() => this.showToast = false, 3000);
+      this.location.back();
+    });
   }
   
   getPendingProposals(): TradeProposal[] {
