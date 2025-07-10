@@ -1,16 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { UserService } from '../services/user.service';
 import { AlbumService } from '../services/album.service';
+import { HeroService } from '../services/hero.service';
 
 
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, RouterLink, FormsModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -23,11 +25,15 @@ export class HomeComponent implements OnInit {
   credits = 0;
   packCount = 0;
   cardCount = 0;
+  searchTerm = '';
+  heroResults: { id: number; name: string }[] = [];
 
   constructor(
     private auth: AuthService,
     private userService: UserService,
-    private albumService: AlbumService
+    private albumService: AlbumService,
+    private heroService: HeroService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -71,5 +77,19 @@ export class HomeComponent implements OnInit {
 
   onMouseLeave() {
     this.logoTransform = 'perspective(600px)';
+  }
+
+  searchHero() {
+    if (!this.searchTerm.trim()) {
+      this.heroResults = [];
+      return;
+    }
+    this.heroService.searchHeroes(this.searchTerm).subscribe(res => this.heroResults = res);
+  }
+
+  goToHero(id: number) {
+    this.router.navigate(['/album/hero', id]);
+    this.searchTerm = '';
+    this.heroResults = [];
   }
 }

@@ -121,12 +121,20 @@ export class ScambioDetailComponent implements OnInit {
         this.toastType = 'danger';
         this.toastMessage = 'Proposta rifiutata';
         this.showToast = true;
+        // Aggiorna crediti e album dell'utente dopo l'accettazione
+        this.userService.getUser(this.userId!).subscribe(u => this.userCredits = u.credits);
+        this.albumService.getAlbum(this.userId!).subscribe(a => {
+          const cards = a.cards || [];
+          this.ownedCardMap = {};
+          cards.forEach(c => this.ownedCardMap[c.heroId] = c.quantity || 0);
+          this.updateRequestedCards();
+        });
         setTimeout(() => this.showToast = false, 3000);
       });
   }
 
   acceptProposal(proposalId: string) {
-    if (!this.trade) { return; }
+    if (!this.trade || !this.userId) { return; }
     this.tradeService
       .acceptProposal(this.trade._id, proposalId)
       .subscribe(tr => {
