@@ -25,6 +25,8 @@ export class ScambioCreateComponent implements OnInit {
   creditsOffered = 0;
   searchTerm = '';
   heroResults: { id: number; name: string; quantity: number }[] = [];
+  offerSearchTerm = '';
+  offerHeroResults: { id: number; name: string; quantity: number }[] = [];
 
   userCredits = 0;
   cardQuantityMap: Record<string, number> = {};
@@ -50,6 +52,14 @@ export class ScambioCreateComponent implements OnInit {
 
   addOffer(card: Card) {
     this.offer.push({ ...card, quantity: 1 });
+  }
+
+  addOfferById(id: number) {
+    this.heroService.getHero(id).subscribe(card => {
+      this.offer.push({ ...card, quantity: 1 });
+      this.offerSearchTerm = '';
+      this.offerHeroResults = [];
+    });
   }
 
   removeOffer(index: number) {
@@ -90,6 +100,18 @@ export class ScambioCreateComponent implements OnInit {
     });
   }
 
+   searchOfferHero() {
+    if (!this.offerSearchTerm.trim()) {
+      this.offerHeroResults = [];
+      return;
+    }
+    this.heroService.searchHeroes(this.offerSearchTerm).subscribe(res => {
+      this.offerHeroResults = res.map(h => ({
+        ...h,
+        quantity: this.cardQuantityMap[h.id] || 0
+      }));
+    });
+  }
 
   create() {
     const userId = localStorage.getItem('userId');

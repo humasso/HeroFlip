@@ -21,6 +21,16 @@
           <div class="card-body p-1"><small>{{c.name}}</small></div>
         </div>
       </div>
+      <div class="mb-2 position-relative">
+        <input type="text" class="form-control" placeholder="Cerca carta" [(ngModel)]="offerSearchTerm" (input)="searchOfferHero()" autocomplete="off">
+        <ul *ngIf="offerHeroResults.length" class="list-group position-absolute w-100" style="z-index:1000; max-height:200px; overflow:auto;">
+          <li class="list-group-item list-group-item-action" *ngFor="let h of offerHeroResults"
+              [class.disabled]="h.quantity <= 1" (click)="h.quantity > 1 && addOfferById(h.id)">
+            {{h.name}}
+            <span class="badge bg-secondary ms-2">x{{h.quantity}}</span>
+          </li>
+        </ul>
+      </div>
       <div class="mt-2">
         <label class="form-label">Crediti offerti</label>
         <input type="number" class="form-control form-control-sm" [(ngModel)]="creditsOffered" min="0" [attr.max]="userCredits" (ngModelChange)="ensureValidOffer()">
