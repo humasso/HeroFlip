@@ -14,11 +14,9 @@
              (click)="openPackBuy(pack)"
              [style.transform]="packTransforms[i]">
              <button class="info-btn" [routerLink]="['/pacchetti/detail', pack.name]" (click)="$event.stopPropagation()">
-              <svg *ngIf="!isDarkMode" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
-                <path d="M8 0a8 8 0 1 0 0 16A8 8 0 0 0 8 0zM4.5 8a.5.5 0 0 1 .5-.5h.5v3h-.5a.5.5 0 0 1-.5-.5v-2zM8 4a.667.667 0 1 1-1.333 0A.667.667 0 0 1 8 4zM8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/>
-              </svg>
-              <svg *ngIf="isDarkMode" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle-fill" viewBox="0 0 16 16">
-                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.93 6.588l-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.526-.598l.088-.416c-.278.176-.494.23-.574.23-.261 0-.334-.192-.27-.491l.738-3.468c.194-.897-.105-1.319-.808-1.319-.302 0-.675.176-.928.409l-.088.416c.278-.176.494-.23.574-.23.261 0 .334.192.27.491l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.526-.598l.088-.416z"/>
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
               </svg>
             </button>
             <h6 class="pack-name mb-1">{{ pack.name }}</h6>

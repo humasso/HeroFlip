@@ -32,7 +32,6 @@ export class ShopdashComponent implements OnInit {
   toastMessage: string | null = null;
   toastType: 'success' | 'danger' = 'success';
 
-  isDarkMode = false;
 
   selectedQty: number | null = null;
   selectedPack: { name: string; image: string; price: number } | null = null;
@@ -69,7 +68,6 @@ export class ShopdashComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.isDarkMode = localStorage.getItem('isDarkMode') === 'true';
     if (this.userId) {
       this.userService.getUser(this.userId).subscribe({
         next: user => this.credits = user.credits,
