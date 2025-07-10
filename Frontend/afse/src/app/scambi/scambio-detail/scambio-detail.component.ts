@@ -114,7 +114,26 @@ export class ScambioDetailComponent implements OnInit {
     if (!this.trade) { return; }
     this.tradeService
       .rejectProposal(this.trade._id, proposalId)
-      .subscribe(tr => (this.trade = tr));
+      .subscribe(tr => {
+        this.trade = tr;
+        this.toastType = 'danger';
+        this.toastMessage = 'Proposta rifiutata';
+        this.showToast = true;
+        setTimeout(() => this.showToast = false, 3000);
+      });
+  }
+
+  acceptProposal(proposalId: string) {
+    if (!this.trade) { return; }
+    this.tradeService
+      .acceptProposal(this.trade._id, proposalId)
+      .subscribe(tr => {
+        this.trade = tr;
+        this.toastType = 'success';
+        this.toastMessage = 'Scambio completato!';
+        this.showToast = true;
+        setTimeout(() => this.showToast = false, 3000);
+      });
   }
 
   private updateRequestedCards() {

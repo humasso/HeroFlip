@@ -5,6 +5,7 @@ const shopRoutes = require('./routes/shop');
 const albumRoutes = require('./routes/album');
 const heroRoutes = require('./routes/hero');
 const tradeRoutes = require('./routes/trade');
+const notificationRoutes = require('./routes/notification');
 
 
 const cors = require('cors');
@@ -39,6 +40,11 @@ app.use('/hero', heroRoutes);
 
 // Rotte per gli scambi
 app.use('/trade', tradeRoutes);
+
+// Rotte per le notifiche
+app.use('/notification', notificationRoutes);
+
+
 
 
 // Avvio del server

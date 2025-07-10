@@ -29,6 +29,10 @@ export class TradeService {
     return this.http.post<Trade>(`${this.baseUrl}/${id}/respond`, proposal);
   }
 
+  acceptProposal(tradeId: string, proposalId: string): Observable<Trade> {
+    return this.http.patch<Trade>(`${this.baseUrl}/${tradeId}/proposal/${proposalId}/accept`, {});
+  }
+
   rejectProposal(tradeId: string, proposalId: string): Observable<Trade> {
     return this.http.patch<Trade>(`${this.baseUrl}/${tradeId}/proposal/${proposalId}/reject`, {});
   }
