@@ -1,7 +1,10 @@
 <div class="container py-4">
-    <div class="text-center fw-semibold fs-5 mb-3">
-    Carte possedute: {{ ownedCardsCount }}
-  </div>
+  <div class="text-center fw-semibold fs-5 mb-1">
+      Carte possedute: {{ uniqueCardsCount }} / {{ totalCards }}
+    </div>
+    <div class="text-center text-muted small mb-3">
+      Totale carte (doppioni inclusi): {{ ownedCardsCount }}
+    </div>
   <div class="d-flex mb-3 gap-2">
     <button class="btn" [class.btn-primary]="view==='owned'" [class.btn-outline-primary]="view!=='owned'" (click)="setView('owned')">Carte Possedute</button>
     <button class="btn" [class.btn-primary]="view==='full'" [class.btn-outline-primary]="view!=='full'" (click)="setView('full')">Album completo</button>

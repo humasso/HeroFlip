@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule, Location } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { TradeService } from '../../services/trade.service';
-import { Trade } from '../../models/trade.model';
+import { Trade, TradeProposal } from '../../models/trade.model';
 import { FormsModule } from '@angular/forms';
 import { Card } from '../../models/card.model';
 import { AlbumService } from '../../services/album.service';
@@ -56,6 +56,10 @@ export class ScambioDetailComponent implements OnInit {
     return typeof t.user === 'object' ? (t.user as any).username : t.username || '';
   }
 
+  getProposalUsername(p: TradeProposal): string {
+    return typeof p.user === 'object' ? (p.user as any).username : '';
+  }
+
   isOwner(): boolean {
     if (!this.trade) { return false; }
     const id = typeof this.trade.user === 'object' ? (this.trade.user as any)._id : this.trade.user;
@@ -94,7 +98,7 @@ export class ScambioDetailComponent implements OnInit {
     });
   }
 
-   goBack() {
+  goBack() {
     this.location.back();
   }
 }

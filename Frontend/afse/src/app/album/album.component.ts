@@ -23,6 +23,7 @@ export class AlbumComponent implements OnInit {
   readonly totalCards = 732;
   private cardMap = new Map<number, Card>();
   ownedCardsCount = 0;
+  uniqueCardsCount = 0;
 
   constructor(private albumService: AlbumService) {}
 
@@ -35,6 +36,7 @@ export class AlbumComponent implements OnInit {
         this.cards = album.cards || [];
         this.cardMap = new Map(this.cards.map(c => [+c.heroId, c]));
         this.ownedCardsCount = this.cards.reduce((sum, c) => sum + (c.quantity || 0), 0);
+         this.uniqueCardsCount = this.cards.length;
         this.pageInput = this.page;
         setTimeout(() => {
           const scroll = +(localStorage.getItem('albumScroll') || '0');
@@ -45,6 +47,7 @@ export class AlbumComponent implements OnInit {
         this.cards = [];
         this.cardMap.clear();
         this.ownedCardsCount = 0;
+        this.uniqueCardsCount = 0;
       }
     });
   }
