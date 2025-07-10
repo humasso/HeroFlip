@@ -15,11 +15,12 @@ import { Card } from '../models/card.model';
 export class AlbumComponent implements OnInit {
   Math = Math;
   cards: Card[] = [];
+  searchTerm = '';
   page = 1;
   readonly pageSize = 20;
   view: 'owned' | 'full' = 'owned';
   pageInput = 1;
-  readonly totalCards = 732;  
+  readonly totalCards = 732;
   private cardMap = new Map<number, Card>();
 
   constructor(private albumService: AlbumService) {}
@@ -45,16 +46,24 @@ export class AlbumComponent implements OnInit {
     });
   }
 
+  get filteredCards(): Card[] {
+    if (!this.searchTerm.trim()) {
+      return this.cards;
+    }
+    const term = this.searchTerm.toLowerCase();
+    return this.cards.filter(c => c.name.toLowerCase().includes(term));
+  }
+
   get totalPages(): number {
     return this.view === 'owned'
-      ? Math.ceil(this.cards.length / this.pageSize) || 1
+      ? Math.ceil(this.filteredCards.length / this.pageSize) || 1
       : Math.ceil(this.totalCards / this.pageSize);
   }
 
   get pagedSlots(): { card?: Card; id: number }[] {
     if (this.view === 'owned') {
       const start = (this.page - 1) * this.pageSize;
-      return this.cards.slice(start, start + this.pageSize)
+      return this.filteredCards.slice(start, start + this.pageSize)
         .map(c => ({ card: c, id: +c.heroId }));
     }
     const slots: { card?: Card; id: number }[] = [];
@@ -90,6 +99,7 @@ export class AlbumComponent implements OnInit {
     this.view = mode;
     this.page = 1;
     this.pageInput = 1;
+    this.searchTerm = '';
   }
 
   formatId(id: number): string {
