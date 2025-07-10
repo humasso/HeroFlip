@@ -20,4 +20,8 @@ export class TradeService {
   createTrade(trade: Partial<Trade>): Observable<Trade> {
     return this.http.post<Trade>(this.baseUrl, trade);
   }
+
+  getTradesByUser(userId: string): Observable<Trade[]> {
+    return this.http.get<Trade[]>(`${this.baseUrl}/user/${userId}`);
+  }
 }
