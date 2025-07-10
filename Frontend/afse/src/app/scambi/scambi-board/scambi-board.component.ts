@@ -76,4 +76,14 @@ export class ScambiBoardComponent implements OnInit {
     }
   }
 
+  deleteTrade(id: string, canvas?: any) {
+    if (!confirm('Sei sicuro di voler eliminare questo annuncio?')) { return; }
+    this.tradeService.deleteTrade(id).subscribe(() => {
+      this.myTrades = this.myTrades.filter(t => t._id !== id);
+      this.trades = this.trades.filter(t => t._id !== id);
+      this.respondedTrades = this.respondedTrades.filter(t => t._id !== id);
+      if (canvas) { canvas.close(); }
+    });
+  }
+
 }

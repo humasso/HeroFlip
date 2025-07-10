@@ -48,7 +48,8 @@
         </div>
         <div>
           <span *ngIf="proposalCount(t)" class="badge bg-info me-2">{{proposalCount(t)}}</span>
-          <a class="btn btn-primary" [routerLink]="['/scambi', t._id]" (click)="offcanvas.close()">Apri</a>
+          <a class="btn btn-primary me-2" [routerLink]="['/scambi', t._id]" (click)="offcanvas.close()">Apri</a>
+          <button type="button" class="btn btn-danger btn-sm" (click)="deleteTrade(t._id, offcanvas)">Elimina</button>
         </div>
       </div>
     </div>
