@@ -42,6 +42,6 @@ app.use('/trade', tradeRoutes);
 
 
 // Avvio del server
-// const PORT = process.env.PORT || 4000;
-const PORT = 3000
+ const PORT = process.env.PORT || 4000;
+//const PORT = 3000
 app.listen(PORT, () => console.log(`🚀 Server in ascolto su http://localhost:${PORT}`));
