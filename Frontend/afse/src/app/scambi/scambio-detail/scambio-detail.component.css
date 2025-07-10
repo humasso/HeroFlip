@@ -17,3 +17,19 @@
   filter: grayscale(1);
   cursor: not-allowed;
 }
+
+.duplicates-slider .card {
+  width: 80px;
+  flex: 0 0 auto;
+  cursor: pointer;
+}
+
+.list-group-item.disabled {
+  background-color: #a59b9b;
+  color: #000000;
+}
+
+.list-group-item {
+  background-color: #c9d60b;
+  color: #000000;
+}

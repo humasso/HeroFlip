@@ -16,7 +16,7 @@
         Crediti offerti: {{ trade.creditsOffered }}
       </p>
     </div>
-    <div class="col-md-6">
+     <div class="col-md-6">
       <h5>Richiede</h5>
       <div class="card-list d-flex gap-2 flex-wrap mb-2">
         <div *ngFor="let c of trade.wantCards" class="card-item text-center position-relative">
@@ -41,17 +41,37 @@
           <button type="button" class="btn-close position-absolute top-0 end-0" (click)="removeOffer(i)"></button>
         </div>
       </div>
-      <h6>Carte disponibili</h6>
-      <div class="d-flex overflow-auto gap-2 mb-2" style="max-width:100%">
-        <div *ngFor="let c of requested" class="card small-card text-center"
-             [class.unavailable]="c.owned === 0"
-             (click)="c.owned > 0 && addRequested(c)">
-          <img [src]="c.image" class="card-img-top" alt="{{c.name}}">
-          <div class="card-body p-1"><small>{{c.name}}</small>
-            <span class="badge bg-secondary ms-1">x{{c.owned}}</span>
+      <ng-container *ngIf="trade?.wantCards.length > 0; else offerAny">
+        <h6>Carte disponibili</h6>
+        <div class="d-flex overflow-auto gap-2 mb-2" style="max-width:100%">
+          <div *ngFor="let c of requested" class="card small-card text-center"
+               [class.unavailable]="c.owned === 0"
+               (click)="c.owned > 0 && addRequested(c)">
+            <img [src]="c.image" class="card-img-top" alt="{{c.name}}">
+            <div class="card-body p-1"><small>{{c.name}}</small>
+              <span class="badge bg-secondary ms-1">x{{c.owned}}</span>
+            </div>
           </div>
         </div>
-      </div>
+      </ng-container>
+      <ng-template #offerAny>
+        <h6>Carte proponibili</h6>
+        <div class="duplicates-slider d-flex overflow-auto gap-2 mb-2">
+          <div *ngFor="let c of duplicates" class="card small-card text-center" (click)="addAvailable(c)">
+            <img [src]="c.image" class="card-img-top" alt="{{c.name}}">
+            <div class="card-body p-1"><small>{{c.name}}</small></div>
+          </div>
+        </div>
+        <div class="mb-2 position-relative">
+          <input type="text" class="form-control" placeholder="Cerca carta" [(ngModel)]="duplicateSearchTerm" (input)="searchDuplicates()" autocomplete="off">
+          <ul *ngIf="duplicateResults.length" class="list-group position-absolute w-100" style="z-index:1000; max-height:200px; overflow:auto;">
+            <li class="list-group-item list-group-item-action" *ngFor="let h of duplicateResults" (click)="addAvailable(h)">
+              {{h.name}}
+              <span class="badge bg-secondary ms-2">x{{h.quantity}}</span>
+            </li>
+          </ul>
+        </div>
+      </ng-template>
       <div class="mb-2" style="max-width:200px;">
         <label class="form-label">Offri Crediti:</label>
          <input type="number" class="form-control form-control-sm"

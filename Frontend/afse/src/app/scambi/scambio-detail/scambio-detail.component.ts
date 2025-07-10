@@ -19,6 +19,9 @@ import { UserService } from '../../services/user.service';
 export class ScambioDetailComponent implements OnInit {
   trade?: Trade;
   requested: (Card & { owned: number })[] = [];
+  duplicates: Card[] = [];
+  duplicateResults: Card[] = [];
+  duplicateSearchTerm = '';
   offer: Card[] = [];
   creditsOffered = 0;
   userCredits = 0;
@@ -53,6 +56,7 @@ export class ScambioDetailComponent implements OnInit {
         const cards = a.cards || [];
         this.ownedCardMap = {};
         cards.forEach(c => this.ownedCardMap[c.heroId] = c.quantity || 0);
+        this.duplicates = cards.filter(c => (c.quantity || 0) > 1);
         this.updateRequestedCards();
       });
       this.userService.getUser(this.userId).subscribe(u => this.userCredits = u.credits);
@@ -104,6 +108,21 @@ export class ScambioDetailComponent implements OnInit {
     const required = this.trade.wantCards.find(w => w.heroId === card.heroId)?.quantity || 1;
     if (offered >= owned || offered >= required) { return; }
     this.offer.push({ ...card, quantity: 1 });
+  }
+
+  addAvailable(card: Card) {
+    const owned = this.ownedCardMap[card.heroId] || 0;
+    if (this.offerCount(card.heroId) >= owned) { return; }
+    this.offer.push({ ...card, quantity: 1 });
+  }
+
+  searchDuplicates() {
+    const term = this.duplicateSearchTerm.toLowerCase().trim();
+    if (!term) {
+      this.duplicateResults = [];
+      return;
+    }
+    this.duplicateResults = this.duplicates.filter(c => c.name.toLowerCase().includes(term));
   }
 
   proposalComplete(): boolean {
@@ -178,10 +197,17 @@ export class ScambioDetailComponent implements OnInit {
 
   private updateRequestedCards() {
     if (!this.trade) { return; }
-    this.requested = this.trade.wantCards.map(c => ({
-      ...c,
-      owned: this.ownedCardMap[c.heroId] || 0
-    }));
+    if (this.trade.wantCards.length > 0) {
+      this.requested = this.trade.wantCards.map(c => ({
+        ...c,
+        owned: this.ownedCardMap[c.heroId] || 0
+      }));
+    } else {
+      this.requested = this.duplicates.map(c => ({
+        ...c,
+        owned: this.ownedCardMap[c.heroId] || 0
+      }));
+    }
   }
 
   sendProposal() {
