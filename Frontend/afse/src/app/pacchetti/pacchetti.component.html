@@ -1,10 +1,4 @@
 <div class="container py-4">
-  <div class="album-container text-end mb-3">
-    <div class="album-link" [class.opening]="albumOpening" (click)="openAlbum()">
-      <img src="assets/album.png" alt="album" class="img-fluid">
-      <p class="mt-2">Apri Album</p>
-    </div>
-  </div>
   <div class="row" *ngIf="packs.length > 0; else noPack">
     <div class="col-6 col-md-4 col-lg-3 mb-3" *ngFor="let p of packs; let i = index">
       <div class="text-center fw-bold mb-1">{{ p.packType }}</div>

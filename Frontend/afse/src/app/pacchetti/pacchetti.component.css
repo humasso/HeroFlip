@@ -76,34 +76,6 @@ img {
   width: 80px;
 }
 
-.album-container {
-  position: relative;
-  perspective: 800px;
-}
-
-.album-link {
-  display: inline-block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  cursor: pointer;
-}
-
-.album-link img {
-  width: 150px;
-  /*border: 2px solid #dc3545;*/
-  border-radius: 4px;
-}
-
-.album-link.opening img {
-  animation: album-open 0.6s forwards;
-}
-
-@keyframes album-open {
-  0% { transform: rotateY(0deg); }
-  100% { transform: rotateY(-150deg); }
-}
-
 .flip-card {
   width: 300px;
   height: 450px;

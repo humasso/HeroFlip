@@ -211,11 +211,4 @@ export class PacchettiComponent implements OnInit {
     };
     return colors[stat];
   }
-
-    openAlbum() {
-    this.albumOpening = true;
-    setTimeout(() => {
-      this.router.navigate(['/album']);
-    }, 600);
-  }
 }
