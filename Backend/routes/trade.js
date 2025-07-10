@@ -3,6 +3,8 @@ const Trade = require('../models/Trade');
 const User = require('../models/User');
 const Album = require('../models/Album');
 const Notification = require('../models/Notification');
+const TradeHistory = require('../models/TradeHistory');
+
 const router = express.Router();
 
 async function getOrCreateAlbum(userId) {
@@ -70,6 +72,26 @@ router.get('/user/:userId', async (req, res) => {
     res.status(500).json({ message: 'Errore server' });
   }
 });
+
+// Storico scambi completati per un utente
+router.get('/history/:userId', async (req, res) => {
+  try {
+    const history = await TradeHistory.find({
+      $or: [
+        { owner: req.params.userId },
+        { proposer: req.params.userId }
+      ]
+    })
+      .sort({ completedAt: -1 })
+      .populate('owner', 'username')
+      .populate('proposer', 'username');
+    res.json(history);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Errore server' });
+  }
+});
+
 
 // Recupera uno scambio specifico per ID
 router.get('/:id', async (req, res) => {
@@ -178,12 +200,27 @@ router.patch('/:tradeId/proposal/:proposalId/accept', async (req, res) => {
     });
     await trade.save();
 
+    await TradeHistory.create({
+      owner: trade.user,
+      proposer: proposal.user,
+      description: trade.description,
+      offerCards: trade.offerCards,
+      wantCards: trade.wantCards,
+      creditsOffered: trade.creditsOffered,
+      creditsWanted: trade.creditsWanted,
+      proposerOfferCards: proposal.offerCards,
+      proposerCreditsOffered: proposal.creditsOffered,
+      createdAt: trade.createdAt
+    });
+
     await Notification.create({
       user: proposal.user,
       message: 'La tua proposta è stata accettata.'
     });
 
     const populated = await trade.populate('proposals.user', 'username');
+    await Trade.findByIdAndDelete(trade._id);
+
     res.json(populated);
   } catch (err) {
     console.error(err);
