@@ -37,6 +37,20 @@ function moveCards(fromAlbum, toAlbum, cards) {
 // Crea un nuovo scambio
 router.post('/', async (req, res) => {
   try {
+    const { offerCards = [], creditsOffered = 0, creditsWanted = 0 } = req.body;
+
+    if (offerCards.length === 0 && creditsOffered <= 0) {
+      return res.status(400).json({
+        message: 'Indica almeno una carta o dei crediti da offrire.'
+      });
+    }
+
+    if (creditsWanted > 9999) {
+      return res.status(400).json({
+        message: 'Non puoi richiedere più di 9999 crediti.'
+      });
+    }
+
     const trade = await Trade.create(req.body);
     res.json(trade);
   } catch (err) {

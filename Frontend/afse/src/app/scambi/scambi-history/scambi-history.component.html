@@ -1,6 +1,6 @@
 <div *ngIf="history.length === 0" class="text-center">Nessuno scambio completato.</div>
-<div *ngFor="let h of history" class="card mb-2">
-  <div class="card-body">
+<div *ngFor="let h of history" class="card mb-3 p-3 history-item">
+  <div class="card-body p-0">
     <div class="d-flex justify-content-between">
       <div>
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left-right me-1" viewBox="0 0 16 16">
@@ -11,7 +11,7 @@
       <small class="text-muted">{{ h.completedAt | date:'short' }}</small>
     </div>
     <p class="mb-1">{{ h.description }}</p>
-    <div class="d-flex flex-wrap">
+    <div class="d-flex flex-wrap mb-2">
       <span *ngIf="h.creditsOffered" class="badge bg-success me-1 mb-1">
         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" fill="currentColor" class="bi bi-currency-dollar" viewBox="0 0 16 16">
           <path d="M8.5 13a3.5 3.5 0 0 0 3.415-2.574c.2-.592-.304-1.044-.829-1.044-.401 0-.68.2-.85.619A2.5 2.5 0 0 1 8.5 11H5a3 3 0 1 1 0-6h.5V4H7v1h1V4h1v1h1v1H9v1H8V6H7v1H5a1 1 0 0 0 0 2h3.5a3.5 3.5 0 0 0 3.415-2.574C12.2 6.57 11.696 6.118 11.171 6.118c-.401 0-.68.2-.85.619A2.5 2.5 0 0 1 8.5 7H12a3 3 0 1 1 0 6h-.5v1H10v-1H9v1H8v-1H7v-1h1.5z"/>
@@ -24,6 +24,18 @@
         </svg>
         {{ h.proposerCreditsOffered }}
       </span>
+    </div>
+    <div *ngIf="h.offerCards.length" class="mb-2">
+      <small class="text-muted">Carte da {{ getOwnerUsername(h) }}:</small>
+      <ul class="mb-0 ps-3">
+        <li *ngFor="let c of h.offerCards">{{ c.name }} x{{ c.quantity }}</li>
+      </ul>
+    </div>
+    <div *ngIf="h.proposerOfferCards.length" class="mb-2">
+      <small class="text-muted">Carte da {{ getProposerUsername(h) }}:</small>
+      <ul class="mb-0 ps-3">
+        <li *ngFor="let c of h.proposerOfferCards">{{ c.name }} x{{ c.quantity }}</li>
+      </ul>
     </div>
   </div>
 </div>

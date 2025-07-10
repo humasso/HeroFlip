@@ -22,8 +22,8 @@ const tradeSchema = new mongoose.Schema({
   description: String,
   offerCards: [cardSchema],
   wantCards: [cardSchema],
-  creditsOffered: { type: Number, default: 0 },
-  creditsWanted: { type: Number, default: 0 },
+  creditsOffered: { type: Number, default: 0, max: 9999 },
+  creditsWanted: { type: Number, default: 0, max: 9999 },
   proposals: [proposalSchema],
   createdAt: { type: Date, default: Date.now }
 });

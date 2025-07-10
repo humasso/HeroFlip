@@ -128,7 +128,7 @@ export class ScambioDetailComponent implements OnInit {
   proposalComplete(): boolean {
     if (!this.trade) { return false; }
     const cardsOk = this.trade.wantCards.every(w => {
-      const required = w.quantity || 1;
+      const required = w.quantity || 2;
       return this.offerCount(w.heroId) >= required;
     });
     const requiredCredits = this.creditInputLocked() ? this.trade.creditsWanted : this.creditsOffered;

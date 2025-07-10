@@ -38,7 +38,7 @@
   </div>
 </div>
 
-<div class="search-wrapper mt-4 position-relative">
+<div class="search-wrapper mt-4 position-relative" *ngIf="isLoggedIn">
     <input type="text" class="form-control search-bar" placeholder="Cerca eroe" [(ngModel)]="searchTerm" (input)="searchHero()" autocomplete="off">
     <ul *ngIf="heroResults.length" class="list-group position-absolute w-100" style="z-index:1000; max-height:200px; overflow:auto;">
       <li class="list-group-item list-group-item-action" *ngFor="let h of heroResults" (click)="goToHero(h.id)">{{h.name}}</li>
