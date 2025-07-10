@@ -41,7 +41,7 @@
           <button type="button" class="btn-close position-absolute top-0 end-0" (click)="removeOffer(i)"></button>
         </div>
       </div>
-      <ng-container *ngIf="trade?.wantCards.length > 0; else offerAny">
+      <ng-container *ngIf="trade?.wantCards?.length > 0; else offerAny">
         <h6>Carte disponibili</h6>
         <div class="d-flex overflow-auto gap-2 mb-2" style="max-width:100%">
           <div *ngFor="let c of requested" class="card small-card text-center"
