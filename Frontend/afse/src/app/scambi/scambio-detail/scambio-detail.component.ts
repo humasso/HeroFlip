@@ -136,6 +136,10 @@ export class ScambioDetailComponent implements OnInit {
     return cardsOk && creditsOk;
   }
 
+  hasWantedCards(): boolean {
+    return !!this.trade && this.trade.wantCards.length > 0;
+  }
+
   hasPendingProposal(): boolean {
     if (!this.trade || !this.userId) { return false; }
     return this.trade.proposals?.some(p => {
