@@ -15,6 +15,8 @@ import { Trade } from '../../models/trade.model';
 export class ScambiBoardComponent implements OnInit {
   trades: Trade[] = [];
   myTrades: Trade[] = [];
+  respondedTrades: Trade[] = [];
+
   @ViewChild('myTradesCanvas') myTradesCanvas!: TemplateRef<any>;
   private userId: string | null = localStorage.getItem('userId');
 
@@ -22,7 +24,15 @@ export class ScambiBoardComponent implements OnInit {
 
   ngOnInit(): void {
     this.tradeService.getTrades().subscribe(trades => {
-      this.trades = trades.filter(t => this.getUserId(t) !== this.userId);
+      if (this.userId) {
+        this.respondedTrades = trades.filter(t =>
+          t.proposals?.some(p => this.getProposalUserId(p) === this.userId && p.status === 'pending')
+        );
+      }
+      this.trades = trades.filter(t =>
+        this.getUserId(t) !== this.userId &&
+        !(this.userId && t.proposals?.some(p => this.getProposalUserId(p) === this.userId && p.status === 'pending'))
+      );
     });
     if (this.userId) {
       this.tradeService.getTradesByUser(this.userId).subscribe(trades => this.myTrades = trades);
@@ -35,6 +45,10 @@ export class ScambiBoardComponent implements OnInit {
 
   private getUserId(t: Trade): string | null {
     return typeof t.user === 'object' ? (t.user as any)._id : t.user || null;
+  }
+
+  private getProposalUserId(p: any): string | null {
+    return typeof p.user === 'object' ? (p.user as any)._id : p.user || null;
   }
 
   openMyTrades() {

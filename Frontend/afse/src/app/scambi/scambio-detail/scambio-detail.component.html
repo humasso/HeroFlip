@@ -31,7 +31,8 @@
     </div>
   </div>
 <div *ngIf="!isOwner()" class="mt-4">
-    <button class="btn btn-outline-primary" *ngIf="!showForm" (click)="showForm = true">Rispondi all'annuncio</button>
+    <div *ngIf="hasPendingProposal()" class="alert alert-info">Hai già inviato una proposta. Attendi la risposta.</div>
+    <button class="btn btn-outline-primary" *ngIf="!showForm && !hasPendingProposal()" (click)="showForm = true">Rispondi all'annuncio</button>
     <div *ngIf="showForm">
       <h5>La tua proposta</h5>
       <div class="d-flex gap-2 flex-wrap mb-2">
@@ -50,6 +51,7 @@
       <div class="mb-2" style="max-width:200px;">
         <label class="form-label">Crediti offerti</label>
         <input type="number" class="form-control form-control-sm" [(ngModel)]="creditsOffered" min="0" [attr.max]="userCredits" (ngModelChange)="ensureValidOffer()">
+        <button class="btn btn-sm btn-danger" *ngIf="p.status === 'pending'" (click)="rejectProposal(p._id!)">Rifiuta</button>
       </div>
       <button class="btn btn-success mt-2" (click)="sendProposal()">Manda richiesta di scambio</button>
     </div>

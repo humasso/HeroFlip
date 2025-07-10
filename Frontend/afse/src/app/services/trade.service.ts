@@ -28,4 +28,8 @@ export class TradeService {
   respondToTrade(id: string, proposal: Partial<TradeProposal>): Observable<Trade> {
     return this.http.post<Trade>(`${this.baseUrl}/${id}/respond`, proposal);
   }
+
+  rejectProposal(tradeId: string, proposalId: string): Observable<Trade> {
+    return this.http.patch<Trade>(`${this.baseUrl}/${tradeId}/proposal/${proposalId}/reject`, {});
+  }
 }

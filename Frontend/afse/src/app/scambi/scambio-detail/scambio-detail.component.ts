@@ -28,6 +28,12 @@ export class ScambioDetailComponent implements OnInit {
   toastType: 'success' | 'danger' = 'success';
   private userId: string | null = localStorage.getItem('userId');
 
+  
+  hasPendingProposal(): boolean {
+    if (!this.trade || !this.userId) { return false; }
+    return this.trade.proposals?.some(p => this.getProposalUserId(p) === this.userId && p.status === 'pending') || false;
+  }
+
   constructor(
     private route: ActivatedRoute,
     private tradeService: TradeService,
@@ -60,6 +66,10 @@ export class ScambioDetailComponent implements OnInit {
     return typeof p.user === 'object' ? (p.user as any).username : '';
   }
 
+  private getProposalUserId(p: TradeProposal): string | null {
+    return typeof p.user === 'object' ? (p.user as any)._id : p.user || null;
+  }
+
   isOwner(): boolean {
     if (!this.trade) { return false; }
     const id = typeof this.trade.user === 'object' ? (this.trade.user as any)._id : this.trade.user;
@@ -72,6 +82,11 @@ export class ScambioDetailComponent implements OnInit {
 
   removeOffer(index: number) {
     this.offer.splice(index, 1);
+  }
+
+  rejectProposal(id: string) {
+    if (!this.trade) { return; }
+    this.tradeService.rejectProposal(this.trade._id, id).subscribe(tr => this.trade = tr);
   }
 
   ensureValidOffer() {
@@ -93,6 +108,11 @@ export class ScambioDetailComponent implements OnInit {
       this.showForm = false;
       this.toastType = 'success';
       this.toastMessage = 'Proposta inviata!';
+      this.showToast = true;
+      setTimeout(() => this.showToast = false, 3000);
+    }, () => {
+      this.toastType = 'danger';
+      this.toastMessage = 'Hai già una proposta in attesa.';
       this.showToast = true;
       setTimeout(() => this.showToast = false, 3000);
     });

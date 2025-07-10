@@ -65,7 +65,34 @@ router.post('/:id/respond', async (req, res) => {
     if (!trade) {
       return res.status(404).json({ message: 'Scambio non trovato' });
     }
+    const exists = trade.proposals.find(p =>
+      p.user.toString() === req.body.user && p.status === 'pending'
+    );
+    if (exists) {
+      return res.status(400).json({ message: 'Proposta già inviata' });
+    }
     trade.proposals.push(req.body);
+    await trade.save();
+    const populated = await trade.populate('proposals.user', 'username');
+    res.json(populated);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Errore server' });
+  }
+});
+
+// Rifiuta una proposta
+router.patch('/:tradeId/proposal/:proposalId/reject', async (req, res) => {
+  try {
+    const trade = await Trade.findById(req.params.tradeId);
+    if (!trade) {
+      return res.status(404).json({ message: 'Scambio non trovato' });
+    }
+    const proposal = trade.proposals.id(req.params.proposalId);
+    if (!proposal) {
+      return res.status(404).json({ message: 'Proposta non trovata' });
+    }
+    proposal.status = 'rejected';
     await trade.save();
     const populated = await trade.populate('proposals.user', 'username');
     res.json(populated);

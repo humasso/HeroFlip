@@ -12,8 +12,9 @@ const proposalSchema = new mongoose.Schema({
   offerCards: [cardSchema],
   creditsOffered: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },
-  seen: { type: Boolean, default: false }
-}, { _id: false });
+  seen: { type: Boolean, default: false },
+  status: { type: String, enum: ['pending', 'accepted', 'rejected'], default: 'pending' }
+});
 
 
 const tradeSchema = new mongoose.Schema({
