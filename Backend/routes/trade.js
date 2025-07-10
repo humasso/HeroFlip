@@ -116,6 +116,9 @@ router.post('/:id/respond', async (req, res) => {
     if (!trade) {
       return res.status(404).json({ message: 'Scambio non trovato' });
     }
+    if (trade.creditsWanted > 0 && req.body.creditsOffered !== trade.creditsWanted) {
+      return res.status(400).json({ message: 'Numero di crediti offerti non valido' });
+    }
     const exists = trade.proposals.find(p =>
       p.user.toString() === req.body.user && p.status === 'pending'
     );

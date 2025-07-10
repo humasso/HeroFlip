@@ -43,6 +43,7 @@ export class ScambioDetailComponent implements OnInit {
     if (id) {
       this.tradeService.getTrade(id).subscribe(tr => {
         this.trade = tr;
+        this.creditsOffered = tr.creditsWanted;
         this.updateRequestedCards();
         this.tradeCompleted = tr.proposals?.some(p => p.status === 'accepted') || false;
       });
@@ -98,10 +99,12 @@ export class ScambioDetailComponent implements OnInit {
 
   proposalComplete(): boolean {
     if (!this.trade) { return false; }
-    return this.trade.wantCards.every(w => {
+    const cardsOk = this.trade.wantCards.every(w => {
       const required = w.quantity || 1;
       return this.offerCount(w.heroId) >= required;
     });
+    const creditsOk = this.trade.creditsWanted <= this.userCredits;
+    return cardsOk && creditsOk;
   }
 
   hasPendingProposal(): boolean {

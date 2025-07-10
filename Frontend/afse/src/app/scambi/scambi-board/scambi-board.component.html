@@ -6,6 +6,7 @@
         I miei annunci
         <span *ngIf="totalProposals()" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ totalProposals() }}</span>
       </button>
+      <button type="button" class="btn btn-secondary me-2" (click)="openHistory()">Storico</button>
       <a class="btn btn-success" [routerLink]="['/scambi/new']">+ Nuovo annuncio</a>
     </div>
   </div>
@@ -51,5 +52,14 @@
         </div>
       </div>
     </div>
+  </div>
+</ng-template>
+<ng-template #historyCanvas let-offcanvas>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Storico scambi</h5>
+    <button type="button" class="btn-close text-reset" aria-label="Close" (click)="offcanvas.close()"></button>
+  </div>
+  <div class="offcanvas-body">
+    <app-scambi-history></app-scambi-history>
   </div>
 </ng-template>

@@ -4,11 +4,13 @@ import { RouterLink } from '@angular/router';
 import { NgbOffcanvas, NgbOffcanvasModule } from '@ng-bootstrap/ng-bootstrap';
 import { TradeService } from '../../services/trade.service';
 import { Trade } from '../../models/trade.model';
+import { TradeHistory } from '../../models/trade-history.model';
+import { ScambiHistoryComponent } from '../scambi-history/scambi-history.component';
 
 @Component({
   selector: 'app-scambi-board',
   standalone: true,
-  imports: [CommonModule, RouterLink, NgbOffcanvasModule],
+  imports: [CommonModule, RouterLink, NgbOffcanvasModule, ScambiHistoryComponent],
   templateUrl: './scambi-board.component.html',
   styleUrl: './scambi-board.component.css'
 })
@@ -16,8 +18,10 @@ export class ScambiBoardComponent implements OnInit {
   trades: Trade[] = [];
   myTrades: Trade[] = [];
   respondedTrades: Trade[] = [];
+  history: TradeHistory[] = [];
 
   @ViewChild('myTradesCanvas') myTradesCanvas!: TemplateRef<any>;
+  @ViewChild('historyCanvas') historyCanvas!: TemplateRef<any>;
   private userId: string | null = localStorage.getItem('userId');
 
   constructor(private tradeService: TradeService, private offcanvas: NgbOffcanvas) {}
@@ -36,6 +40,7 @@ export class ScambiBoardComponent implements OnInit {
     });
     if (this.userId) {
       this.tradeService.getTradesByUser(this.userId).subscribe(trades => this.myTrades = trades);
+      this.tradeService.getHistory(this.userId).subscribe(h => this.history = h);
     }
   }
 
@@ -63,6 +68,12 @@ export class ScambiBoardComponent implements OnInit {
 
   totalProposals(): number {
     return this.myTrades.reduce((sum, t) => sum + this.proposalCount(t), 0);
+  }
+
+  openHistory() {
+    if (this.historyCanvas) {
+      this.offcanvas.open(this.historyCanvas, { position: 'end' });
+    }
   }
 
 }
