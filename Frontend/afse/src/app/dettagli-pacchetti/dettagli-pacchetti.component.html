@@ -1,0 +1,23 @@
+<div class="container py-4" *ngIf="pack">
+  <div class="text-center mb-3">
+    <img [src]="pack.image" class="img-fluid" style="max-width:200px" alt="pack">
+    <h3 class="mt-2">{{ pack.name }}</h3>
+    <p>{{ pack.description }}</p>
+    <p *ngIf="pack.publisher">Carte disponibili {{ totalHeroes }} con publisher {{ pack.publisher }}</p>
+    <p *ngIf="!pack.publisher">Carte totali {{ totalHeroes }}</p>
+  </div>
+  <div class="mb-3 d-flex justify-content-end">
+    <input type="text" class="form-control w-auto" placeholder="Cerca carta" [(ngModel)]="searchTerm">
+  </div>
+  <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 g-4">
+    <div class="col" *ngFor="let hero of filteredHeroes">
+      <div class="card h-100 text-center">
+        <img [src]="hero.image" class="card-img-top" alt="{{ hero.name }}">
+        <div class="card-body p-2">
+          <h6 class="card-title mb-1">{{ hero.name }}</h6>
+          <small class="text-muted">{{ hero.publisher }}</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

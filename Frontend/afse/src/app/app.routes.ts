@@ -11,6 +11,7 @@ import { DettagliEroeComponent } from './dettagli-eroe/dettagli-eroe.component';
 import { ScambiBoardComponent } from './scambi/scambi-board/scambi-board.component';
 import { ScambioCreateComponent } from './scambi/scambio-create/scambio-create.component';
 import { ScambioDetailComponent } from './scambi/scambio-detail/scambio-detail.component';
+import { DettagliPacchettiComponent } from './dettagli-pacchetti/dettagli-pacchetti.component';
 
 
 
@@ -24,6 +25,7 @@ export const routes: Routes = [
     { path: 'shop', component: ShopdashComponent },
     { path: 'shop/credits', component: CreditsComponent },
     { path: 'pacchetti', component: PacchettiComponent },
+    { path: 'pacchetti/detail/:name', component: DettagliPacchettiComponent },
     { path: 'album', component: AlbumComponent },
     { path: 'album/hero/:id', component: DettagliEroeComponent },
     { path: 'scambi', component: ScambiBoardComponent },

@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router} from '@angular/router';
+import { Router, RouterLink} from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../services/user.service';
@@ -12,7 +12,8 @@ import { delay } from 'rxjs';
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    RouterLink
   ],
   templateUrl: './shopdash.component.html',
   styleUrl: './shopdash.component.css'
@@ -30,6 +31,8 @@ export class ShopdashComponent implements OnInit {
   loading = false;
   toastMessage: string | null = null;
   toastType: 'success' | 'danger' = 'success';
+
+  isDarkMode = false;
 
   selectedQty: number | null = null;
   selectedPack: { name: string; image: string; price: number } | null = null;
@@ -66,6 +69,7 @@ export class ShopdashComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isDarkMode = localStorage.getItem('isDarkMode') === 'true';
     if (this.userId) {
       this.userService.getUser(this.userId).subscribe({
         next: user => this.credits = user.credits,
