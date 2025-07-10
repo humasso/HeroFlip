@@ -1,6 +1,6 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterLink} from '@angular/router';
+import { Router} from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../../services/user.service';
@@ -12,9 +12,7 @@ import { delay } from 'rxjs';
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
-    RouterLink
-  ],
+    FormsModule],
   templateUrl: './shopdash.component.html',
   styleUrl: './shopdash.component.css'
 })
