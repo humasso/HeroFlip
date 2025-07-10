@@ -30,4 +30,49 @@
       </p>
     </div>
   </div>
+<div *ngIf="!isOwner()" class="mt-4">
+    <button class="btn btn-outline-primary" *ngIf="!showForm" (click)="showForm = true">Rispondi all'annuncio</button>
+    <div *ngIf="showForm">
+      <h5>La tua proposta</h5>
+      <div class="d-flex gap-2 flex-wrap mb-2">
+        <div *ngFor="let c of offer; let i = index" class="position-relative">
+          <img [src]="c.image" class="img-fluid" style="width:80px" alt="{{c.name}}">
+          <button type="button" class="btn-close position-absolute top-0 end-0" (click)="removeOffer(i)"></button>
+        </div>
+      </div>
+      <h6>Carte disponibili</h6>
+      <div class="d-flex overflow-auto gap-2 mb-2" style="max-width:100%">
+        <div *ngFor="let c of duplicates" class="card small-card text-center" (click)="addOffer(c)">
+          <img [src]="c.image" class="card-img-top" alt="{{c.name}}">
+          <div class="card-body p-1"><small>{{c.name}}</small></div>
+        </div>
+      </div>
+      <div class="mb-2" style="max-width:200px;">
+        <label class="form-label">Crediti offerti</label>
+        <input type="number" class="form-control form-control-sm" [(ngModel)]="creditsOffered" min="0" [attr.max]="userCredits" (ngModelChange)="ensureValidOffer()">
+      </div>
+      <button class="btn btn-success mt-2" (click)="sendProposal()">Manda richiesta di scambio</button>
+    </div>
+  </div>
+  <div *ngIf="isOwner() && trade.proposals?.length" class="mt-4">
+    <h5>Proposte ricevute</h5>
+    <div *ngFor="let p of trade.proposals" class="border p-2 mb-2">
+      <div class="mb-2"><strong>{{ typeof p.user === 'object' ? (p.user as any).username : '' }}</strong></div>
+      <div class="d-flex gap-2 flex-wrap mb-2">
+        <div *ngFor="let c of p.offerCards" class="text-center position-relative">
+          <img [src]="c.image" class="img-fluid" style="width:80px" alt="{{c.name}}">
+          <span class="badge bg-secondary position-absolute top-0 start-0 m-1">x{{c.quantity}}</span>
+        </div>
+      </div>
+      <p *ngIf="p.creditsOffered" class="fw-bold text-success">Crediti offerti: {{p.creditsOffered}}</p>
+    </div>
+  </div>
+  <div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div class="toast text-white bg-{{toastType}} show" role="alert" *ngIf="showToast">
+      <div class="d-flex">
+        <div class="toast-body">{{ toastMessage }}</div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" (click)="showToast = false"></button>
+      </div>
+    </div>
+  </div>
 </div>

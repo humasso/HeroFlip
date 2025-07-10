@@ -7,6 +7,15 @@ const cardSchema = new mongoose.Schema({
   quantity: { type: Number, default: 1 }
 }, { _id: false });
 
+const proposalSchema = new mongoose.Schema({
+  user: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', required: true },
+  offerCards: [cardSchema],
+  creditsOffered: { type: Number, default: 0 },
+  createdAt: { type: Date, default: Date.now },
+  seen: { type: Boolean, default: false }
+}, { _id: false });
+
+
 const tradeSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'Users', required: true },
   description: String,
@@ -14,6 +23,7 @@ const tradeSchema = new mongoose.Schema({
   wantCards: [cardSchema],
   creditsOffered: { type: Number, default: 0 },
   creditsWanted: { type: Number, default: 0 },
+  proposals: [proposalSchema],
   createdAt: { type: Date, default: Date.now }
 });
 

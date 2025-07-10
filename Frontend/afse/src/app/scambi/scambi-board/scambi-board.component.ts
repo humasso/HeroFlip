@@ -42,4 +42,13 @@ export class ScambiBoardComponent implements OnInit {
       this.offcanvas.open(this.myTradesCanvas, { position: 'end' });
     }
   }
+
+  proposalCount(t: Trade): number {
+    return t.proposals ? t.proposals.length : 0;
+  }
+
+  totalProposals(): number {
+    return this.myTrades.reduce((sum, t) => sum + this.proposalCount(t), 0);
+  }
+
 }

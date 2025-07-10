@@ -2,7 +2,10 @@
   <div class="d-flex justify-content-between align-items-center mb-3">
     <h2 class="mb-0">Bacheca Scambi</h2>
     <div>
-      <button type="button" class="btn btn-secondary me-2" (click)="openMyTrades()">I miei annunci</button>
+      <button type="button" class="btn btn-secondary me-2 position-relative" (click)="openMyTrades()">
+        I miei annunci
+        <span *ngIf="totalProposals()" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ totalProposals() }}</span>
+      </button>
       <a class="btn btn-success" [routerLink]="['/scambi/new']">+ Nuovo annuncio</a>
     </div>
   </div>
@@ -30,7 +33,10 @@
           <strong>{{getUsername(t)}}</strong>
           <p class="mb-0">{{t.description}}</p>
         </div>
-        <a class="btn btn-primary" [routerLink]="['/scambi', t._id]" (click)="offcanvas.close()">Apri</a>
+        <div>
+          <span *ngIf="proposalCount(t)" class="badge bg-info me-2">{{proposalCount(t)}}</span>
+          <a class="btn btn-primary" [routerLink]="['/scambi', t._id]" (click)="offcanvas.close()">Apri</a>
+        </div>
       </div>
     </div>
   </div>

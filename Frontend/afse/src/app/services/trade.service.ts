@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Trade } from '../models/trade.model';
+import { Trade, TradeProposal } from '../models/trade.model';
 
 @Injectable({ providedIn: 'root' })
 export class TradeService {
@@ -23,5 +23,9 @@ export class TradeService {
 
   getTradesByUser(userId: string): Observable<Trade[]> {
     return this.http.get<Trade[]>(`${this.baseUrl}/user/${userId}`);
+  }
+
+  respondToTrade(id: string, proposal: Partial<TradeProposal>): Observable<Trade> {
+    return this.http.post<Trade>(`${this.baseUrl}/${id}/respond`, proposal);
   }
 }

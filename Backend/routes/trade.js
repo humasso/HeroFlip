@@ -17,7 +17,10 @@ router.post('/', async (req, res) => {
 // Lista di tutti gli scambi
 router.get('/', async (req, res) => {
   try {
-    const trades = await Trade.find().sort({ createdAt: -1 }).populate('user', 'username');
+    const trades = await Trade.find()
+      .sort({ createdAt: -1 })
+      .populate('user', 'username')
+      .populate('proposals.user', 'username');
     res.json(trades);
   } catch (err) {
     console.error(err);
@@ -30,7 +33,8 @@ router.get('/user/:userId', async (req, res) => {
   try {
     const trades = await Trade.find({ user: req.params.userId })
       .sort({ createdAt: -1 })
-      .populate('user', 'username');
+      .populate('user', 'username')
+      .populate('proposals.user', 'username');
     res.json(trades);
   } catch (err) {
     console.error(err);
@@ -41,11 +45,30 @@ router.get('/user/:userId', async (req, res) => {
 // Recupera uno scambio specifico per ID
 router.get('/:id', async (req, res) => {
   try {
-    const trade = await Trade.findById(req.params.id).populate('user', 'username');
+    const trade = await Trade.findById(req.params.id)
+      .populate('user', 'username')
+      .populate('proposals.user', 'username');
     if (!trade) {
       return res.status(404).json({ message: 'Scambio non trovato' });
     }
     res.json(trade);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Errore server' });
+  }
+});
+
+// Aggiungi una proposta a uno scambio
+router.post('/:id/respond', async (req, res) => {
+  try {
+    const trade = await Trade.findById(req.params.id);
+    if (!trade) {
+      return res.status(404).json({ message: 'Scambio non trovato' });
+    }
+    trade.proposals.push(req.body);
+    await trade.save();
+    const populated = await trade.populate('proposals.user', 'username');
+    res.json(populated);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Errore server' });

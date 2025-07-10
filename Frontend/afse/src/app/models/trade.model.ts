@@ -1,5 +1,11 @@
 import { Card } from './card.model';
 
+export interface TradeProposal {
+  user: string | { _id: string; username: string };
+  offerCards: Card[];
+  creditsOffered: number;
+}
+
 export interface Trade {
   _id: string;
   user: string | { _id: string; username: string };
@@ -9,4 +15,5 @@ export interface Trade {
   wantCards: Card[];
   creditsOffered: number;
   creditsWanted: number;
+  proposals?: TradeProposal[];
 }
