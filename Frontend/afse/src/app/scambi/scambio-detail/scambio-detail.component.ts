@@ -102,6 +102,21 @@ export class ScambioDetailComponent implements OnInit {
     });
   }
 
+  hasPendingProposal(): boolean {
+    if (!this.trade || !this.userId) { return false; }
+    return this.trade.proposals?.some(p => {
+      const uid = typeof p.user === 'object' ? (p.user as any)._id : p.user;
+      return uid === this.userId && p.status === 'pending';
+    }) || false;
+  }
+
+  rejectProposal(proposalId: string) {
+    if (!this.trade) { return; }
+    this.tradeService
+      .rejectProposal(this.trade._id, proposalId)
+      .subscribe(tr => (this.trade = tr));
+  }
+
   private updateRequestedCards() {
     if (!this.trade) { return; }
     this.requested = this.trade.wantCards.map(c => ({
