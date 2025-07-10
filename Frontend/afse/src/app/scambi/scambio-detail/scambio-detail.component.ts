@@ -18,7 +18,7 @@ import { UserService } from '../../services/user.service';
 })
 export class ScambioDetailComponent implements OnInit {
   trade?: Trade;
-  duplicates: Card[] = [];
+  requested: (Card & { owned: number })[] = [];
   offer: Card[] = [];
   creditsOffered = 0;
   userCredits = 0;
@@ -26,13 +26,8 @@ export class ScambioDetailComponent implements OnInit {
   showToast = false;
   toastMessage: string | null = null;
   toastType: 'success' | 'danger' = 'success';
+  private ownedCardMap: Record<string, number> = {};
   private userId: string | null = localStorage.getItem('userId');
-
-  
-  hasPendingProposal(): boolean {
-    if (!this.trade || !this.userId) { return false; }
-    return this.trade.proposals?.some(p => this.getProposalUserId(p) === this.userId && p.status === 'pending') || false;
-  }
 
   constructor(
     private route: ActivatedRoute,
@@ -45,12 +40,17 @@ export class ScambioDetailComponent implements OnInit {
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
-      this.tradeService.getTrade(id).subscribe(tr => this.trade = tr);
+      this.tradeService.getTrade(id).subscribe(tr => {
+        this.trade = tr;
+        this.updateRequestedCards();
+      });
     }
     if (this.userId) {
       this.albumService.getAlbum(this.userId).subscribe(a => {
         const cards = a.cards || [];
-        this.duplicates = cards.filter(c => (c.quantity || 0) > 1);
+        this.ownedCardMap = {};
+        cards.forEach(c => this.ownedCardMap[c.heroId] = c.quantity || 0);
+        this.updateRequestedCards();
       });
       this.userService.getUser(this.userId).subscribe(u => this.userCredits = u.credits);
     }
@@ -66,32 +66,48 @@ export class ScambioDetailComponent implements OnInit {
     return typeof p.user === 'object' ? (p.user as any).username : '';
   }
 
-  private getProposalUserId(p: TradeProposal): string | null {
-    return typeof p.user === 'object' ? (p.user as any)._id : p.user || null;
-  }
-
   isOwner(): boolean {
     if (!this.trade) { return false; }
     const id = typeof this.trade.user === 'object' ? (this.trade.user as any)._id : this.trade.user;
     return id === this.userId;
   }
 
-  addOffer(card: Card) {
-    this.offer.push({ ...card, quantity: 1 });
-  }
-
   removeOffer(index: number) {
     this.offer.splice(index, 1);
-  }
-
-  rejectProposal(id: string) {
-    if (!this.trade) { return; }
-    this.tradeService.rejectProposal(this.trade._id, id).subscribe(tr => this.trade = tr);
   }
 
   ensureValidOffer() {
     if (this.creditsOffered > this.userCredits) { this.creditsOffered = this.userCredits; }
     if (this.creditsOffered < 0) { this.creditsOffered = 0; }
+  }
+
+  private offerCount(heroId: string): number {
+    return this.offer.filter(o => o.heroId === heroId).length;
+  }
+
+  addRequested(card: Card) {
+    if (!this.trade) { return; }
+    const owned = this.ownedCardMap[card.heroId] || 0;
+    const offered = this.offerCount(card.heroId);
+    const required = this.trade.wantCards.find(w => w.heroId === card.heroId)?.quantity || 1;
+    if (offered >= owned || offered >= required) { return; }
+    this.offer.push({ ...card, quantity: 1 });
+  }
+
+  proposalComplete(): boolean {
+    if (!this.trade) { return false; }
+    return this.trade.wantCards.every(w => {
+      const required = w.quantity || 1;
+      return this.offerCount(w.heroId) >= required;
+    });
+  }
+
+  private updateRequestedCards() {
+    if (!this.trade) { return; }
+    this.requested = this.trade.wantCards.map(c => ({
+      ...c,
+      owned: this.ownedCardMap[c.heroId] || 0
+    }));
   }
 
   sendProposal() {
@@ -108,11 +124,6 @@ export class ScambioDetailComponent implements OnInit {
       this.showForm = false;
       this.toastType = 'success';
       this.toastMessage = 'Proposta inviata!';
-      this.showToast = true;
-      setTimeout(() => this.showToast = false, 3000);
-    }, () => {
-      this.toastType = 'danger';
-      this.toastMessage = 'Hai già una proposta in attesa.';
       this.showToast = true;
       setTimeout(() => this.showToast = false, 3000);
     });

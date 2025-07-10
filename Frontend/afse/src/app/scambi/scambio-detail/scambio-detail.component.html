@@ -43,17 +43,20 @@
       </div>
       <h6>Carte disponibili</h6>
       <div class="d-flex overflow-auto gap-2 mb-2" style="max-width:100%">
-        <div *ngFor="let c of duplicates" class="card small-card text-center" (click)="addOffer(c)">
+        <div *ngFor="let c of requested" class="card small-card text-center"
+             [class.unavailable]="c.owned === 0"
+             (click)="c.owned > 0 && addRequested(c)">
           <img [src]="c.image" class="card-img-top" alt="{{c.name}}">
-          <div class="card-body p-1"><small>{{c.name}}</small></div>
+          <div class="card-body p-1"><small>{{c.name}}</small>
+            <span class="badge bg-secondary ms-1">x{{c.owned}}</span>
+          </div>
         </div>
       </div>
       <div class="mb-2" style="max-width:200px;">
         <label class="form-label">Crediti offerti</label>
         <input type="number" class="form-control form-control-sm" [(ngModel)]="creditsOffered" min="0" [attr.max]="userCredits" (ngModelChange)="ensureValidOffer()">
-        <button class="btn btn-sm btn-danger" *ngIf="p.status === 'pending'" (click)="rejectProposal(p._id!)">Rifiuta</button>
       </div>
-      <button class="btn btn-success mt-2" (click)="sendProposal()">Manda richiesta di scambio</button>
+      <button class="btn btn-success mt-2" [disabled]="!proposalComplete()" (click)="sendProposal()">Manda richiesta di scambio</button>
     </div>
   </div>
   <div *ngIf="isOwner() && trade.proposals?.length" class="mt-4">
@@ -67,6 +70,7 @@
         </div>
       </div>
       <p *ngIf="p.creditsOffered" class="fw-bold text-success">Crediti offerti: {{p.creditsOffered}}</p>
+      <button class="btn btn-sm btn-danger" *ngIf="p.status === 'pending'" (click)="rejectProposal(p._id!)">Rifiuta</button>
     </div>
   </div>
   <div class="toast-container position-fixed bottom-0 end-0 p-3">

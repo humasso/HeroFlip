@@ -12,3 +12,8 @@
 .credits {
   font-size: 1.1rem;
 }
+
+.unavailable {
+  filter: grayscale(1);
+  cursor: not-allowed;
+}
