@@ -54,7 +54,9 @@
       </div>
       <div class="mb-2" style="max-width:200px;">
         <label class="form-label">Offri Crediti:</label>
-        <input type="number" class="form-control form-control-sm" [(ngModel)]="creditsOffered" readonly>
+         <input type="number" class="form-control form-control-sm"
+               [(ngModel)]="creditsOffered" min="0" [attr.max]="userCredits"
+               (ngModelChange)="ensureValidOffer()" [readonly]="creditInputLocked()">
       </div>
       <button class="btn btn-success mt-2" [disabled]="!proposalComplete()" (click)="sendProposal()">Manda richiesta di scambio</button>
     </div>

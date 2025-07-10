@@ -69,6 +69,11 @@ export class ScambioDetailComponent implements OnInit {
     return typeof p.user === 'object' ? (p.user as any).username : '';
   }
 
+  creditInputLocked(): boolean {
+    if (!this.trade) { return true; }
+    return this.trade.creditsWanted > 0 || this.trade.wantCards.length > 0;
+  }
+
   isOwner(): boolean {
     if (!this.trade) { return false; }
     const id = typeof this.trade.user === 'object' ? (this.trade.user as any)._id : this.trade.user;
@@ -80,8 +85,12 @@ export class ScambioDetailComponent implements OnInit {
   }
 
   ensureValidOffer() {
-    if (this.creditsOffered > this.userCredits) { this.creditsOffered = this.userCredits; }
-    if (this.creditsOffered < 0) { this.creditsOffered = 0; }
+    if (this.creditsOffered > this.userCredits) {
+      this.creditsOffered = this.userCredits;
+    }
+    if (this.creditsOffered < 0) {
+      this.creditsOffered = 0;
+    }
   }
 
   private offerCount(heroId: string): number {
@@ -103,7 +112,8 @@ export class ScambioDetailComponent implements OnInit {
       const required = w.quantity || 1;
       return this.offerCount(w.heroId) >= required;
     });
-    const creditsOk = this.trade.creditsWanted <= this.userCredits;
+    const requiredCredits = this.creditInputLocked() ? this.trade.creditsWanted : this.creditsOffered;
+    const creditsOk = requiredCredits <= this.userCredits;
     return cardsOk && creditsOk;
   }
 
