@@ -7,6 +7,8 @@ const heroRoutes = require('./routes/hero');
 const tradeRoutes = require('./routes/trade');
 const notificationRoutes = require('./routes/notification');
 
+const setupSwagger = require('./swagger');
+
 
 const cors = require('cors');
 require('dotenv').config();
@@ -44,10 +46,11 @@ app.use('/trade', tradeRoutes);
 // Rotte per le notifiche
 app.use('/notification', notificationRoutes);
 
-
+// Configurazione Swagger
+setupSwagger(app); 
 
 
 // Avvio del server
-const PORT = process.env.PORT || 4000;
-//const PORT = 3000
+//const PORT = process.env.PORT || 4000;
+const PORT = 3000
 app.listen(PORT, () => console.log(`🚀 Server in ascolto su http://localhost:${PORT}`));
