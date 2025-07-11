@@ -2,7 +2,29 @@ const express = require('express');
 const Album = require('../models/Album');
 const router = express.Router();
 
-// Get album for user
+/**
+ * @swagger
+ * tags:
+ *   name: Album
+ *   description: Gestione album delle carte
+ */
+
+/**
+ * @swagger
+ * /album/{userId}:
+ *   get:
+ *     summary: Ottiene l'album di un utente
+ *     tags: [Album]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Album dell'utente
+ */
 router.get('/:userId', async (req, res) => {
   try {
     let album = await Album.findOne({ user: req.params.userId });
@@ -16,7 +38,33 @@ router.get('/:userId', async (req, res) => {
   }
 });
 
-// Add cards to album
+/**
+ * @swagger
+ * /album/add/{userId}:
+ *   post:
+ *     summary: Aggiunge carte all'album di un utente
+ *     tags: [Album]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               cards:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *     responses:
+ *       200:
+ *         description: Album aggiornato
+ */
 router.post('/add/:userId', async (req, res) => {
   try {
     const cards = req.body.cards || [];

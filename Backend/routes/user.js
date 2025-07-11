@@ -3,6 +3,32 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const router = express.Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: User
+ *   description: Gestione utenti
+ */
+
+
+/**
+ * @swagger
+ * /user/{id}:
+ *   get:
+ *     summary: Ottiene le informazioni di un utente
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Dati dell'utente
+ *       404:
+ *         description: Utente non trovato
+ */
 router.get('/:id', async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -14,6 +40,35 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /user/pass/{id}:
+ *   put:
+ *     summary: Aggiorna la password di un utente
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               oldPassword:
+ *                 type: string
+ *               newPassword:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Password aggiornata
+ *       404:
+ *         description: Utente non trovato
+ */
 router.put('/pass/:id', async (req, res) => {
   try {
     const user = await User.findById(req.params.id);
@@ -37,6 +92,33 @@ router.put('/pass/:id', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /user/username/{id}:
+ *   put:
+ *     summary: Aggiorna lo username
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Username aggiornato
+ *       404:
+ *         description: Utente non trovato
+ */
 router.put('/username/:id', async (req, res) => {
   try {
     const { username } = req.body;
@@ -49,6 +131,33 @@ router.put('/username/:id', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /user/favoritehero/{id}:
+ *   put:
+ *     summary: Aggiorna l'eroe preferito
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               favoriteHero:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Utente aggiornato
+ *       404:
+ *         description: Utente non trovato
+ */
 router.put('/favoritehero/:id', async (req, res) => {
   try {
     const { favoriteHero } = req.body;
@@ -61,6 +170,24 @@ router.put('/favoritehero/:id', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /user/{id}:
+ *   delete:
+ *     summary: Elimina un utente
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       204:
+ *         description: Utente eliminato
+ *       404:
+ *         description: Utente non trovato
+ */
 router.delete('/:id', async (req, res) => {
   try {
     const result = await User.findByIdAndDelete(req.params.id);

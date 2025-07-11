@@ -3,6 +3,57 @@ const bcrypt = require('bcrypt');
 const User = require('../models/User');
 const router = express.Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Auth
+ *   description: Gestione autenticazione utenti
+ */
+
+
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Registra un nuovo utente
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - name
+ *               - surname
+ *               - email
+ *               - password
+ *               - favoriteHero
+ *             properties:
+ *               username:
+ *                 type: string
+ *               name:
+ *                 type: string
+ *               surname:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *               favoriteHero:
+ *                 type: string
+ *               avatar:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Utente creato con successo
+ *       400:
+ *         description: Dati non validi
+ *       500:
+ *         description: Errore server
+ */
+
 router.post('/register', async (req, res) => {
   try {
     const { username, name, surname, email, password, favoriteHero, avatar } = req.body;
@@ -52,6 +103,35 @@ router.post('/register', async (req, res) => {
   }
 });
 
+
+/**
+ * @swagger
+ * /auth/login:
+ *   post:
+ *     summary: Effettua il login
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - password
+ *             properties:
+ *               username:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login effettuato
+ *       400:
+ *         description: Credenziali non valide
+ *       500:
+ *         description: Errore server
+ */
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;

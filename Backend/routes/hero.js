@@ -4,8 +4,43 @@ const User = require('../models/User');
 const Album = require('../models/Album');
 require('dotenv').config();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Hero
+ *   description: Gestione eroi e pacchetti
+ */
+
 const API_URL = process.env.HERO_API;
 
+
+/**
+ * @swagger
+ * /hero/open/{id}:
+ *   post:
+ *     summary: Apre un pacchetto e assegna le carte uscite dal pachetto all'utente
+ *     tags: [Hero]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               packType:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Pacchetto aperto
+ *       404:
+ *         description: Utente non trovato
+ */
 router.post('/open/:id', async (req, res) => {
   try {
     const { packType } = req.body;

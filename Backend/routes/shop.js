@@ -2,7 +2,41 @@ const express = require('express');
 const User = require('../models/User');
 const router = express.Router();
 
-// Aggiunge crediti all'utente specificato
+/**
+ * @swagger
+ * tags:
+ *   name: Shop
+ *   description: Operazioni di acquisto e crediti
+ */
+
+
+/**
+ * @swagger
+ * /shop/credits/{id}:
+ *   post:
+ *     summary: Aggiunge crediti a un utente
+ *     tags: [Shop]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               credits:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: Crediti aggiunti
+ *       404:
+ *         description: Utente non trovato
+ */
 router.post('/credits/:id', async (req, res) => {
   try {
     const credits = parseInt(req.body.credits, 10);
@@ -27,7 +61,39 @@ router.post('/credits/:id', async (req, res) => {
   }
 });
 
-// Acquisto pacchetti per l'utente specificato
+//post aparte per l'apertura dei pacchetti
+
+/**
+ * @swagger
+ * /shop/packs/{id}:
+ *   post:
+ *     summary: Acquista pacchetti per l'utente specificato
+ *     tags: [Shop]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               packType:
+ *                 type: string
+ *               qty:
+ *                 type: integer
+ *               cost:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: Pacchetti acquistati
+ *       404:
+ *         description: Utente non trovato
+ */
 router.post('/packs/:id', async (req, res) => {
   try {
     const { packType, qty, cost } = req.body;
@@ -65,7 +131,35 @@ router.post('/packs/:id', async (req, res) => {
   }
 });
 
-// Apertura pacchetti
+/**
+ * @swagger
+ * /shop/open/{id}:
+ *   post:
+ *     summary: Apre pacchetti per un utente
+ *     tags: [Shop]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               packType:
+ *                 type: string
+ *               qty:
+ *                 type: integer
+ *     responses:
+ *       200:
+ *         description: Pacchetti aperti
+ *       404:
+ *         description: Utente non trovato
+ */
 router.post('/open/:id', async (req, res) => {
   try {
     const { packType, qty } = req.body;

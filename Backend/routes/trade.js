@@ -7,6 +7,13 @@ const TradeHistory = require('../models/TradeHistory');
 
 const router = express.Router();
 
+/**
+ * @swagger
+ * tags:
+ *   name: Trade
+ *   description: Gestione degli scambi
+ */
+
 async function getOrCreateAlbum(userId) {
   let album = await Album.findOne({ user: userId });
   if (!album) {
@@ -34,7 +41,22 @@ function moveCards(fromAlbum, toAlbum, cards) {
   }
 }
 
-// Crea un nuovo scambio
+/**
+ * @swagger
+ * /trade:
+ *   post:
+ *     summary: Crea un nuovo scambio e lo publica sulla bacheca
+ *     tags: [Trade]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Scambio creato
+ */
 router.post('/', async (req, res) => {
   try {
     const { offerCards = [], creditsOffered = 0, creditsWanted = 0 } = req.body;
@@ -59,7 +81,17 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Lista di tutti gli scambi
+
+/**
+ * @swagger
+ * /trade:
+ *   get:
+ *     summary: Lista di tutti gli scambi
+ *     tags: [Trade]
+ *     responses:
+ *       200:
+ *         description: Elenco scambi
+ */
 router.get('/', async (req, res) => {
   try {
     const trades = await Trade.find()
@@ -73,7 +105,22 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Lista di tutti gli scambi per un utente specifico
+/**
+ * @swagger
+ * /trade/user/{userId}:
+ *   get:
+ *     summary: Lista degli scambi creati da un utente specifico
+ *     tags: [Trade]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Elenco scambi
+ */
 router.get('/user/:userId', async (req, res) => {
   try {
     const trades = await Trade.find({ user: req.params.userId })
@@ -87,7 +134,22 @@ router.get('/user/:userId', async (req, res) => {
   }
 });
 
-// Storico scambi completati per un utente
+/**
+ * @swagger
+ * /trade/history/{userId}:
+ *   get:
+ *     summary: Storico degli scambi completati di un utente
+ *     tags: [Trade]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Storico scambi
+ */
 router.get('/history/:userId', async (req, res) => {
   try {
     const history = await TradeHistory.find({
@@ -107,7 +169,24 @@ router.get('/history/:userId', async (req, res) => {
 });
 
 
-// Recupera uno scambio specifico per ID
+/**
+ * @swagger
+ * /trade/{id}:
+ *   get:
+ *     summary: Recupera informazioni di uno scambio tramite ID
+ *     tags: [Trade]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Dati dello scambio
+ *       404:
+ *         description: Scambio non trovato
+ */
 router.get('/:id', async (req, res) => {
   try {
     const trade = await Trade.findById(req.params.id)
@@ -123,7 +202,30 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Aggiungi una proposta a uno scambio
+/**
+ * @swagger
+ * /trade/{id}/respond:
+ *   post:
+ *     summary: Invia una proposta di scambio
+ *     tags: [Trade]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *     responses:
+ *       200:
+ *         description: Proposta aggiunta
+ *       404:
+ *         description: Scambio non trovato
+ */
 router.post('/:id/respond', async (req, res) => {
   try {
     const trade = await Trade.findById(req.params.id);
@@ -149,7 +251,29 @@ router.post('/:id/respond', async (req, res) => {
   }
 });
 
-// Rifiuta una proposta
+/**
+ * @swagger
+ * /trade/{tradeId}/proposal/{proposalId}/reject:
+ *   patch:
+ *     summary: Rifiuta una proposta
+ *     tags: [Trade]
+ *     parameters:
+ *       - in: path
+ *         name: tradeId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: proposalId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Proposta rifiutata
+ *       404:
+ *         description: Scambio o proposta non trovati
+ */
 router.patch('/:tradeId/proposal/:proposalId/reject', async (req, res) => {
   try {
     const trade = await Trade.findById(req.params.tradeId);
@@ -174,7 +298,29 @@ router.patch('/:tradeId/proposal/:proposalId/reject', async (req, res) => {
   }
 });
 
-// Accetta una proposta e trasferisce carte e crediti
+/**
+ * @swagger
+ * /trade/{tradeId}/proposal/{proposalId}/accept:
+ *   patch:
+ *     summary: Accetta una proposta e trasferisce carte e crediti
+ *     tags: [Trade]
+ *     parameters:
+ *       - in: path
+ *         name: tradeId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: proposalId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Proposta accettata
+ *       404:
+ *         description: Scambio o proposta non trovati
+ */
 router.patch('/:tradeId/proposal/:proposalId/accept', async (req, res) => {
   try {
     const trade = await Trade.findById(req.params.tradeId);
@@ -245,7 +391,24 @@ router.patch('/:tradeId/proposal/:proposalId/accept', async (req, res) => {
   }
 });
 
-// Elimina uno scambio
+/**
+ * @swagger
+ * /trade/{id}:
+ *   delete:
+ *     summary: Elimina uno scambio
+ *     tags: [Trade]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Scambio eliminato
+ *       404:
+ *         description: Scambio non trovato
+ */
 router.delete('/:id', async (req, res) => {
   try {
     const trade = await Trade.findByIdAndDelete(req.params.id);
