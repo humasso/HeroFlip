@@ -29,7 +29,6 @@ export class ProfileComponent implements OnInit {
   heroOptions: { id: number; name: string }[] = [];
   favoriteHeroExists = true;
   cardCount = 0;
-  temp = 300;
 
   constructor(
     private userService: UserService,
@@ -114,10 +113,8 @@ export class ProfileComponent implements OnInit {
 
     // Caso Password
     if (field === 'password') {
-      console.log('user', this.user);
       this.userService.updatePassword(this.user._id, this.editForm.value.oldPassword, this.editForm.value.password).subscribe({
-        next: response => {
-          console.log('response', response);
+        next: () => {
           this.user.password = this.editForm.value.password;
           this.editingField = null;
           this.loading = false;
