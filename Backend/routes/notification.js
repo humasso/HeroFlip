@@ -37,6 +37,7 @@ router.get('/:userId', async (req, res) => {
     res.status(500).json({ message: 'Errore server' });
   }
 });
+
 /**
  * @swagger
  * /notification:
@@ -49,6 +50,16 @@ router.get('/:userId', async (req, res) => {
  *         application/json:
  *           schema:
  *             type: object
+ *             required:
+ *               - user
+ *               - message
+ *             properties:
+ *               user:
+ *                 type: string
+ *               actor:
+ *                 type: string
+ *               message:
+ *                 type: string
  *     responses:
  *       200:
  *         description: Notifica creata
