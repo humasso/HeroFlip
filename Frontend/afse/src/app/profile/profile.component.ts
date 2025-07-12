@@ -203,6 +203,21 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+   setHeroAvatar() {
+    const name = this.user.favoriteHero;
+    this.heroService.searchHeroes(name).subscribe(heroes => {
+      const found = heroes.find(h => h.name.toLowerCase() === name.toLowerCase()) || heroes[0];
+      if (!found) { return; }
+      this.heroService.getHero(found.id).subscribe(hero => {
+        const image = hero.image;
+        this.userService.updateAvatar(this.user._id, image).subscribe({
+          next: () => this.user.avatar = image,
+          error: () => alert('Errore durante l\'aggiornamento dell\'immagine.')
+        });
+      });
+    });
+  }
+
   goToShop() {
     this.router.navigate(['/shop/credits']);
   }

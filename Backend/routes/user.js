@@ -172,6 +172,45 @@ router.put('/favoritehero/:id', async (req, res) => {
 
 /**
  * @swagger
+ * /user/avatar/{id}:
+ *   put:
+ *     summary: Aggiorna l'avatar dell'utente
+ *     tags: [User]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               avatar:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Utente aggiornato
+ *       404:
+ *         description: Utente non trovato
+ */
+router.put('/avatar/:id', async (req, res) => {
+  try {
+    const { avatar } = req.body;
+    const user = await User.findByIdAndUpdate(req.params.id, { avatar }, { new: true });
+    if (!user) return res.status(404).json({ message: 'Utente non trovato' });
+    res.json(user);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Errore server' });
+  }
+});
+
+/**
+ * @swagger
  * /user/{id}:
  *   delete:
  *     summary: Elimina un utente
