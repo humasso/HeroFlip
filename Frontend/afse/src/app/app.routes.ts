@@ -18,10 +18,10 @@ import { adminGuard } from './auth/admin.guard';
 
 export const routes: Routes = [
     //{ path: '', component: AppComponent },
-    { path: '', component: HomeComponent, canActivate: [authGuard] },
+    { path: '', component: HomeComponent },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'home', component: HomeComponent, canActivate: [authGuard] },
+    { path: 'home', component: HomeComponent },
     { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
     { path: 'shop', component: ShopdashComponent, canActivate: [authGuard] },
     { path: 'shop/credits', component: CreditsComponent, canActivate: [authGuard] },

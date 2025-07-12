@@ -2,6 +2,9 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const User = require('../models/User');
+const Album = require('../models/Album');
+const Notification = require('../models/Notification');
+const Trade = require('../models/Trade');
 const router = express.Router();
 
 /**
@@ -236,7 +239,7 @@ router.put('/avatar/:id', async (req, res) => {
  * @swagger
  * /user/{id}:
  *   delete:
- *     summary: Elimina un utente
+ *     summary: Elimina un utente e tutti i dati associati
  *     tags: [User]
  *     parameters:
  *       - in: path
@@ -256,9 +259,16 @@ router.delete('/:id', async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ message: 'ID non valido' });
     }
-    
+
     const result = await User.findByIdAndDelete(req.params.id);
     if (!result) return res.status(404).json({ message: 'Utente non trovato' });
+
+    await Promise.all([
+      Album.deleteOne({ user: req.params.id }),
+      Notification.deleteMany({ $or: [{ user: req.params.id }, { actor: req.params.id }] }),
+      Trade.deleteMany({ $or: [{ user: req.params.id }, { 'proposals.user': req.params.id }] })
+    ]);
+
     res.status(204).end();
   } catch (err) {
     console.error(err);

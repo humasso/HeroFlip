@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Album = require('../models/Album');
+const Notification = require('../models/Notification');
+const Trade = require('../models/Trade');
 const bcrypt = require('bcrypt');
 
 // Lista di tutti gli utenti
@@ -93,11 +95,17 @@ router.put('/password/:id', async (req, res) => {
   }
 });
 
-// Elimina un utente
 router.delete('/user/:id', async (req, res) => {
   try {
     const result = await User.findByIdAndDelete(req.params.id);
     if (!result) return res.status(404).json({ message: 'Utente non trovato' });
+
+    await Promise.all([
+      Album.deleteOne({ user: req.params.id }),
+      Notification.deleteMany({ $or: [{ user: req.params.id }, { actor: req.params.id }] }),
+      Trade.deleteMany({ $or: [{ user: req.params.id }, { 'proposals.user': req.params.id }] })
+    ]);
+
     res.status(204).end();
   } catch (err) {
     console.error(err);
