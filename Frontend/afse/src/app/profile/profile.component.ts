@@ -29,6 +29,9 @@ export class ProfileComponent implements OnInit {
   heroOptions: { id: number; name: string }[] = [];
   favoriteHeroExists = true;
   cardCount = 0;
+  heroAvatarActive = false;
+  heroImageUrl = '';
+  defaultAvatarUrl = '';
 
   constructor(
     private userService: UserService,
@@ -49,9 +52,17 @@ export class ProfileComponent implements OnInit {
     this.userService.getUser(this.userId).subscribe({
       next: user => {
         this.user = user;
+        this.defaultAvatarUrl = `https://robohash.org/${this.user.username}.png?set=set4`;
         this.initForm();
         this.heroService.searchHeroes(this.user.favoriteHero).subscribe(res => {
           this.favoriteHeroExists = res.some(h => h.name.toLowerCase() === this.user.favoriteHero.toLowerCase());
+          const found = res.find(h => h.name.toLowerCase() === this.user.favoriteHero.toLowerCase()) || res[0];
+          if (found) {
+            this.heroService.getHero(found.id).subscribe(hero => {
+              this.heroImageUrl = hero.image;
+              this.heroAvatarActive = this.user.avatar === this.heroImageUrl;
+            });
+          }
         });
       },
       error: () => this.errorMsg = 'Impossibile caricare i dati.'
@@ -203,19 +214,38 @@ export class ProfileComponent implements OnInit {
     });
   }
 
-   setHeroAvatar() {
-    const name = this.user.favoriteHero;
-    this.heroService.searchHeroes(name).subscribe(heroes => {
-      const found = heroes.find(h => h.name.toLowerCase() === name.toLowerCase()) || heroes[0];
-      if (!found) { return; }
-      this.heroService.getHero(found.id).subscribe(hero => {
-        const image = hero.image;
-        this.userService.updateAvatar(this.user._id, image).subscribe({
-          next: () => this.user.avatar = image,
-          error: () => alert('Errore durante l\'aggiornamento dell\'immagine.')
-        });
+  toggleAvatar() {
+    if (this.heroAvatarActive) {
+      this.userService.updateAvatar(this.user._id, this.defaultAvatarUrl).subscribe({
+        next: () => {
+          this.user.avatar = this.defaultAvatarUrl;
+          this.heroAvatarActive = false;
+        },
+        error: () => alert("Errore durante l'aggiornamento dell'immagine.")
       });
-    });
+    } else {
+      const update = (image: string) => {
+        this.heroImageUrl = image;
+        this.userService.updateAvatar(this.user._id, image).subscribe({
+          next: () => {
+            this.user.avatar = image;
+            this.heroAvatarActive = true;
+          },
+          error: () => alert("Errore durante l'aggiornamento dell'immagine.")
+        });
+      };
+
+      if (this.heroImageUrl) {
+        update(this.heroImageUrl);
+      } else {
+        const name = this.user.favoriteHero;
+        this.heroService.searchHeroes(name).subscribe(heroes => {
+          const found = heroes.find(h => h.name.toLowerCase() === name.toLowerCase()) || heroes[0];
+          if (!found) { return; }
+          this.heroService.getHero(found.id).subscribe(hero => update(hero.image));
+        });
+      }
+    }
   }
 
   goToShop() {

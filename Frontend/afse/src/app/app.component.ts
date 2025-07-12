@@ -22,12 +22,14 @@ export class AppComponent implements OnInit {
   isDarkMode = false;
 
   constructor(private auth: AuthService, private userService: UserService, public router: Router) {}
-  
+
   ngOnInit(): void {
     this.username = null;
     const savedTheme = localStorage.getItem('isDarkMode');
     this.isDarkMode = savedTheme === 'true';
     document.body.setAttribute('data-bs-theme', this.isDarkMode ? 'dark' : 'light');
+    this.userService.avatar$.subscribe(av => this.avatar = av);
+
     this.auth.loggedIn$.subscribe(status => {
       this.isLoggedIn = status;
 
@@ -36,13 +38,13 @@ export class AppComponent implements OnInit {
         if (userId) {
           this.userService.getUser(userId).subscribe(user => {
             this.username = user.username;
-            this.avatar = user.avatar;
+            this.userService.setAvatar(user.avatar);
             // this.credits = user.credits;
           });
         }
       } else {
         this.username = null;
-        this.avatar = null;
+        this.userService.setAvatar(null);
         this.credits = 0;
       }
     });
@@ -58,7 +60,7 @@ export class AppComponent implements OnInit {
     this.auth.logout();
     this.isLoggedIn = false;
     this.username = null;
-    this.avatar = null;
+    this.userService.setAvatar(null);
     this.credits = 0;
     
     // Reset dark mode al logout

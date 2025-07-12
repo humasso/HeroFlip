@@ -37,6 +37,7 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.userService.avatar$.subscribe(av => this.avatar = av);
     this.auth.loggedIn$.subscribe(status => {
       this.isLoggedIn = status;
       if (status) {
@@ -44,7 +45,7 @@ export class HomeComponent implements OnInit {
         if (!userId) { return; }
         this.userService.getUser(userId).subscribe(user => {
           this.username = user.username;
-          this.avatar = user.avatar;
+          this.userService.setAvatar(user.avatar);
           this.credits = user.credits;
           this.packCount = (user.packs ?? []).reduce((sum, p) => sum + p.quantity, 0);
         });
@@ -53,13 +54,14 @@ export class HomeComponent implements OnInit {
         });
       } else {
         this.username = null;
-        this.avatar = null;
+        this.userService.setAvatar(null);
         this.credits = 0;
         this.packCount = 0;
         this.cardCount = 0;
       }
     });
   }
+
 
   onMouseEnter() {
     this.logoTransform = 'perspective(600px) scale(1.05)';

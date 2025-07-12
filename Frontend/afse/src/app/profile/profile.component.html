@@ -4,7 +4,9 @@
       <div class="text-center mb-4">
         <img [src]="user.avatar" class="rounded-circle" alt="User Image" width="100" height="100" style="border-radius: 2px; border: 2px solid #f30808;">
         <div class="mt-2">
-          <button class="btn btn-sm btn-outline-primary" (click)="setHeroAvatar()">Usa immagine eroe</button>
+          <a href="javascript:void(0)" class="link-primary small" (click)="toggleAvatar()">
+            {{ heroAvatarActive ? 'Usa immagine default' : 'Usa immagine eroe' }}
+          </a>
         </div>
       <h4 class="card-title text-center mb-3">{{ user.username }}</h4>
       <ul class="list-group list-group-flush mb-3">

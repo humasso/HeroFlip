@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { User } from '../models/user.model';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 
@@ -12,6 +12,9 @@ import { environment } from '../../environments/environment';
 export class UserService {
   private http = inject(HttpClient)
   private apiUrl = `${environment.backendApi}/user`;
+
+  private avatarSubject = new BehaviorSubject<string | null>(null);
+  avatar$ = this.avatarSubject.asObservable();
 
   constructor() { }
 
@@ -32,7 +35,13 @@ export class UserService {
   }
 
   updateAvatar(id: string, avatar: string): Observable<{ message: string }> {
-    return this.http.put<{ message: string }>(`${this.apiUrl}/avatar/${id}`, { avatar });
+    return this.http
+      .put<{ message: string }>(`${this.apiUrl}/avatar/${id}`, { avatar })
+      .pipe(tap(() => this.avatarSubject.next(avatar)));
+  }
+
+  setAvatar(avatar: string | null) {
+    this.avatarSubject.next(avatar);
   }
 
   deleteUser(id: string): Observable<void> {
