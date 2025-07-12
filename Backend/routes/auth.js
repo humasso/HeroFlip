@@ -140,7 +140,6 @@ router.post('/login', async (req, res) => {
       return res.status(400).send('Credenziali mancanti');
     }
 
-    req.session.userId = user._id;
     const user = await User.findOne({ username });
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(400).send('Credenziali errate');
@@ -151,16 +150,6 @@ router.post('/login', async (req, res) => {
     console.error('Errore in /login:', err);
     res.status(500).send('Errore Server Interno');
   }
-});
-
-router.post('/logout', (req, res) => {
-  req.session.destroy(err => {
-    if (err) {
-      return res.status(500).send('Errore logout');
-    }
-    res.clearCookie('connect.sid');
-    res.json({ message: 'Logout effettuato' });
-  });
 });
 
 

@@ -6,8 +6,6 @@ const albumRoutes = require('./routes/album');
 const heroRoutes = require('./routes/hero');
 const tradeRoutes = require('./routes/trade');
 const notificationRoutes = require('./routes/notification');
-const session = require('express-session');
-const requireLogin = require('./middleware/sessionAuth');
 
 const setupSwagger = require('./swagger');
 
@@ -19,13 +17,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET || 'secret-key',
-    resave: false,
-    saveUninitialized: false
-  })
-);
 
 connectDB();
 
@@ -35,9 +26,6 @@ app.get('/', (req, res) => {
 
 // Rotte di auth sotto /api/auth
 app.use('/auth', authRoutes);
-
-// Da qui in poi richiede l'autenticazione
-app.use(requireLogin);
 
 // Rotte di user sotto /api/users
 app.use('/user', userRoutes);

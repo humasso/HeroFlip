@@ -11,23 +11,23 @@ import { DettagliEroeComponent } from './dettagli-eroe/dettagli-eroe.component';
 import { ScambiBoardComponent } from './scambi/scambi-board/scambi-board.component';
 import { ScambioCreateComponent } from './scambi/scambio-create/scambio-create.component';
 import { ScambioDetailComponent } from './scambi/scambio-detail/scambio-detail.component';
-
+import { authGuard } from './auth/auth.guard';
 
 
 export const routes: Routes = [
     //{ path: '', component: AppComponent },
-    { path: '', component: HomeComponent },
+    { path: '', component: HomeComponent, canActivate: [authGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
-    { path: 'home', component: HomeComponent },
-    { path: 'profile', component: ProfileComponent },
-    { path: 'shop', component: ShopdashComponent },
-    { path: 'shop/credits', component: CreditsComponent },
-    { path: 'pacchetti', component: PacchettiComponent },
-    { path: 'album', component: AlbumComponent },
-    { path: 'album/hero/:id', component: DettagliEroeComponent },
-    { path: 'scambi', component: ScambiBoardComponent },
-    { path: 'scambi/new', component: ScambioCreateComponent },
-    { path: 'scambi/:id', component: ScambioDetailComponent },
+    { path: 'home', component: HomeComponent, canActivate: [authGuard] },
+    { path: 'profile', component: ProfileComponent, canActivate: [authGuard] },
+    { path: 'shop', component: ShopdashComponent, canActivate: [authGuard] },
+    { path: 'shop/credits', component: CreditsComponent, canActivate: [authGuard] },
+    { path: 'pacchetti', component: PacchettiComponent, canActivate: [authGuard] },
+    { path: 'album', component: AlbumComponent, canActivate: [authGuard] },
+    { path: 'album/hero/:id', component: DettagliEroeComponent, canActivate: [authGuard] },
+    { path: 'scambi', component: ScambiBoardComponent, canActivate: [authGuard] },
+    { path: 'scambi/new', component: ScambioCreateComponent, canActivate: [authGuard] },
+    { path: 'scambi/:id', component: ScambioDetailComponent, canActivate: [authGuard] },
     { path: '**', redirectTo: '' }
 ];
