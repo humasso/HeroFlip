@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   avatar: string | null = null;
   credits = 0;
   isDarkMode = false;
+  isAdmin = false;
 
   constructor(private auth: AuthService, private userService: UserService, public router: Router) {}
 
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit {
     this.username = null;
     const savedTheme = localStorage.getItem('isDarkMode');
     this.isDarkMode = savedTheme === 'true';
+    this.isAdmin = localStorage.getItem('isAdmin') === 'true';
     document.body.setAttribute('data-bs-theme', this.isDarkMode ? 'dark' : 'light');
     this.userService.avatar$.subscribe(av => this.avatar = av);
 
@@ -62,6 +64,7 @@ export class AppComponent implements OnInit {
     this.username = null;
     this.userService.setAvatar(null);
     this.credits = 0;
+    this.isAdmin = false;
     
     // Reset dark mode al logout
     this.isDarkMode = false;

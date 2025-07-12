@@ -34,9 +34,13 @@ export class LoginComponent {
     this.errorMessage = null;
 
     this.authService.login(payload).subscribe({
-      next: () => {
+      next: res => {
         localStorage.setItem('username', this.username);
-        this.router.navigate(['/']);
+        if (res && (res as any).admin) {
+          this.router.navigate(['/admin']);
+        } else {
+          this.router.navigate(['/']);
+        }
       },
       error: err => {
         if (err.error && err.error.message) {

@@ -6,6 +6,7 @@ const albumRoutes = require('./routes/album');
 const heroRoutes = require('./routes/hero');
 const tradeRoutes = require('./routes/trade');
 const notificationRoutes = require('./routes/notification');
+const adminRoutes = require('./routes/admin');
 
 const setupSwagger = require('./swagger');
 
@@ -44,6 +45,9 @@ app.use('/trade', tradeRoutes);
 
 // Rotte per le notifiche
 app.use('/notification', notificationRoutes);
+
+// Rotte per l'admin
+app.use('/admin', adminRoutes);
 
 // Configurazione Swagger
 setupSwagger(app); 

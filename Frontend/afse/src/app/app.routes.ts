@@ -12,6 +12,8 @@ import { ScambiBoardComponent } from './scambi/scambi-board/scambi-board.compone
 import { ScambioCreateComponent } from './scambi/scambio-create/scambio-create.component';
 import { ScambioDetailComponent } from './scambi/scambio-detail/scambio-detail.component';
 import { authGuard } from './auth/auth.guard';
+import { AdminComponent } from './admin/admin.component';
+import { adminGuard } from './auth/admin.guard';
 
 
 export const routes: Routes = [
@@ -29,5 +31,6 @@ export const routes: Routes = [
     { path: 'scambi', component: ScambiBoardComponent, canActivate: [authGuard] },
     { path: 'scambi/new', component: ScambioCreateComponent, canActivate: [authGuard] },
     { path: 'scambi/:id', component: ScambioDetailComponent, canActivate: [authGuard] },
+    { path: 'admin', component: AdminComponent, canActivate: [adminGuard] },
     { path: '**', redirectTo: '' }
 ];

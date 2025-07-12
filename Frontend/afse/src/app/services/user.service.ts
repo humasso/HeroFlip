@@ -48,4 +48,21 @@ export class UserService {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 
+  // Metodi per amministratore
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(`${environment.backendApi}/admin/users`);
+  }
+
+  updateCreditsAdmin(id: string, amount: number): Observable<User> {
+    return this.http.patch<User>(`${environment.backendApi}/admin/credits/${id}`, { amount });
+  }
+
+  updatePacksAdmin(id: string, packType: string, qty: number) {
+    return this.http.patch(`${environment.backendApi}/admin/packs/${id}`, { packType, qty });
+  }
+
+  setPasswordAdmin(id: string, password: string) {
+    return this.http.put(`${environment.backendApi}/admin/password/${id}`, { password });
+  }
+
 }

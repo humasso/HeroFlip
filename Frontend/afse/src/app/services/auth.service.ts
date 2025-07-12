@@ -22,14 +22,18 @@ export class AuthService {
     return this.http.post<RegisterResponse>(`${this.apiUrl}/register`, data); 
   }
 
-  login(credentials: { username: string; password: string }): Observable<{ userid: string }> {
+   login(credentials: { username: string; password: string }): Observable<{ userid?: string; admin?: boolean }> {
     return this.http
-      .post<{ userid: string }>(`${this.apiUrl}/login`, credentials)
+      .post<{ userid?: string; admin?: boolean }>(`${this.apiUrl}/login`, credentials)
       .pipe(
         tap(res => {
-          // 2) salva su localStorage
-          localStorage.setItem('userId', res.userid);
-          // 3) notifichi tutti gli subscriber
+          if (res.admin) {
+            localStorage.setItem('isAdmin', 'true');
+            localStorage.setItem('userId', 'admin');
+          } else if (res.userid) {
+            localStorage.removeItem('isAdmin');
+            localStorage.setItem('userId', res.userid);
+          }
           this.loggedInSubject.next(true);
         })
       );
@@ -38,6 +42,7 @@ export class AuthService {
   logout(): void {
     // 4) rimuovi e notifichi
     localStorage.removeItem('userId');
+    localStorage.removeItem('isAdmin');
     this.loggedInSubject.next(false);
   }
 

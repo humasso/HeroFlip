@@ -19,4 +19,8 @@ export class AlbumService {
   getAlbum(userId: string): Observable<Album> {
     return this.http.get<Album>(`${this.albumUrl}/${userId}`);
   }
+
+  addCards(userId: string, cards: Card[]): Observable<Album> {
+    return this.http.post<Album>(`${this.albumUrl}/add/${userId}`, { cards });
+  }
 }
