@@ -59,11 +59,16 @@ function moveCards(fromAlbum, toAlbum, cards) {
  */
 router.post('/', async (req, res) => {
   try {
-    const { offerCards = [], creditsOffered = 0, creditsWanted = 0 } = req.body;
+    const {
+      offerCards = [],
+      wantCards = [],
+      creditsOffered = 0,
+      creditsWanted = 0
+    } = req.body;
 
-    if (offerCards.length === 0 && creditsOffered <= 0) {
+    if (offerCards.length === 0 && (creditsOffered <= 0 || wantCards.length === 0)) {
       return res.status(400).json({
-        message: 'Indica almeno una carta o dei crediti da offrire.'
+        message: 'Aggiungi almeno una carta da offrire oppure dei crediti e le carte richieste.'
       });
     }
 

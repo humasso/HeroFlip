@@ -30,6 +30,7 @@ export class ScambioCreateComponent implements OnInit {
 
   userCredits = 0;
   cardQuantityMap: Record<string, number> = {};
+  errorMsg: string | null = null;
 
   constructor(
     private albumService: AlbumService,
@@ -117,6 +118,10 @@ export class ScambioCreateComponent implements OnInit {
     const userId = localStorage.getItem('userId');
     if (!userId) { return; }
     this.ensureValidOffer();
+    if (this.offer.length === 0 && (this.creditsOffered <= 0 || this.want.length === 0)) {
+      this.errorMsg = 'Inserisci almeno una carta in "Offri" oppure dei crediti e le carte richieste.';
+      return;
+    }
     this.tradeService.createTrade({
       user: userId,
       description: this.description,
@@ -124,8 +129,13 @@ export class ScambioCreateComponent implements OnInit {
       wantCards: this.want,
       creditsWanted: this.creditsWanted,
       creditsOffered: this.creditsOffered
-    }).subscribe(tr => {
-      this.router.navigate(['/scambi', tr._id]);
+    }).subscribe({
+      next: tr => {
+        this.router.navigate(['/scambi', tr._id]);
+      },
+      error: err => {
+        this.errorMsg = err.error?.message || 'Errore durante la creazione.';
+      }
     });
   }
 }

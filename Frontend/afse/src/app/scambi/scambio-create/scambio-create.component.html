@@ -1,5 +1,6 @@
 <div class="container mt-4">
   <h4>Nuovo Scambio</h4>
+  <div *ngIf="errorMsg" class="alert alert-danger">{{ errorMsg }}</div>
   <div class="mb-3">
     <label class="form-label">Descrizione</label>
     <textarea class="form-control" [(ngModel)]="description"></textarea>
