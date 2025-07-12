@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const mongoose = require('mongoose');
 const User = require('../models/User');
 const router = express.Router();
 
@@ -31,6 +32,9 @@ const router = express.Router();
  */
 router.get('/:id', async (req, res) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'ID non valido' });
+    }
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ message: 'Utente non trovato' });
     res.json(user);
@@ -71,6 +75,11 @@ router.get('/:id', async (req, res) => {
  */
 router.put('/pass/:id', async (req, res) => {
   try {
+
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'ID non valido' });
+    }
+
     const user = await User.findById(req.params.id);
     if (!user) return res.status(404).json({ message: 'Utente non trovato' });
 
@@ -121,6 +130,10 @@ router.put('/pass/:id', async (req, res) => {
  */
 router.put('/username/:id', async (req, res) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'ID non valido' });
+    }
+
     const { username } = req.body;
     const user = await User.findByIdAndUpdate(req.params.id, { username }, { new: true });
     if (!user) return res.status(404).json({ message: 'Utente non trovato' });
@@ -160,6 +173,11 @@ router.put('/username/:id', async (req, res) => {
  */
 router.put('/favoritehero/:id', async (req, res) => {
   try {
+
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'ID non valido' });
+    }
+
     const { favoriteHero } = req.body;
     const user = await User.findByIdAndUpdate(req.params.id, { favoriteHero }, { new: true });
     if (!user) return res.status(404).json({ message: 'Utente non trovato' });
@@ -199,6 +217,11 @@ router.put('/favoritehero/:id', async (req, res) => {
  */
 router.put('/avatar/:id', async (req, res) => {
   try {
+
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'ID non valido' });
+    }
+
     const { avatar } = req.body;
     const user = await User.findByIdAndUpdate(req.params.id, { avatar }, { new: true });
     if (!user) return res.status(404).json({ message: 'Utente non trovato' });
@@ -229,6 +252,11 @@ router.put('/avatar/:id', async (req, res) => {
  */
 router.delete('/:id', async (req, res) => {
   try {
+
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ message: 'ID non valido' });
+    }
+    
     const result = await User.findByIdAndDelete(req.params.id);
     if (!result) return res.status(404).json({ message: 'Utente non trovato' });
     res.status(204).end();

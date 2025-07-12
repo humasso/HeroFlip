@@ -34,8 +34,9 @@ export class AppComponent implements OnInit {
 
     this.auth.loggedIn$.subscribe(status => {
       this.isLoggedIn = status;
+      this.isAdmin = localStorage.getItem('isAdmin') === 'true';
 
-      if (status) {
+      if (status && !this.isAdmin) {
         const userId = localStorage.getItem('userId');
         if (userId) {
           this.userService.getUser(userId).subscribe(user => {
@@ -44,7 +45,7 @@ export class AppComponent implements OnInit {
             // this.credits = user.credits;
           });
         }
-      } else {
+      } else if (!status) {
         this.username = null;
         this.userService.setAvatar(null);
         this.credits = 0;
