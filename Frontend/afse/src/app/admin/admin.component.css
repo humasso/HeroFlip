@@ -1,4 +1,18 @@
-.list-group-item.active {
+.user-list {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.user-item.active {
   background-color: #0d6efd;
-  color: white;
+  color: #fff;
+}
+
+.detail-card {
+  border: none;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+}
+
+.form-label {
+  font-weight: 600;
 }

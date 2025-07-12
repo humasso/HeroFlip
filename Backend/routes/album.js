@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const Album = require('../models/Album');
 const router = express.Router();
 
@@ -27,9 +28,13 @@ const router = express.Router();
  */
 router.get('/:userId', async (req, res) => {
   try {
-    let album = await Album.findOne({ user: req.params.userId });
+    const { userId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
+    let album = await Album.findOne({ user: userId });
     if (!album) {
-      album = await Album.create({ user: req.params.userId, cards: [] });
+      album = await Album.create({ user: userId, cards: [] });
     }
     res.json(album);
   } catch (err) {
@@ -67,10 +72,14 @@ router.get('/:userId', async (req, res) => {
  */
 router.post('/add/:userId', async (req, res) => {
   try {
+    const { userId } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: 'Invalid user ID' });
+    }
     const cards = req.body.cards || [];
-    let album = await Album.findOne({ user: req.params.userId });
+    let album = await Album.findOne({ user: userId });
     if (!album) {
-      album = new Album({ user: req.params.userId, cards: [] });
+      album = new Album({ user: userId, cards: [] });
     }
     for (const c of cards) {
       const existing = album.cards.find(card => card.heroId === c.heroId);

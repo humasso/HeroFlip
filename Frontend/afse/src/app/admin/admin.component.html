@@ -1,48 +1,85 @@
-<div class="container mt-4">
-  <h2>Gestione Utenti</h2>
-  <input type="text" class="form-control mb-3" [(ngModel)]="searchTerm" (input)="filter()" placeholder="Cerca utente" />
-  <ul class="list-group mb-4">
-    <li class="list-group-item" *ngFor="let u of filtered" (click)="selectUser(u)" [class.active]="selected?._id === u._id">
-      {{u.username}}
-    </li>
-  </ul>
-
-  <div *ngIf="selected">
-    <h4>Dettagli {{selected!.username}}</h4>
-    <p>Crediti: {{selected!.credits}}</p>
-
-    <div class="mb-3">
-      <label>Aggiungi/Rimuovi Crediti</label>
-      <input type="number" class="form-control" [(ngModel)]="creditAmount" />
-      <button class="btn btn-primary mt-2" (click)="updateCredits()">Aggiorna</button>
-    </div>
-
-    <div class="mb-3">
-      <label>Modifica Pacchetti</label>
-      <input class="form-control" placeholder="Tipo" [(ngModel)]="packType" />
-      <input type="number" class="form-control mt-1" [(ngModel)]="packQty" />
-      <button class="btn btn-primary mt-2" (click)="updatePacks()">Aggiorna</button>
-    </div>
-
-    <div class="mb-3">
-      <label>Nuova Password</label>
-      <input type="password" class="form-control" [(ngModel)]="newPassword" />
-      <button class="btn btn-warning mt-2" (click)="changePassword()">Cambia Password</button>
-    </div>
-
-    <div class="mb-3">
-      <label>Aggiungi Carta</label>
-      <input class="form-control" placeholder="Hero ID" [(ngModel)]="cardHeroId" />
-      <input class="form-control mt-1" placeholder="Nome" [(ngModel)]="cardName" />
-      <input class="form-control mt-1" placeholder="Immagine" [(ngModel)]="cardImage" />
-      <button class="btn btn-secondary mt-2" (click)="addCard()">Aggiungi</button>
-    </div>
-
-    <div *ngIf="album">
-      <h5>Album</h5>
-      <ul>
-        <li *ngFor="let c of album.cards">{{c.name}} - {{c.quantity}}</li>
+<div class="container py-4 admin-page">
+  <h2 class="mb-4 text-center">Pannello Amministratore</h2>
+  <div class="row">
+    <div class="col-md-4 mb-3">
+      <input type="text" class="form-control mb-3" [(ngModel)]="searchTerm" (input)="filter()" placeholder="Cerca utente">
+      <ul class="list-group user-list">
+        <li class="list-group-item user-item" *ngFor="let u of filtered" (click)="selectUser(u)" [class.active]="selected?._id === u._id">
+          {{u.username}}
+        </li>
       </ul>
+    </div>
+    <div class="col-md-8">
+      <div *ngIf="selected; else placeholder" class="card detail-card">
+        <div class="card-body">
+          <h4 class="card-title">{{selected!.username}}</h4>
+          <p class="card-text mb-2">Crediti: <strong>{{selected!.credits}}</strong></p>
+
+          <div class="row g-2 mb-3 align-items-end">
+            <div class="col-sm-5">
+              <label class="form-label">Crediti</label>
+              <input type="number" class="form-control" [(ngModel)]="creditAmount">
+            </div>
+            <div class="col-sm-auto">
+              <button class="btn btn-primary w-100" (click)="updateCredits()">Aggiorna</button>
+            </div>
+          </div>
+
+          <div class="row g-2 mb-3 align-items-end">
+            <div class="col-sm-5">
+              <label class="form-label">Tipo Pacchetto</label>
+              <input class="form-control" [(ngModel)]="packType">
+            </div>
+            <div class="col-sm-3">
+              <label class="form-label">Quantità</label>
+              <input type="number" class="form-control" [(ngModel)]="packQty">
+            </div>
+            <div class="col-sm-auto">
+              <button class="btn btn-primary w-100" (click)="updatePacks()">Aggiorna</button>
+            </div>
+          </div>
+
+          <div class="row g-2 mb-3 align-items-end">
+            <div class="col-sm-8">
+              <label class="form-label">Nuova Password</label>
+              <input type="password" class="form-control" [(ngModel)]="newPassword">
+            </div>
+            <div class="col-sm-auto">
+              <button class="btn btn-warning w-100" (click)="changePassword()">Cambia Password</button>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="row g-2 mb-3">
+            <div class="col-12">
+              <label class="form-label">Aggiungi Carta</label>
+            </div>
+            <div class="col-md-4">
+              <input class="form-control" placeholder="Hero ID" [(ngModel)]="cardHeroId">
+            </div>
+            <div class="col-md-4">
+              <input class="form-control" placeholder="Nome" [(ngModel)]="cardName">
+            </div>
+            <div class="col-md-4">
+              <input class="form-control" placeholder="Immagine" [(ngModel)]="cardImage">
+            </div>
+            <div class="col-12 mt-2">
+              <button class="btn btn-secondary" (click)="addCard()">Aggiungi</button>
+            </div>
+          </div>
+
+          <div *ngIf="album">
+            <h5>Album</h5>
+            <ul class="list-unstyled mb-0">
+              <li *ngFor="let c of album.cards">{{c.name}} - {{c.quantity}}</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <ng-template #placeholder>
+        <div class="text-muted text-center py-5">Seleziona un utente per visualizzare i dettagli</div>
+      </ng-template>
     </div>
   </div>
 </div>
