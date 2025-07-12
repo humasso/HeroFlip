@@ -53,12 +53,12 @@
                           <small class="me-2 text-capitalize stat-label">{{ stat }}</small>
                           <div class="progress position-relative flex-grow-1" style="height: 0.75rem;">
                             <div class="progress-bar" role="progressbar"
-                                 [ngClass]="{'bg-secondary': !statValue(c.powerstats[stat])}"
-                                 [style.width.%]="statValue(c.powerstats[stat]) || 100"
-                                 [style.backgroundColor]="statValue(c.powerstats[stat]) ? statColor(stat) : ''">
+                                   [ngClass]="{'bg-secondary': !statValue(c.powerstats?.[stat] || '')}"
+                                   [style.width.%]="statValue(c.powerstats?.[stat] || '') || 100"
+                                   [style.backgroundColor]="statValue(c.powerstats?.[stat] || '') ? statColor(stat) : ''">
                             </div>
                             <small class="position-absolute top-0 end-0 me-1" style="font-size: 0.65rem; font-weight: 700;">
-                              {{ statValue(c.powerstats[stat]) ?? 'unknown' }}
+                              {{ statValue(c.powerstats?.[stat] || '') ?? 'unknown' }}
                             </small>
                           </div>
                         </div>

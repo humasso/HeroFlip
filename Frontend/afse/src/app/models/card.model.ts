@@ -11,8 +11,8 @@ export interface Card {
   heroId: string;
   name: string;
   image: string;
-  publisher: string;
-  powerstats: Powerstats;
+  publisher?: string;
+  powerstats?: Powerstats;
   quantity?: number;
   biography?: any;
   appearance?: any;

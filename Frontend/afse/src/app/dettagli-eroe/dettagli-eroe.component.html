@@ -10,12 +10,12 @@
             <span class="mx-2">|</span>
             <div class="progress position-relative flex-grow-1" style="height: 0.75rem;">
               <div class="progress-bar" role="progressbar"
-                   [ngClass]="{'bg-secondary': !statValue(card.powerstats[stat])}"
-                   [style.width.%]="statValue(card.powerstats[stat]) || 100"
-                   [style.backgroundColor]="statValue(card.powerstats[stat]) ? statColor(stat) : ''">
+                   [ngClass]="{'bg-secondary': !statValue(card.powerstats?.[stat] || '')}"
+                   [style.width.%]="statValue(card.powerstats?.[stat] || '') || 100"
+                   [style.backgroundColor]="statValue(card.powerstats?.[stat] || '') ? statColor(stat) : ''">
               </div>
               <small class="position-absolute top-0 end-0 me-1" style="font-size: 0.65rem; font-weight: 700;">
-                {{ statValue(card.powerstats[stat]) ?? 'unknown' }}
+                {{ statValue(card.powerstats?.[stat] || '') ?? 'unknown' }}
               </small>
             </div>
           </div>

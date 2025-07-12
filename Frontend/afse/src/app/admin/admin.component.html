@@ -8,8 +8,8 @@
   </ul>
 
   <div *ngIf="selected">
-    <h4>Dettagli {{selected?.username}}</h4>
-    <p>Crediti: {{selected?.credits}}</p>
+    <h4>Dettagli {{selected!.username}}</h4>
+    <p>Crediti: {{selected!.credits}}</p>
 
     <div class="mb-3">
       <label>Aggiungi/Rimuovi Crediti</label>
