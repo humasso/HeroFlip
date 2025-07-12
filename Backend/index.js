@@ -11,7 +11,6 @@ const requireLogin = require('./middleware/sessionAuth');
 
 const setupSwagger = require('./swagger');
 
-
 const cors = require('cors');
 require('dotenv').config();
 const connectDB = require('./functions/dbconnection');
