@@ -63,4 +63,34 @@ router.post('/', async (req, res) => {
   }
 });
 
+/**
+ * @swagger
+ * /notification/{id}:
+ *   delete:
+ *     summary: Elimina una notifica
+ *     tags: [Notification]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Notifica eliminata
+ */
+router.delete('/:id', async (req, res) => {
+  try {
+    const deleted = await Notification.findByIdAndDelete(req.params.id);
+    if (!deleted) {
+      return res.status(404).json({ message: 'Notifica non trovata' });
+    }
+    res.json({ message: 'Notifica eliminata' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Errore server' });
+  }
+});
+
+
 module.exports = router;

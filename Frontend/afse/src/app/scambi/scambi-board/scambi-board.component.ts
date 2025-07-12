@@ -94,8 +94,10 @@ export class ScambiBoardComponent implements OnInit {
     });
   }
 
-  removeNotification(n: Notification) {
-    this.notifications = this.notifications.filter(not => not !== n);
+   removeNotification(n: Notification) {
+    this.notificationService.deleteNotification(n._id!).subscribe(() => {
+      this.notifications = this.notifications.filter(not => not !== n);
+    });
   }
 
 

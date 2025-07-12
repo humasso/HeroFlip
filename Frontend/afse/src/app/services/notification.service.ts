@@ -20,4 +20,8 @@ export class NotificationService {
   getNotifications(userId: string): Observable<Notification[]> {
     return this.http.get<Notification[]>(`${this.baseUrl}/${userId}`);
   }
+
+  deleteNotification(id: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/${id}`);
+  }
 }

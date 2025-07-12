@@ -18,11 +18,19 @@
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   text-decoration: none;
   color: inherit;
+  padding: 1.5rem;
+  font-size: 1.2rem;
 }
 
 .dashboard-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.dashboard-card svg,
+.dashboard-card img {
+  width: 48px;
+  height: 48px;
 }
 
 .search-wrapper {
