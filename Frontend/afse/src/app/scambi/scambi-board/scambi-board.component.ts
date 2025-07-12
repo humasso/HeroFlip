@@ -94,6 +94,11 @@ export class ScambiBoardComponent implements OnInit {
     });
   }
 
+  removeNotification(n: Notification) {
+    this.notifications = this.notifications.filter(not => not !== n);
+  }
+
+
   getActorName(n: Notification): string {
     if (!n.actor) { return ''; }
     return typeof n.actor === 'object' ? n.actor.username : '';

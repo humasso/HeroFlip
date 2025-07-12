@@ -37,7 +37,7 @@
   <div class="toast text-white bg-{{getToastType(n)}} show" role="alert" *ngFor="let n of notifications">
     <div class="d-flex">
       <div class="toast-body">{{ n.message }}<span *ngIf="getActorName(n)"> da {{ getActorName(n) }}</span></div>
-      <button type="button" class="btn-close btn-close-white me-2 m-auto" (click)="notifications = notifications.filter(nt => nt !== n)"></button>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" (click)="removeNotification(n)"></button>
     </div>
   </div>
 </div>
