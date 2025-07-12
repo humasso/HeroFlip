@@ -16,3 +16,50 @@
 .form-label {
   font-weight: 600;
 }
+
+.album-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 1rem;
+}
+
+.album-img {
+  height: 150px;
+  object-fit: cover;
+}
+
+/* Reuse arrows from album component */
+.page-arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1050;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-arrow.left {
+  left: 10px;
+}
+
+.page-arrow.right {
+  right: 10px;
+}
+
+.page-arrow:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.search-bar {
+  width: 250px;
+  border-width: 2px;
+  border-color: #0d6efd;
+}

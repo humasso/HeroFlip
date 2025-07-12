@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../services/user.service';
 import { AlbumService, Album } from '../services/album.service';
+import { HeroService } from '../services/hero.service';
 import { User, UserPack } from '../models/user.model';
 
 @Component({
@@ -18,15 +19,23 @@ export class AdminComponent implements OnInit {
   selected: User | null = null;
   searchTerm = '';
   album: Album | null = null;
+  albumSearch = '';
+  albumPage = 1;
+  readonly albumPageSize = 20;
   creditAmount = 0;
   packType = '';
   packQty = 0;
   newPassword = '';
-  cardHeroId = '';
-  cardName = '';
-  cardImage = '';
+  heroSearch = '';
+  heroResults: { id: number; name: string }[] = [];
+  selectedHero: { heroId: string; name: string; image: string } | null = null;
+  cardQty = 1;
 
-  constructor(private userService: UserService, private albumService: AlbumService) {}
+  constructor(
+    private userService: UserService,
+    private albumService: AlbumService,
+    private heroService: HeroService
+  ) {}
 
   ngOnInit(): void {
     this.loadUsers();
@@ -46,7 +55,11 @@ export class AdminComponent implements OnInit {
 
   selectUser(u: User) {
     this.selected = u;
-    this.albumService.getAlbum(u._id).subscribe(a => this.album = a);
+    this.albumService.getAlbum(u._id).subscribe(a => {
+      this.album = a;
+      this.albumPage = 1;
+      this.albumSearch = '';
+    });
   }
 
   updateCredits() {
@@ -72,12 +85,66 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  addCard() {
-    if (!this.selected) return;
-    const card = { heroId: this.cardHeroId, name: this.cardName, image: this.cardImage };
-    this.albumService.addCards(this.selected._id, [card]).subscribe(a => {
-      this.album = a;
-      this.cardHeroId = this.cardName = this.cardImage = '';
+  searchHero() {
+    if (!this.heroSearch.trim()) {
+      this.heroResults = [];
+      return;
+    }
+    this.heroService.searchHeroes(this.heroSearch).subscribe(res => this.heroResults = res);
+  }
+
+  selectHero(opt: { id: number; name: string }) {
+    this.heroSearch = opt.name;
+    this.heroResults = [];
+    this.heroService.getHero(opt.id).subscribe(card => {
+      this.selectedHero = {
+        heroId: String(card.heroId),
+        name: card.name,
+        image: card.image
+      };
     });
+  }
+
+  addCard() {
+    if (!this.selected || !this.selectedHero || this.cardQty <= 0) return;
+    const card = {
+      heroId: this.selectedHero.heroId,
+      name: this.selectedHero.name,
+      image: this.selectedHero.image
+    };
+    const cards = Array(this.cardQty).fill(card);
+    this.albumService.addCards(this.selected._id, cards).subscribe(a => {
+      this.album = a;
+      this.selectedHero = null;
+      this.heroSearch = '';
+      this.cardQty = 1;
+    });
+  }
+
+  get filteredAlbumCards(): any[] {
+    if (!this.album) return [];
+    const term = this.albumSearch.toLowerCase();
+    return this.album.cards.filter(c => c.name.toLowerCase().includes(term));
+  }
+
+  get albumTotalPages(): number {
+    return Math.ceil(this.filteredAlbumCards.length / this.albumPageSize) || 1;
+  }
+
+  get pagedAlbumCards(): any[] {
+    const start = (this.albumPage - 1) * this.albumPageSize;
+    return this.filteredAlbumCards.slice(start, start + this.albumPageSize);
+  }
+
+  albumNextPage() {
+    if (this.albumPage < this.albumTotalPages) {
+      this.albumPage++;
+    }
+  }
+
+  albumPrevPage() {
+    if (this.albumPage > 1) {
+      this.albumPage--;
+    }
   }
 }
