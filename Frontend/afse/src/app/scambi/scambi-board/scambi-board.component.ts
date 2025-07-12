@@ -6,6 +6,7 @@ import { TradeService } from '../../services/trade.service';
 import { Trade } from '../../models/trade.model';
 import { TradeHistory } from '../../models/trade-history.model';
 import { ScambiHistoryComponent } from '../scambi-history/scambi-history.component';
+import { NotificationService, Notification } from '../../services/notification.service';
 
 @Component({
   selector: 'app-scambi-board',
@@ -19,12 +20,17 @@ export class ScambiBoardComponent implements OnInit {
   myTrades: Trade[] = [];
   respondedTrades: Trade[] = [];
   history: TradeHistory[] = [];
+  notifications: Notification[] = [];
 
   @ViewChild('myTradesCanvas') myTradesCanvas!: TemplateRef<any>;
   @ViewChild('historyCanvas') historyCanvas!: TemplateRef<any>;
   private userId: string | null = localStorage.getItem('userId');
 
-  constructor(private tradeService: TradeService, private offcanvas: NgbOffcanvas) {}
+  constructor(
+    private tradeService: TradeService,
+    private notificationService: NotificationService,
+    private offcanvas: NgbOffcanvas
+  ) {}
 
   ngOnInit(): void {
     this.tradeService.getTrades().subscribe(trades => {
@@ -41,6 +47,8 @@ export class ScambiBoardComponent implements OnInit {
     if (this.userId) {
       this.tradeService.getTradesByUser(this.userId).subscribe(trades => this.myTrades = trades);
       this.tradeService.getHistory(this.userId).subscribe(h => this.history = h);
+      this.notificationService.getNotifications(this.userId)
+        .subscribe(nots => this.notifications = nots);
     }
   }
 
@@ -84,6 +92,17 @@ export class ScambiBoardComponent implements OnInit {
       this.respondedTrades = this.respondedTrades.filter(t => t._id !== id);
       if (canvas) { canvas.close(); }
     });
+  }
+
+  getActorName(n: Notification): string {
+    if (!n.actor) { return ''; }
+    return typeof n.actor === 'object' ? n.actor.username : '';
+  }
+
+  getToastType(n: Notification): 'success' | 'danger' | 'primary' {
+    if (n.message.includes('accettata')) { return 'success'; }
+    if (n.message.includes('rifiutata')) { return 'danger'; }
+    return 'primary';
   }
 
 }

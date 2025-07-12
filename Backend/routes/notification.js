@@ -28,14 +28,15 @@ const router = express.Router();
  */
 router.get('/:userId', async (req, res) => {
   try {
-    const notifications = await Notification.find({ user: req.params.userId }).sort({ createdAt: -1 });
+    const notifications = await Notification.find({ user: req.params.userId })
+      .sort({ createdAt: -1 })
+      .populate('actor', 'username');
     res.json(notifications);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Errore server' });
   }
 });
-
 /**
  * @swagger
  * /notification:

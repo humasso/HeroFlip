@@ -7,6 +7,7 @@ export interface Notification {
   _id?: string;
   message: string;
   user: string;
+  actor?: string | { _id: string; username: string };
   createdAt?: string;
   read?: boolean;
 }

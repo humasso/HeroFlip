@@ -288,6 +288,7 @@ router.patch('/:tradeId/proposal/:proposalId/reject', async (req, res) => {
     await trade.save();
     await Notification.create({
       user: proposal.user,
+      actor: trade.user,
       message: 'La tua proposta è stata rifiutata.'
     });
     const populated = await trade.populate('proposals.user', 'username');
@@ -378,6 +379,7 @@ router.patch('/:tradeId/proposal/:proposalId/accept', async (req, res) => {
 
     await Notification.create({
       user: proposal.user,
+      actor: trade.user,
       message: 'La tua proposta è stata accettata.'
     });
 
