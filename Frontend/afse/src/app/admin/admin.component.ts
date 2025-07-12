@@ -147,4 +147,15 @@ export class AdminComponent implements OnInit {
       this.albumPage--;
     }
   }
+
+  deleteSelectedUser() {
+    if (!this.selected) return;
+    if (!confirm('Sei sicuro di voler eliminare questo utente?')) return;
+    const id = this.selected._id;
+    this.userService.deleteUserAdmin(id).subscribe(() => {
+      this.users = this.users.filter(u => u._id !== id);
+      this.selected = null;
+      this.filter();
+    });
+  }
 }

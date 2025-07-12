@@ -93,4 +93,16 @@ router.put('/password/:id', async (req, res) => {
   }
 });
 
+// Elimina un utente
+router.delete('/user/:id', async (req, res) => {
+  try {
+    const result = await User.findByIdAndDelete(req.params.id);
+    if (!result) return res.status(404).json({ message: 'Utente non trovato' });
+    res.status(204).end();
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Errore server' });
+  }
+});
+
 module.exports = router;

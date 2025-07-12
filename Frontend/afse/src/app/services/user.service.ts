@@ -65,4 +65,8 @@ export class UserService {
     return this.http.put(`${environment.backendApi}/admin/password/${id}`, { password });
   }
 
+  deleteUserAdmin(id: string) {
+    return this.http.delete<void>(`${environment.backendApi}/admin/user/${id}`);
+  }
+
 }
